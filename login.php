@@ -11,6 +11,7 @@
         <label>Password:</label>
         <input type="password" name="password" required><br><br>
         <input type="submit" value="Login">
+        <a href="register.php">signup here</a>
     </form>
 </body>
 </html>
