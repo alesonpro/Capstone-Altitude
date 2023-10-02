@@ -2,16 +2,26 @@
 <html>
 <head>
     <title>Login Page</title>
-</head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    </head>
 <body>
-    <h2>Login</h2>
     <form action="login_process.php" method="POST">
-        <label>Username:</label>
-        <input type="text" name="username" required><br><br>
-        <label>Password:</label>
-        <input type="password" name="password" required><br><br>
-        <input type="submit" value="Login">
-        <a href="register.php">signup here</a>
+        <h2>Login to your account</h2>
+        <div class="input-container">
+            <label for="username">Username</label>
+            <input class="username" type="text" name="username" id="username" required>
+            <div class="divider"></div>
+            <label for="password">Password</label>
+            <input class="password" type="password" name="password" id="password" required>
+        </div>
+        <div class="input-container">
+            <div class="divider"></div>
+            <input class="submit" type="submit" value="Login">
+        </div>
+        <p>Don't have an account? <a href="register.php">Sign Up</a></p>
     </form>
 </body>
 </html>

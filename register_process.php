@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
     // Connect to the database
-    $conn = mysqli_connect("localhost", "root", "", "user_login");
+    $conn = new mysqli("localhost", "root", "", "user_login");
 
     // Check connection
     if ($conn->connect_error) {
@@ -15,11 +15,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
     
     if ($conn->query($sql) === TRUE) {
-        echo "Registration successful. <a href='login.php'>Login</a>";
+        echo "<html><head><title>Registration Successful</title><link rel='stylesheet' type='text/css' href='styless.css'></head><body>";
+        echo "<h2 class='success-message'>Registration successful. <a href='login.php'>Login</a></h2>";
+        echo "</body></html>";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "<html><head><title>Registration Error</title><link rel='stylesheet' type='text/css' href='styles.css'></head><body>";
+        echo "<h2 class='error-message'>Error: " . $sql . "<br>" . $conn->error . "</h2>";
+        echo "</body></html>";
     }
 
-    $conn->close(); 
+    $conn->close();
 }
 ?>
