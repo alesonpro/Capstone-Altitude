@@ -22,12 +22,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $row["password"])) {
             $_SESSION["username"] = $username;
             header("Location: dashboard.php"); // Redirect to the dashboard
-            exit; // Ensure no further code is executed after the redirect
         } else {
-            echo "Incorrect password. <a href='login.php'>Try Again</a>";
+            echo "<html><head><title>Login Error</title><link rel='stylesheet' type='text/css' href='styles.css'></head><body>";
+            echo "<div class='login-container'>";
+            echo "<h2 class='error-message'>Incorrect password. <a href='login.php'>Try Again</a></h2>";
+            echo "</div>";
+            echo "</body></html>";
         }
     } else {
-        echo "User not found. <a href='register.php'>Register</a>";
+        echo "<html><head><title>Login Error</title><link rel='stylesheet' type='text/css' href='styless.css'></head><body>";
+        echo "<div class='login-container'>";
+        echo "<h2 class='error-message'>User not found. <a href='register.php'>Register</a></h2>";
+        echo "</div>";
+        echo "</body></html>";
     }
 
     $conn->close();
