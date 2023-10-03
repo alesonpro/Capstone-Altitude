@@ -7,6 +7,26 @@ body {
     
 }
 
+img {
+    height: 50px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+    padding-top: 15px;
+}
+
+.logo-text {
+    font-size: 30px;
+    padding-left: 7px;
+    padding-top: 10px;
+    font-family: 'Russo One', sans-serif;
+    color: #fff;
+    letter-spacing: 1.5px;
+}
+
 h2 {
     text-align: center;
     margin: 20px;
@@ -16,11 +36,11 @@ h2 {
 form {
     background-color: #ffffff;
     width: 450px;
-    margin: 0 auto;
+    margin: auto;
     padding: 20px 30px 15px 30px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 10%;
+    margin-top: 5%;
     align-content: center;
 }
 
@@ -28,6 +48,7 @@ form {
 .input-container {
     margin-bottom: 15px;
     padding-left: 15%;
+    
 }
 
 .divider{
@@ -58,7 +79,7 @@ input:focus {
 }
 
 .submit {
-    width: 85%;
+    width: 86.2%;
     padding: 10px;
     background-color: #740A00;
     color: #fff;
@@ -87,3 +108,5 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+
