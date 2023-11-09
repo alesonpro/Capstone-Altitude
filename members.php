@@ -4,7 +4,7 @@ session_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>Members Page</title>
     <link rel="stylesheet" type="text/css" href="styless.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,12 @@ session_start();
 <!-- end of header -->
 
 <!-- body -->
+
 <div class="body-container">
+<form action="members_search.php" method="get">
+  <input type="text" name="q" placeholder="Search members">
+  <button type="submit">Search</button>
+</form>
   <!-- sidenav -->
   <div class="sidenav">
       <a href="dashboard.php"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
@@ -49,10 +54,56 @@ session_start();
 
   <!-- main content -->
   <div class="content">
-    <h3>Welcome back <?php echo $_SESSION["username"]; echo"!";?></h3>
-    <hr>
-    <div class="active-members">
-    </div>
+        <h3>Members</h3>
+        <hr>
+        <?php
+            // Connect to the database
+            $connection = mysqli_connect("localhost", "root", "", "members");
+
+            // Retrieve member data
+            $query = "SELECT * FROM members_list";
+            $result = mysqli_query($connection, $query);
+
+            // Display member data
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<p>Name: " . $row['name'] . "</p>";
+                    echo "<p>Joining Date: " . $row['joining_date'] . "</p>";
+                    echo "<p>Category: " . $row['Category'] . "</p>";
+                    // Add more member information as needed
+                    echo "<hr>";
+                }
+            }
+            else {
+                echo "No members found.";
+            }
+
+            if (isset($_GET['q'])) {
+                $query = $_GET['q'];
+              
+                // Perform search query
+                $searchQuery = "SELECT * FROM members_list WHERE name LIKE '%$query%'";
+                $result = mysqli_query($connection, $searchQuery);
+
+                mysqli_free_result($result);
+              
+                // Display search results
+                if (mysqli_num_rows($result) > 0) {
+                  while ($row = mysqli_fetch_assoc($result)) {
+                      echo "<p>Name: " . $row['name'] . "</p>";
+                      echo "<p>Joining Date: " . $row['joining_date'] . "</p>";
+                      echo "<p>Category: " . $row['Category'] . "</p>";
+                    // Add more member information as needed
+                    echo "<hr>";
+                  }
+                } else {
+                  echo "No matching results found.";
+                }
+              }
+
+            // Close the database connection
+            mysqli_close($connection);
+        ?>
   </div>
   <!-- end of content -->
 </div>
