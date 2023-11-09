@@ -4,7 +4,7 @@ session_start();
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>Walk-in Page</title>
     <link rel="stylesheet" type="text/css" href="styless.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,12 @@ session_start();
 <!-- end of header -->
 
 <!-- body -->
+
 <div class="body-container">
+<form action="/search" method="get">
+  <input type="text" name="q" placeholder="Search members">
+  <button type="submit">Search</button>
+</form>
   <!-- sidenav -->
   <div class="sidenav">
       <a href="dashboard.php"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
@@ -43,16 +48,14 @@ session_start();
       <a href="dues.php"><i class="fa fa-credit-card"></i>Dues</a>
       <a href="trainers.php"><i class="fa fa-user"></i>Trainers</a>
       <a href="walk-in.php"><i class='fa-solid fa-person-walking'></i>Walk-in</a>
-      <a href="logs.php"><i class="fa-solid fa-right-to-bracket"></i>Logs</a>  
+      <a href="logs.php"><i class="fa-solid fa-right-to-bracket"></i>Logs</a>   
   </div>  
   <!-- end of sidenav -->
 
   <!-- main content -->
   <div class="content">
-    <h3>Welcome back <?php echo $_SESSION["username"]; echo"!";?></h3>
+  <h3>Walk-in</h3>
     <hr>
-    <div class="active-members">
-    </div>
   </div>
   <!-- end of content -->
 </div>

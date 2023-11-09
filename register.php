@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Registration Page</title>
-    <link rel="stylesheet" type="text/css" href="./css-files/styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Russo+One&display=swap" rel="stylesheet">
@@ -10,7 +10,7 @@
 <body>
     <div class="header">
         <div class="img">
-            <a href="dashboard.php"><img src="./img/logo.png"/></a>
+            <a href="login.php"><img src="./img/logo.png"/></a>
         </div>
 
         <div class="logo-text">ALTITUDE</div>

@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -9,7 +10,6 @@
 body {
     background-color: #CDCDCD;
 }
-
 
 .dashboard-header{
     display: flex;
@@ -28,7 +28,7 @@ h3 {
 }
 
 .sidenav {
-    padding-top: 50px;
+    padding-top: 40px;
     height: 100%;
     width: 250px;
     position: absolute;
@@ -87,32 +87,65 @@ h3 {
     padding-right: 10px;
 }
 
-
-
-/* Add some styles to the content to move it away from the sidebar */
-.content {
-    color: black;
-    position: relative;
-    border: 3px solid black;
-    left: 300px;
-    width:calc(100% - 350px);
-    top: 50px;
-    background-color: #D9D9D9;
-}
-
-hr {
-    border:none;
-    border-bottom:solid thin gray ;
-    width: fit-content;
-}
-
-content h1 {
-    padding-left: 10px;
-}
-
 .body-container {
     height: calc(100% - 80px);
     width: 100%;
     position: absolute;
     background-color: #CDCDCD;
 }
+
+.content {
+    color: black;
+    position: relative;
+    /* border: 3px solid black; */
+    left: 300px;
+    width:calc(100% - 350px);
+    top: 20px;
+    background-color: #D9D9D9;
+    height: 75vh;
+}
+
+h3 {
+    padding-top: 20px;
+}
+
+hr {
+    border: 1px solid black;
+}
+
+.active-members {
+    padding-left: 100px;
+    width: 400px;
+    margin: 0;
+}
+
+/* members css */
+form {
+    display: flex;
+    align-items: center;
+    width:calc(100% - 350px);
+    padding-left: 600px;
+    padding-top: 20px;
+  }
+  
+  input[type="text"] {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 600px;
+    color: black;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #740A00;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #000000;
+  }
