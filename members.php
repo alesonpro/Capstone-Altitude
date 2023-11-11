@@ -5,13 +5,31 @@ session_start();
 <html>
 <head>
     <title>Members Page</title>
-    <link rel="stylesheet" type="text/css" href="styless.css">
+    <link rel="stylesheet" type="text/css" href="./styless.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
+
+    <style>
+
+      .member-details {
+        border-bottom: solid black;
+        color: black;
+        display: flex;
+        padding: 15px;
+        padding-left: 30px;
+        margin-bottom: 20px;
+        width:calc(100% - 30px);
+        gap: calc(100% - 800px);
+      }
+
+      button {
+        border-radius: 10px;
+      }
+    </style>
 </head>
 <body>
   <!-- header -->
@@ -65,41 +83,22 @@ session_start();
             $result = mysqli_query($connection, $query);
 
             // Display member data
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<p>Name: " . $row['name'] . "</p>";
-                    echo "<p>Joining Date: " . $row['joining_date'] . "</p>";
-                    echo "<p>Category: " . $row['Category'] . "</p>";
-                    // Add more member information as needed
-                    echo "<hr>";
-                }
-            }
-            else {
-                echo "No members found.";
-            }
-
-            if (isset($_GET['q'])) {
-                $query = $_GET['q'];
-              
-                // Perform search query
-                $searchQuery = "SELECT * FROM members_list WHERE name LIKE '%$query%'";
-                $result = mysqli_query($connection, $searchQuery);
-
-                mysqli_free_result($result);
-              
-                // Display search results
-                if (mysqli_num_rows($result) > 0) {
-                  while ($row = mysqli_fetch_assoc($result)) {
-                      echo "<p>Name: " . $row['name'] . "</p>";
-                      echo "<p>Joining Date: " . $row['joining_date'] . "</p>";
-                      echo "<p>Category: " . $row['Category'] . "</p>";
-                    // Add more member information as needed
-                    echo "<hr>";
-                  }
-                } else {
-                  echo "No matching results found.";
-                }
+            if ($result->num_rows > 0) {
+              echo '<div class="member-list">';
+              while ($row = $result->fetch_assoc()) {
+                  echo '<div class="member-details">';
+                  echo "<h4>Name: " . $row['name'] . "</h4>";
+                  echo "<h4>Joining Date  " . $row['joining_date'] . "</h4>";
+                  echo "<h4>Category " . $row['Category'] . "</h4>";
+                  // Add more member information as needed
+                  
+                  echo "</div>";
               }
+              echo "</div>";
+              
+          } else {
+              echo "<p>No members found.</p>";
+          }
 
             // Close the database connection
             mysqli_close($connection);

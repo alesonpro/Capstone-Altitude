@@ -12,6 +12,19 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
+
+
+    <style>
+
+        .member-details {
+          color: black;
+          display: flex;
+          padding: 15px;
+          margin-bottom: 10px;
+          width:calc(100% - 30px);
+          gap: calc(100% - 800px);
+        }
+    </style>
 </head>
 <body>
   <!-- header -->
@@ -69,17 +82,21 @@ if (isset($_GET['q'])) {
   $result = mysqli_query($connection, $searchQuery);
 
   // Display search results
-  if (mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<p>Name: " . $row['name'] . "</p>";
-        echo "<p>Joining Date: " . $row['joining_date'] . "</p>";
-        echo "<p>Category: " . $row['Category'] . "</p>";
-      // Add more member information as needed
-      echo "<hr>";
+  if ($result->num_rows > 0) {
+    echo '<div class="member-list">';
+    while ($row = $result->fetch_assoc()) {
+        echo '<div class="member-details">';
+        echo "<h4>Name: " . $row['name'] . "</h4>";
+        echo "<h4>Joining Date  " . $row['joining_date'] . "</h4>";
+        echo "<h4>Category " . $row['Category'] . "</h4>";
+        // Add more member information as needed
+        
+        echo "</div>";
     }
-  } else {
-    echo "No matching results found.";
-  }
+    echo "</div>";
+} else {
+    echo "<p>No members found.</p>";
+}
 }
 
 // Close the database connection
