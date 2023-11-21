@@ -89,7 +89,6 @@ if (isset($_GET['q'])) {
         echo "<h4>Name: " . $row['name'] . "</h4>";
         echo "<h4>Joining Date  " . $row['joining_date'] . "</h4>";
         echo "<h4>Category " . $row['Category'] . "</h4>";
-        // Add more member information as needed
         
         echo "</div>";
     }
