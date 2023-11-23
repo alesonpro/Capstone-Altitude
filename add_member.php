@@ -1,4 +1,9 @@
 <?php
+// Function to format the date as MM-DD-YYYY
+function formatDate($inputDate) {
+    return date("m-d-Y", strtotime($inputDate));
+}
+
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connect to the database
@@ -12,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize user inputs
     $name = mysqli_real_escape_string($connection, $_POST['name']);
     
-    // Format the joining date as MM-DD-YYYY
-    $joiningDate = date("m-d-Y", strtotime($_POST['joining_date']));
+    // Format the joining date using the formatDate function
+    $joiningDate = formatDate($_POST['joining_date']);
 
     $category = mysqli_real_escape_string($connection, $_POST['category']);
 
@@ -51,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <option value="Student">Student</option>
             <option value="Regular">Regular</option>
             <option value="Regular/Coach">Regular/Coach</option>
-            <!-- Add more options as needed -->
         </select><br>
 
         <button type="submit">Add Member</button>
