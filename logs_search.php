@@ -1,13 +1,11 @@
 <?php
 session_start();
-
-require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Logs Page</title>
-    <link rel="stylesheet" type="text/css" href="./styless.css">
+    <link rel="stylesheet" type="text/css" href="styless.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,23 +13,17 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
 
+
     <style>
 
-      .attendance-details {
-        border-bottom: solid black;
-        color: black;
-        display: flex;
-        padding: 15px;
-        padding-left: 30px;
-        margin-bottom: 20px;
-        width:calc(100% - 30px);
-        gap: 200px;
-        
-      }
-
-      button {
-        border-radius: 10px;
-      }
+        .attendance-details {
+          color: black;
+          display: flex;
+          padding: 15px;
+          margin-bottom: 10px;
+          width:calc(100% - 30px);
+          gap: calc(100% - 800px);
+        }
     </style>
 </head>
 <body>
@@ -76,33 +68,35 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
   <!-- main content -->
   <div class="content">
         <h3>Logs</h3>
-        <button onclick="printToPDF()">Print to PDF</button>
-        <button onclick="window.location.href='add_timein.php'">Add Members</button>
         <hr>
         <?php
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "attendance");
 
-// Retrieve member data
-$query = "SELECT * FROM attendance_table";
-$result = mysqli_query($connection, $query);
-
-if ($result) {
-    if (mysqli_num_rows($result) > 0) {
-        echo '<div class="attendance-table">';
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="attendance-details">';
-            echo "<h4>Name: " . $row['qr_content'] . "</h4>";
-            echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
-            echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
-            echo "</div>";
-        }
+// Retrieve search query
+if (isset($_GET['q'])) {
+    $query = $_GET['q'];
+  
+    // Perform search query
+    $searchQuery = "SELECT * FROM attendance_table WHERE qr_content LIKE '%$query%'";
+    $result = mysqli_query($connection, $searchQuery);
+  
+    // Display search results
+    if ($result->num_rows > 0) {
+      echo '<div class="attendance-list">';
+      while ($row = $result->fetch_assoc()) {
+        echo '<div class="attendance-details">';
+        echo "<h4>Name: " . $row['qr_content'] . "</h4>";
+        echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
+        echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
         echo "</div>";
+      }
+      echo "</div>";
     } else {
-        echo "<p>No members found.</p>";
+      echo "<p>No members found.</p>";
     }
-
-}
+  }
+  
 
 // Close the database connection
 mysqli_close($connection);
@@ -112,12 +106,6 @@ mysqli_close($connection);
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
-<script>
-    function printToPDF() {
-   // Redirect to the server-side script to generate the PDF
-   window.location.href = 'generate_pdf.php';
-}
-
-  </script>
 </body>
 </html>
+

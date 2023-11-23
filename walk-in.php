@@ -56,7 +56,7 @@ session_start();
 <!-- body -->
 
 <div class="body-container">
-<form action="members_search.php" method="get">
+<form action="walk-in_search.php" method="get">
   <input type="text" name="q" placeholder="Search members">
   <button type="submit">Search</button>
 </form>

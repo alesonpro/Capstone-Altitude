@@ -23,6 +23,11 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
         margin: 0;
       }
 
+      .edit {
+        padding: 0;
+        margin: 0
+      }
+
       .member-details {
         border-bottom: solid black;
         color: black;
@@ -31,7 +36,7 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
-        gap: 250px;
+        /* gap: 100px; */
       }
 
       button {
@@ -93,24 +98,28 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
       $result = mysqli_query($connection, $query);
 
       if ($result) {
-        if (mysqli_num_rows($result) > 0) {
+        if ($result->num_rows > 0) {
           echo '<div class="member-list">';
-          while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="member-details">';
-            echo "<h4>Name: " . $row['name'] . "</h4>";
-            echo "<h6>Joining Date: " . $row['joining_date'] . "</h6>";
-            echo "<h6>Category: " . $row['Category'] . "</h6>";
-            // Add more member information as needed
-            echo "<form class='delete' method='post' action=''>";
-            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-            echo "<button type='submit' name='delete_member'>Delete Member</button>";
-            echo "</form>";
-            echo "</div>";
+          while ($row = $result->fetch_assoc()) {
+              echo '<div class="member-details">';
+              echo "<h4>Name: " . $row['name'] . "</h4>";
+              echo "<h6>Joining Date: " . $row['joining_date'] . "</h6>";
+              echo "<h6>Category: " . $row['Category'] . "</h6>";
+              // Add more member information as needed
+              echo "<form class='delete' method='post' action=''>";
+              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+              echo "<button type='submit' name='delete_member'>Delete Member</button>";
+              echo "</form>";
+              echo "<form class='edit' method='post' action='edit_member.php'>";
+              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+              echo "<button type='submit' name='edit_member'>Edit Member</button>";
+              echo "</form>";
+              echo "</div>";
           }
           echo "</div>";
-        } else {
+      } else {
           echo "<p>No members found.</p>";
-        }
+      }
         mysqli_free_result($result);
       } else {
         echo "<p>Error: " . mysqli_error($connection) . "</p>";
