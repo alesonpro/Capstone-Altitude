@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,6 +40,11 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
 
       button {
         border-radius: 10px;
+      }
+
+      .content{
+        overflow: auto;
+
       }
     </style>
 </head>
@@ -85,8 +89,8 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
     <!-- main content -->
     <div class="content">
       <h3>Members</h3>
-      <button onclick="printToPDF()">Print to PDF</button>
       <button onclick="window.location.href='add_member.php'">Add Members</button>
+      
       <hr>
 
       <?php
@@ -103,7 +107,7 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
           while ($row = $result->fetch_assoc()) {
               echo '<div class="member-details">';
               echo "<h4>Name: " . $row['name'] . "</h4>";
-              echo "<h6>Joining Date: " . $row['joining_date'] . "</h6>";
+              echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
               echo "<h6>Category: " . $row['Category'] . "</h6>";
               // Add more member information as needed
               echo "<form class='delete' method='post' action=''>";
@@ -146,12 +150,5 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-  <script>
-    function printToPDF() {
-   // Redirect to the server-side script to generate the PDF
-   window.location.href = 'generate_pdf.php';
-}
-
-  </script>
 </body>
 </html>

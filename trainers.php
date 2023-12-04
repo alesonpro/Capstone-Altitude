@@ -40,6 +40,11 @@ session_start();
       button {
         border-radius: 10px;
       }
+
+      .content{
+        overflow: auto;
+
+      }
     </style>
 </head>
 <body>
@@ -82,7 +87,7 @@ session_start();
 
     <!-- main content -->
     <div class="content">
-      <h3>Members</h3>
+      <h3>Trainers</h3>
       <button onclick="window.location.href='add_trainers.php'">Add Trainers</button>
       <hr>
 

@@ -12,6 +12,38 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Russo+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
+
+    <style>
+      .delete {
+        padding: 0;
+        margin: 0;
+      }
+
+      .edit {
+        padding: 0;
+        margin: 0
+      }
+
+      .member-details {
+        border-bottom: solid black;
+        color: black;
+        display: flex;
+        padding: 15px;
+        padding-left: 30px;
+        margin-bottom: 20px;
+        width: calc(100% - 30px);
+        /* gap: 100px; */
+      }
+
+      button {
+        border-radius: 10px;
+      }
+
+      .content{
+        overflow: auto;
+
+      }
+    </style>
 </head>
 <body>
   <!-- header -->
@@ -37,7 +69,7 @@ session_start();
 <!-- body -->
 
 <div class="body-container">
-<form action="/search" method="get">
+<form action="dues.php" method="get">
   <input type="text" name="q" placeholder="Search members">
   <button type="submit">Search</button>
 </form>
@@ -55,7 +87,74 @@ session_start();
   <!-- main content -->
   <div class="content">
   <h3>Dues</h3>
-    <hr>
+      <hr>
+
+      <?php
+      // Connect to the database
+      $connection = mysqli_connect("localhost", "root", "", "members");
+
+      // Retrieve member data
+      $query = "SELECT * FROM members_list ORDER BY name";
+      $result = mysqli_query($connection, $query);
+
+      if ($result) {
+        if ($result->num_rows > 0) {
+          echo '<div class="member-list">';
+          while ($row = $result->fetch_assoc()) {
+              echo '<div class="member-details">';
+              echo "<h4>Name: " . $row['name'] . "</h4>";
+              echo "<h6>Due Date: " . date("m-d-Y", strtotime($row['due_date'])) . "</h6>";
+              echo "<h6>Status: " . $row['status'] . "</h6>";
+
+              echo "<form class='delete' method='post' action=''>";
+              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+              echo "<button type='submit' name='delete_member'>Delete Member</button>";
+              echo "</form>";
+
+              echo "<form class='pay' method='post' action='pay_dues.php'>";
+              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+              echo "<button type='submit' name='pay_dues'>Pay</button>";
+              echo "</form>";
+              
+              echo "</div>";
+          }
+          echo "</div>";
+      } else {
+          echo "<p>No members found.</p>";
+      }
+        mysqli_free_result($result);
+      } else {
+        echo "<p>Error: " . mysqli_error($connection) . "</p>";
+      }
+
+      // Handle member deletion
+      if (isset($_POST['delete_member'])) {
+        $memberId = mysqli_real_escape_string($connection, $_POST['id']);
+        $deleteQuery = "DELETE FROM members_list WHERE id = '$memberId'";
+        $deleteResult = mysqli_query($connection, $deleteQuery);
+
+        if ($deleteResult) {
+          echo "<script>alert('Member deleted successfully.');</script>";
+        } else {
+          echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+        }
+      }
+
+      // Close the database connection
+      mysqli_close($connection);
+      ?>
+    </div>
+    <!-- end of content -->
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+  <script>
+    function printToPDF() {
+   // Redirect to the server-side script to generate the PDF
+   window.location.href = 'generate_pdf.php';
+}
+
+  </script>
   </div>
   <!-- end of content -->
 </div>
