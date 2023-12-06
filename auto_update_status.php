@@ -1,6 +1,6 @@
 <?php
 // auto_update_status.php
-
+date_default_timezone_set('Asia/Manila');
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "members");
 
