@@ -53,7 +53,7 @@ if (!isset($_SESSION['username'])) {
             Administrator
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="login.php">Logout</a></li>
+            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
           </ul>
         </li>
       </ul>
