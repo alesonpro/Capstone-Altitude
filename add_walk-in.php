@@ -43,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="name" required><br>
 
         <label>Time in:</label>
-        <input type="text" name="time_in" required><br>
+        <input type="time" name="time_in" required><br>
         <label>Time out:</label>
-        <input type="text" name="time_out" required><br>
+        <input type="time" name="time_out"><br>
 
         <br>
 

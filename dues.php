@@ -1,5 +1,12 @@
 <?php
 session_start();
+include('auto_update_status.php');
+
+// Check if the user is not logged in
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,6 +21,11 @@ session_start();
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
 
     <style>
+      .pay{
+        padding: 0;
+        margin: 0;
+      }
+
       .delete {
         padding: 0;
         margin: 0;
@@ -69,7 +81,7 @@ session_start();
 <!-- body -->
 
 <div class="body-container">
-<form action="dues.php" method="get">
+<form class="search" action="members_search.php" method="get">
   <input type="text" name="q" placeholder="Search members">
   <button type="submit">Search</button>
 </form>
@@ -92,53 +104,60 @@ session_start();
       <?php
       // Connect to the database
       $connection = mysqli_connect("localhost", "root", "", "members");
+      date_default_timezone_set('Asia/Manila');
 
       // Retrieve member data
-      $query = "SELECT * FROM members_list ORDER BY name";
-      $result = mysqli_query($connection, $query);
+$query = "SELECT * FROM members_list ORDER BY name";
+$result = mysqli_query($connection, $query);
 
-      if ($result) {
-        if ($result->num_rows > 0) {
-          echo '<div class="member-list">';
-          while ($row = $result->fetch_assoc()) {
-              echo '<div class="member-details">';
-              echo "<h4>Name: " . $row['name'] . "</h4>";
-              echo "<h6>Due Date: " . date("m-d-Y", strtotime($row['due_date'])) . "</h6>";
-              echo "<h6>Status: " . $row['status'] . "</h6>";
+if ($result) {
+  if ($result->num_rows > 0) {
+    echo '<div class="member-list">';
+    while ($row = $result->fetch_assoc()) {
+        echo '<div class="member-details">';
+        echo "<h4>Name: " . $row['name'] . "</h4>";
 
-              echo "<form class='delete' method='post' action=''>";
-              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='delete_member'>Delete Member</button>";
-              echo "</form>";
+        // Get the current date in the same format as the due date
+        $currentDate = date('Y-m-d');
+        echo "<h6>Current Date: " . date("m-d-Y", strtotime($currentDate)) . "</h6>";
 
-              echo "<form class='pay' method='post' action='pay_dues.php'>";
-              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='pay_dues'>Pay</button>";
-              echo "</form>";
-              
-              echo "</div>";
-          }
-          echo "</div>";
-      } else {
-          echo "<p>No members found.</p>";
-      }
-        mysqli_free_result($result);
-      } else {
-        echo "<p>Error: " . mysqli_error($connection) . "</p>";
-      }
+        // Update due date to the current date if it has expired
+        $dueDate = (strtotime($row['due_date']) > strtotime($currentDate))
+            ? $row['due_date']
+            : $currentDate;
 
-      // Handle member deletion
-      if (isset($_POST['delete_member'])) {
-        $memberId = mysqli_real_escape_string($connection, $_POST['id']);
-        $deleteQuery = "DELETE FROM members_list WHERE id = '$memberId'";
-        $deleteResult = mysqli_query($connection, $deleteQuery);
+        echo "<h6>Due Date: " . date("m-d-Y", strtotime($dueDate)) . "</h6>";
 
-        if ($deleteResult) {
-          echo "<script>alert('Member deleted successfully.');</script>";
-        } else {
-          echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+        // Calculate the status based on the updated due date
+        $status = (strtotime($dueDate) >= strtotime($currentDate)) ? 'Active' : 'Expired';
+        echo "<h6>Status: " . $status . "</h6>";
+
+        // Add logic to update the status in the database if it's expired
+        if ($status === 'Expired') {
+            $updateStatusQuery = "UPDATE members_list SET status = 'Expired' WHERE id = " . $row['id'];
+            mysqli_query($connection, $updateStatusQuery);
         }
-      }
+
+        echo "<form class='delete' method='post' action=''>";
+        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+        echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+        echo "</form>";
+
+        echo "<form class='pay' method='post' action='pay_dues.php'>";
+        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+        echo "<button type='submit' name='pay_dues'><i class='fa fa-money' aria-hidden='true'></i> Pay</button>";
+        echo "</form>";
+
+        echo "</div>";
+    }
+    echo "</div>";
+} else {
+    echo "<p>No members found.</p>";
+}
+mysqli_free_result($result);
+} else {
+    echo "<p>Error: " . mysqli_error($connection) . "</p>";
+}
 
       // Close the database connection
       mysqli_close($connection);
