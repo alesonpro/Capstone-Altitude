@@ -117,15 +117,8 @@ if ($result) {
         echo '<div class="member-details">';
         echo "<h4>Name: " . $row['name'] . "</h4>";
 
-        // Get the current date in the same format as the due date
-        $currentDate = date('Y-m-d');
-        echo "<h6>Current Date: " . date("m-d-Y", strtotime($currentDate)) . "</h6>";
-
         // Update due date to the current date if it has expired
-        $dueDate = (strtotime($row['due_date']) > strtotime($currentDate))
-            ? $row['due_date']
-            : $currentDate;
-
+        $dueDate = ($row['due_date']);
         echo "<h6>Due Date: " . date("m-d-Y", strtotime($dueDate)) . "</h6>";
 
         // Calculate the status based on the updated due date
@@ -157,6 +150,19 @@ if ($result) {
 mysqli_free_result($result);
 } else {
     echo "<p>Error: " . mysqli_error($connection) . "</p>";
+}
+
+// Handle member deletion
+if (isset($_POST['delete_member'])) {
+  $memberId = mysqli_real_escape_string($connection, $_POST['id']);
+  $deleteQuery = "DELETE FROM members_list WHERE id = '$memberId'";
+  $deleteResult = mysqli_query($connection, $deleteQuery);
+
+  if ($deleteResult) {
+    echo "<script>alert('Member deleted successfully.');</script>";
+  } else {
+    echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+  }
 }
 
       // Close the database connection

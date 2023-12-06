@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Manila');
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,16 +13,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Sanitize user inputs
     $name = mysqli_real_escape_string($connection, $_POST['name']);
-    
-    // Format the joining date using the formatDate function
-    $joiningDate = date($_POST['joining_date']);
 
+    $joiningDate = mysqli_real_escape_string($connection, $_POST['joining_date']);
+    
     $category = mysqli_real_escape_string($connection, $_POST['category']);
 
-    $dueDate = date("Y-m-d", strtotime($joiningDate . "+30 days"));
+    $dueDate = mysqli_real_escape_string($connection, $_POST['initial_due_date']);
 
     // Set initial status based on due date
-    $status = (date("Y-m-d") > $dueDate) ? "Expired" : "Active";
+    $status = "Active";
 
     // Insert member data into the database
     $insertQuery = "INSERT INTO members_list (name, joining_date, Category, status, due_date) VALUES ('$name', '$joiningDate', '$category', '$status', '$dueDate')";
@@ -50,6 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <label>Joining Date:</label>
         <input type="date" name="joining_date" required><br>
+
+        <label>latest Due Date:</label>
+        <input type="date" name="initial_due_date" required><br>
+
 
         <label>Category:</label>
         <select name="category" required>
