@@ -2,6 +2,12 @@
 session_start();
 
 require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
+
+// Check if the user is not logged in
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -58,7 +64,7 @@ require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
 <!-- body -->
 
 <div class="body-container">
-<form action="logs_search.php" method="get">
+<form class="search" action="logs_search.php" method="get">
   <input type="text" name="q" placeholder="Search members">
   <button type="submit">Search</button>
 </form>
@@ -115,7 +121,7 @@ mysqli_close($connection);
 <script>
     function printToPDF() {
    // Redirect to the server-side script to generate the PDF
-   window.location.href = 'generate_pdf.php';
+   window.location.href = 'generate_pdf_member.php';
 }
 
   </script>

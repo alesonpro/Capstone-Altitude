@@ -122,11 +122,11 @@ hr {
 }
 
 /* members css */
-form {
+.search {
     display: flex;
     align-items: center;
     width:calc(100% - 350px);
-    padding-left: 600px;
+    padding-left: 600rem !important;
     padding-top: 20px;
   }
   
@@ -137,6 +137,7 @@ form {
     margin-right: 10px;
     width: 600px;
     color: black;
+
   }
   
   button {

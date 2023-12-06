@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// Check if the user is not logged in
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,7 +76,7 @@ session_start();
 
   <!-- body -->
   <div class="body-container">
-    <form action="trainers_search.php" method="get">
+    <form class="search" action="trainers_search.php" method="get">
       <input type="text" name="q" placeholder="Search trainers">
       <button class='submit' type="submit">Search</button>
     </form>
@@ -107,11 +113,11 @@ session_start();
               echo "<h4>Name: " . $row['name'] . "</h4>";
               echo "<form class='delete' method='post' action=''>";
               echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='delete_member'>Delete Trainer</button>";
+              echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
               echo "</form>";
               echo "<form class='edit' method='post' action='edit_trainer.php'>";
               echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='edit_trainer'>Edit trainer</button>";
+              echo "<button type='submit' name='edit_trainer'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
               echo "</form>";
               echo "</div>";
           }

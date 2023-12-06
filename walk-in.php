@@ -1,5 +1,12 @@
 <?php
 session_start();
+require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
+
+// Check if the user is not logged in
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,6 +37,16 @@ session_start();
       button {
         border-radius: 10px;
       }
+
+      .edit {
+        padding: 0;
+        margin: 0
+      }
+
+      .delete {
+        padding: 0;
+        margin: 0;
+      }
     </style>
 </head>
 <body>
@@ -56,7 +73,7 @@ session_start();
 <!-- body -->
 
 <div class="body-container">
-<form action="walk-in_search.php" method="get">
+<form class="search" action="walk-in_search.php" method="get">
   <input type="text" name="q" placeholder="Search members">
   <button type="submit">Search</button>
 </form>
@@ -74,6 +91,7 @@ session_start();
   <!-- main content -->
   <div class="content">
         <h3>Walk-in</h3>
+        <button onclick="printToPDF()">Print to PDF</button>
         <button onclick="window.location.href='add_walk-in.php'">Add Members</button>
         <hr>
         <?php
@@ -85,20 +103,54 @@ $query = "SELECT * FROM walk_in";
 $result = mysqli_query($connection, $query);
 
 if ($result) {
-    if (mysqli_num_rows($result) > 0) {
-        echo '<div class="attendance-table">';
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="attendance-details">';
-            echo "<h4>Name: " . $row['name'] . "</h4>";
-            echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
-            echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
-            echo "</div>";
-        }
-        echo "</div>";
-    } else {
-        echo "<p>No members found.</p>";
-    }
+  if (mysqli_num_rows($result) > 0) {
+      echo '<div class="attendance-table">';
+      while ($row = mysqli_fetch_assoc($result)) {
+          echo '<div class="attendance-details">';
+          echo "<h4>Name: " . $row['name'] . "</h4>";
+          
+          // Format time_in in AM/PM format
+          $timeInFormatted = date("h:i A", strtotime($row['time_in']));
+          echo "<h6>TIME IN: " . $timeInFormatted . "</h6>";
 
+          // Check if time_out is empty before formatting and displaying
+          if (!empty($row['time_out'])) {
+            // Format time_out in AM/PM format
+            $timeOutFormatted = date("h:i A", strtotime($row['time_out']));
+            echo "<h6>TIME OUT: " . $timeOutFormatted . "</h6>";
+        } else {
+            // Display an empty TIME OUT if time_out is empty
+            echo "<h6>TIME OUT: </h6>";
+        }
+          
+          echo "<form class='edit' method='post' action='edit_walk-in.php'>";
+          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+          echo "<button type='submit' name='edit_walk-in'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
+          echo "</form>";
+
+          echo "<form class='delete' method='post' action=''>";
+              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+              echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+              echo "</form>";
+          echo "</div>";
+      }
+      echo "</div>";
+  } else {
+      echo "<p>No members found.</p>";
+  }
+}
+
+// Handle member deletion
+if (isset($_POST['delete_member'])) {
+  $memberId = mysqli_real_escape_string($connection, $_POST['id']);
+  $deleteQuery = "DELETE FROM walk_in WHERE id = '$memberId'";
+  $deleteResult = mysqli_query($connection, $deleteQuery);
+
+  if ($deleteResult) {
+    echo "<script>alert('Member deleted successfully.');</script>";
+  } else {
+    echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+  }
 }
 
 // Close the database connection
@@ -109,5 +161,12 @@ mysqli_close($connection);
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
+<script>
+    function printToPDF() {
+   // Redirect to the server-side script to generate the PDF
+   window.location.href = 'generate_pdf_walk-in.php';
+}
+
+  </script>
 </body>
 </html>

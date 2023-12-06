@@ -87,8 +87,8 @@ if (isset($_GET['q'])) {
       while ($row = $result->fetch_assoc()) {
         echo '<div class="attendance-details">';
         echo "<h4>Name: " . $row['name'] . "</h4>";
-        echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
-        echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
+        echo "<h6>TIME IN: " . date("h:i A", strtotime($row['time_in'])) . "</h6>";
+        echo "<h6>TIME OUT: " . date("h:i A", strtotime($row['time_out'])) . "</h6>";
         echo "</div>";
       }
       echo "</div>";

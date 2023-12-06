@@ -15,15 +15,35 @@ session_start();
 
 
     <style>
+      .delete {
+        padding: 0;
+        margin: 0;
+      }
 
-        .member-details {
-          color: black;
-          display: flex;
-          padding: 15px;
-          margin-bottom: 10px;
-          width:calc(100% - 30px);
-          gap: calc(100% - 800px);
-        }
+      .edit {
+        padding: 0;
+        margin: 0
+      }
+
+      .member-details {
+        border-bottom: solid black;
+        color: black;
+        display: flex;
+        padding: 15px;
+        padding-left: 30px;
+        margin-bottom: 20px;
+        width: calc(100% - 30px);
+        /* gap: 100px; */
+      }
+
+      button {
+        border-radius: 10px;
+      }
+
+      .content{
+        overflow: auto;
+
+      }
     </style>
 </head>
 <body>
@@ -85,14 +105,22 @@ if (isset($_GET['q'])) {
   if ($result->num_rows > 0) {
     echo '<div class="member-list">';
     while ($row = $result->fetch_assoc()) {
-        echo '<div class="member-details">';
-        echo "<h4>Name: " . $row['name'] . "</h4>";
-        echo "<h4>Joining Date  " . $row['joining_date'] . "</h4>";
-        echo "<h4>Category " . $row['Category'] . "</h4>";
-        
-        echo "</div>";
-    }
-    echo "</div>";
+      echo '<div class="member-details">';
+      echo "<h4>Name: " . $row['name'] . "</h4>";
+      echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
+      echo "<h6>Category: " . $row['Category'] . "</h6>";
+      // Add more member information as needed
+      echo "<form class='delete' method='post' action=''>";
+      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+      echo "<button type='submit' name='delete_member'>Delete Member</button>";
+      echo "</form>";
+      echo "<form class='edit' method='post' action='edit_member.php'>";
+      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+      echo "<button type='submit' name='edit_member'>Edit Member</button>";
+      echo "</form>";
+      echo "</div>";
+  }
+  echo "</div>";;
 } else {
     echo "<p>No members found.</p>";
 }

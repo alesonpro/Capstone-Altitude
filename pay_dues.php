@@ -24,15 +24,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['pay_dues'])) {
         $row = $result->fetch_assoc();
 
         // Check if the member has a due date in the future
-        $currentDate = $row['date_today'];
-        $existingDueDate = $row['due_date'];
+        $currentDate = date('Y-m-d');
+        $existingDueDate = isset($row['due_date']) ? $row['due_date'] : null;
 
-        if ($existingDueDate >= $currentDate) {
+        if ($existingDueDate && $existingDueDate > $currentDate) {
             // Member has a due date in the future, add 30 days to the existing due date
-            $newDueDate = date('Y-m-d', strtotime($existingDueDate . ' + 30 days'));
+            $newDueDate = date('Y-m-d', strtotime($existingDueDate . ' + 31 days'));
         } else {
             // Member has no existing due date or the due date is in the past, add 30 days to the current date
-            $newDueDate = date('Y-m-d', strtotime($currentDate . ' + 30 days'));
+            $newDueDate = date('Y-m-d', strtotime($currentDate . ' + 31 days'));
         }
 
         // Update due date in the database
