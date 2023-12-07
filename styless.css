@@ -122,7 +122,7 @@ hr {
 }
 
 /* members css */
-form {
+.search {
     display: flex;
     align-items: center;
     width:calc(100% - 350px);
