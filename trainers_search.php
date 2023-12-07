@@ -50,7 +50,7 @@ session_start();
 <!-- body -->
 
 <div class="body-container">
-<form action="trainers_search.php" method="get">
+<form class="search" action="trainers_search.php" method="get">
   <input type="text" name="q" placeholder="Search trainers">
   <button type="submit">Search</button>
 </form>
