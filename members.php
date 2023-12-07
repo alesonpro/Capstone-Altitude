@@ -19,8 +19,8 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
   
-
     <style>
+
       .delete {
         padding: 0;
         margin: 0;
@@ -31,15 +31,30 @@ if (!isset($_SESSION['username'])) {
         margin: 0
       }
 
-      .member-details {
-        border-bottom: solid black;
+      .member-info {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid black;
+        align-items: center;
         color: black;
         display: flex;
         padding: 15px;
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
-        /* gap: 100px; */
+      }
+      
+      
+      .member-details{
+        display: flex;
+        flex-direction: column;
+        color: black;
+      }
+
+      .member-btn{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
       }
 
       button {
@@ -48,8 +63,8 @@ if (!isset($_SESSION['username'])) {
 
       .content{
         overflow: auto;
-
       }
+      
     </style>
 </head>
 <body>
@@ -92,9 +107,10 @@ if (!isset($_SESSION['username'])) {
 
     <!-- main content -->
     <div class="content">
-      <h3>Members</h3>
-      <button onclick="window.location.href='add_member.php'">Add Members</button>
-      
+      <div class="members-add">
+        <h3>Members</h3>
+        <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
+      </div>
       <hr>
 
       <?php
@@ -109,24 +125,29 @@ if (!isset($_SESSION['username'])) {
         if ($result->num_rows > 0) {
           echo '<div class="member-list">';
           while ($row = $result->fetch_assoc()) {
-              echo '<div class="member-details">';
-              echo "<h4>Name: " . $row['name'] . "</h4>";
+              echo '<div class="member-info">';
+                  echo '<div class="member-details">';
+                      echo "<h4>Name: " . $row['name'] . "</h4>";
 
-              echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
+                      echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
 
-              echo "<h6>Category: " . $row['Category'] . "</h6>";
+                      echo "<h6>Category: " . $row['Category'] . "</h6>";
 
-              echo "<h6>Gender: " . $row['gender'] . "</h6>";
+                      echo "<h6>Gender: " . $row['gender'] . "</h6>";
+                  echo '</div>';
 
-              echo "<form class='delete' method='post' action=''>";
-              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
-              echo "</form>";
-              
-              echo "<form class='edit' method='post' action='edit_member.php'>";
-              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
-              echo "</form>";
+                  echo '<div class="member-btn">';
+                      echo "<form class='edit' method='post' action='edit_member.php'>";
+                      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                      echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
+                      echo "</form>";
+
+                      echo "<form class='delete' method='post' action=''>";
+                      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                      echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+                      echo "</form>";
+                  
+                  echo '</div>';
               echo "</div>";
           }
           echo "</div>";
