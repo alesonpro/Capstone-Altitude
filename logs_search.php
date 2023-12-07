@@ -49,7 +49,7 @@ session_start();
 <!-- body -->
 
 <div class="body-container">
-<form action="logs_search.php" method="get">
+<form class="search" action="logs_search.php" method="get">
   <input type="text" name="q" placeholder="Search members">
   <button type="submit">Search</button>
 </form>
