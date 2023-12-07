@@ -33,7 +33,6 @@ session_start();
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
-        /* gap: 100px; */
       }
 
       button {
