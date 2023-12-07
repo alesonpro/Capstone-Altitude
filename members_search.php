@@ -25,15 +25,31 @@ session_start();
         margin: 0
       }
 
-      .member-details {
-        border-bottom: solid black;
-        color: black;
+      .member-info {
         display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid black;
+        color: black;
         padding: 15px;
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
       }
+      
+      .member-details{
+        display: flex;
+        flex-direction: column;
+        color: black;
+        width: 25%;
+      } 
+
+      .member-btn{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      } 
 
       button {
         border-radius: 10px;
@@ -41,8 +57,8 @@ session_start();
 
       .content{
         overflow: auto;
-
       }
+      
     </style>
 </head>
 <body>
@@ -101,29 +117,92 @@ if (isset($_GET['q'])) {
   $result = mysqli_query($connection, $searchQuery);
 
   // Display search results
-  if ($result->num_rows > 0) {
-    echo '<div class="member-list">';
-    while ($row = $result->fetch_assoc()) {
-      echo '<div class="member-details">';
-      echo "<h4>Name: " . $row['name'] . "</h4>";
-      echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
-      echo "<h6>Category: " . $row['Category'] . "</h6>";
-      // Add more member information as needed
-      echo "<form class='delete' method='post' action=''>";
-      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-      echo "<button type='submit' name='delete_member'>Delete Member</button>";
-      echo "</form>";
-      echo "<form class='edit' method='post' action='edit_member.php'>";
-      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-      echo "<button type='submit' name='edit_member'>Edit Member</button>";
-      echo "</form>";
-      echo "</div>";
+ if ($result) {
+        if ($result->num_rows > 0) {
+           echo '<div class="member-list">';
+           while ($row = $result->fetch_assoc()) {
+              echo '<div class="member-info">';
+                  echo '<div class="member-details">';
+                      echo "<h4>Name: " . $row['name'] . "</h4>";
+                      echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
+                      echo "<h6>Category: " . $row['Category'] . "</h6>";
+                      echo "<h6>Gender: " . $row['gender'] . "</h6>";
+                  echo "</div>";
+
+                  echo'<div class="member-btn">';
+                        echo "<form class='edit' method='post' action='edit_member.php'>";
+                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                        echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
+                        echo "</form>";
+
+                        echo "<form class='delete' method='post' action=''>";
+                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                        echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+                        echo "</form>";
+                        
+                  echo"</div>";
+
+                  echo '<div class="member-qr">';
+                        // Generate and update QR code for each member
+                        $memberId = $row['id'];
+                        $data = $row['name']; // You can customize this based on your needs
+
+                        $filename = generateAndUpdateQRCode($memberId, $data, $connection);
+
+                        // ... Display the QR code image ...
+                        echo '<img src="' . $filename . '" alt="QR Code">';
+                  echo "</div>";
+                        // ... Display delete and edit buttons ...
+              echo "</div>";
+          }
+         
+        } else {
+            echo "<p>No members found.</p>";
+        }
+        mysqli_free_result($result);
+    } else {
+        echo "<p>Error: " . mysqli_error($connection) . "</p>";
+    }
+}
+
+  // Function to generate QR code and update existing member data
+    function generateAndUpdateQRCode($memberId, $data, $conn) {
+        include_once('C:\xampp\htdocs\Capstone-Altitude\phpqrcode\qrlib.php');
+
+        $filename = "qrcodes/member_" . $memberId . ".png"; // Unique filename for each member
+        QRcode::png($data, $filename, QR_ECLEVEL_L, 4);
+
+        // Read the binary data of the image
+        $imageData = file_get_contents($filename);
+
+        // Escape the binary data for use in an SQL statement
+        $escapedData = $conn->real_escape_string($imageData);
+
+        // Update the existing member's row with the new QR code data
+        $query = "UPDATE members_list SET qrcode = '$escapedData' WHERE id = '$memberId'";
+        $result = $conn->query($query);
+
+        if ($result) {
+            // echo 'QR Code data updated successfully for member ' . $memberId;
+        } else {
+            // echo 'Error updating QR Code data: ' . $conn->error;
+        }
+
+        return $filename; // Return the filename for later use if needed
+    }
+
+  // Handle member deletion
+  if (isset($_POST['delete_member'])) {
+    $memberId = mysqli_real_escape_string($connection, $_POST['id']);
+    $deleteQuery = "DELETE FROM members_list WHERE id = '$memberId'";
+    $deleteResult = mysqli_query($connection, $deleteQuery);
+
+    if ($deleteResult) {
+      echo "<script>alert('Member deleted successfully.');</script>";
+    } else {
+      echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+    }
   }
-  echo "</div>";;
-} else {
-    echo "<p>No members found.</p>";
-}
-}
 
 // Close the database connection
 mysqli_close($connection);
