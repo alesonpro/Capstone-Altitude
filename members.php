@@ -111,13 +111,18 @@ if (!isset($_SESSION['username'])) {
           while ($row = $result->fetch_assoc()) {
               echo '<div class="member-details">';
               echo "<h4>Name: " . $row['name'] . "</h4>";
+
               echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
+
               echo "<h6>Category: " . $row['Category'] . "</h6>";
-              // Add more member information as needed
+
+              echo "<h6>Gender: " . $row['gender'] . "</h6>";
+
               echo "<form class='delete' method='post' action=''>";
               echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
               echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
               echo "</form>";
+              
               echo "<form class='edit' method='post' action='edit_member.php'>";
               echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
               echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
