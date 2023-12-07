@@ -22,12 +22,6 @@ if ($result) {
         $memberId = $row['id'];
         $updateStatusQuery = "UPDATE members_list SET status = 'Expired' WHERE id = '$memberId'";
         $updateStatusResult = mysqli_query($connection, $updateStatusQuery);
-
-        if ($updateStatusResult) {
-            echo "Member ID $memberId status updated to 'Expired'.\n";
-        } else {
-            echo "Error updating member ID $memberId status: " . mysqli_error($connection) . "\n";
-        }
     }
 } else {
     echo "Error fetching past due members: " . mysqli_error($connection) . "\n";

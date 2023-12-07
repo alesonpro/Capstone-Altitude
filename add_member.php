@@ -15,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = mysqli_real_escape_string($connection, $_POST['name']);
 
     $joiningDate = mysqli_real_escape_string($connection, $_POST['joining_date']);
+
+    $gender = mysqli_real_escape_string($connection, $_POST['gender']);
     
     $category = mysqli_real_escape_string($connection, $_POST['category']);
 
@@ -24,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = "Active";
 
     // Insert member data into the database
-    $insertQuery = "INSERT INTO members_list (name, joining_date, Category, status, due_date) VALUES ('$name', '$joiningDate', '$category', '$status', '$dueDate')";
+    $insertQuery = "INSERT INTO members_list (name, joining_date, gender, Category, status, due_date) VALUES ('$name', '$joiningDate', '$gender', '$category', '$status', '$dueDate')";
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
@@ -53,6 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <label>latest Due Date:</label>
         <input type="date" name="initial_due_date" required><br>
+
+        <label>Gender:</label>
+        <select name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select><br>
 
 
         <label>Category:</label>
