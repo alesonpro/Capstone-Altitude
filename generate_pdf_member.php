@@ -1,5 +1,5 @@
 <?php
-require('C:\xampp\htdocs\php\Capstone-Altitude\fpdf186\fpdf.php');
+require('C:\xampp\htdocs\Capstone-Altitude\fpdf186\fpdf.php');
 
 // Create a PDF instance
 $pdf = new FPDF();
