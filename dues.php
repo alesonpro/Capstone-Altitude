@@ -41,12 +41,19 @@ if (!isset($_SESSION['username'])) {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border: 1px solid black;
+        /* border: 1px solid black; */
         color: black;
         padding: 15px;
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
+      }
+
+      .divider{
+        margin: 0 auto;
+        width: 95%;
+        border-bottom: 1px solid grey;
+        padding-top: 5px;
       }
 
       .member-details-name{
@@ -80,6 +87,7 @@ if (!isset($_SESSION['username'])) {
         overflow: auto;
 
       }
+      
     </style>
 </head>
 <body>
@@ -124,15 +132,14 @@ if (!isset($_SESSION['username'])) {
   <!-- main content -->
   <div class="content">
   <h3>Dues</h3>
-      <hr>
-
+  <div class="divider"></div>
       <?php
       // Connect to the database
       $connection = mysqli_connect("localhost", "root", "", "members");
       date_default_timezone_set('Asia/Manila');
 
       // Retrieve member data
-$query = "SELECT * FROM members_list ORDER BY name";
+$query = "SELECT * FROM members_list ORDER BY id";
 $result = mysqli_query($connection, $query);
 
 if ($result) {
@@ -179,6 +186,8 @@ if ($result) {
                 echo '</div>';    
                 
             echo '</div>'; 
+            echo"<div class='divider'></div>";
+
     }
     echo "</div>";
 } else {

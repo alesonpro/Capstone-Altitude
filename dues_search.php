@@ -21,7 +21,7 @@ if (!isset($_SESSION['username'])) {
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
 
     <style>
-      .pay{
+     .pay{
         padding: 0;
         margin: 0;
       }
@@ -41,12 +41,29 @@ if (!isset($_SESSION['username'])) {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border: 1px solid black;
+        /* border: 1px solid black; */
         color: black;
         padding: 15px;
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
+      }
+
+      .divider{
+        margin: 0 auto;
+        width: 95%;
+        border-bottom: 1px solid grey;
+        padding-top: 5px;
+      }
+
+      .member-details-name{
+        display: flex;
+        flex-direction:column;
+        width: 25%;
+      }
+
+      .member-details-name, .member-details-date, .member-details-status{
+        color: black;
       }
 
         
@@ -60,7 +77,8 @@ if (!isset($_SESSION['username'])) {
       .member-btn{
         padding-right: 20px;
       } 
-
+      
+    
       button {
         border-radius: 10px;
       }
@@ -69,6 +87,7 @@ if (!isset($_SESSION['username'])) {
         overflow: auto;
 
       }
+    
     </style>
 </head>
 <body>
@@ -113,8 +132,8 @@ if (!isset($_SESSION['username'])) {
   <!-- main content -->
   <div class="content">
   <h3>Dues</h3>
-      <hr>
-
+  <div class="divider"></div>
+  
       <?php
 
       // Connect to the database
@@ -133,36 +152,45 @@ if (!isset($_SESSION['username'])) {
         echo '<div class="member-list">';
         while ($row = $result->fetch_assoc()) {
                 echo '<div class="member-info">';
-                    echo '<div class="member-details">';
-                        echo "<h4>Name: " . $row['name'] . "</h4>";
-                
-                        // Update due date to the current date if it has expired
-                        $dueDate = ($row['due_date']);
-                        echo "<h6>Due Date: " . date("m-d-Y", strtotime($dueDate)) . "</h6>";
-                
+                    echo '<div class="member-details-name">';
+                        echo "<h4>Name</h4>";
+                        echo "<h4>". $row['name'] . "</h4>";
+                    echo "</div>";
+
+                    echo"<div class='member-details-date'>";
+                      // Update due date to the current date if it has expired
+                      $dueDate = ($row['due_date']);
+                      echo "<h6>Due Date</h6>";
+                      echo "<h6>" . date("m-d-Y", strtotime($dueDate)) . "</h6>";
+                    echo"</div>";
+
+                    echo"<div class='member-details-status'>";
                         // Calculate the status based on the updated due date
                         $status = (strtotime($dueDate) >= strtotime($currentDate)) ? 'Active' : 'Expired';
-                        echo "<h6>Status: " . $status . "</h6>";
-                
+                        echo "<h6>Status</h6>";
+                        echo "<h6>" . $status . "</h6>";
                         // Add logic to update the status in the database if it's expired
                         if ($status === 'Expired') {
                             $updateStatusQuery = "UPDATE members_list SET status = 'Expired' WHERE id = " . $row['id'];
                             mysqli_query($connection, $updateStatusQuery);
                         }
-                    echo "</div>";
+                    echo"</div>";
+                  
                     
                     echo '<div class="member-btn">';
-                    echo "<form class='pay' method='post' action='pay_dues.php'>";
-                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                    echo "<button type='submit' name='pay_dues'><i class='fa fa-money' aria-hidden='true'></i> Pay</button>";
-                    echo "</form>";
+                      echo "<form class='pay' method='post' action='pay_dues.php'>";
+                      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                      echo "<button type='submit' name='pay_dues'><i class='fa fa-money' aria-hidden='true'></i> Pay</button>";
+                      echo "</form>";
 
-                    // echo "<form class='delete' method='post' action=''>";
-                    // echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                    // echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
-                    // echo "</form>";
+                      // echo "<form class='delete' method='post' action=''>";
+                      // echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                      // echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+                      // echo "</form>";
                     echo '</div>';    
                 echo '</div>'; 
+                echo"<div class='divider'></div>";
+
         }
         echo "</div>";
     } else {
