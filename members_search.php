@@ -15,7 +15,7 @@ session_start();
 
 
     <style>
-      .delete {
+         .delete {
         padding: 0;
         margin: 0;
       }
@@ -30,12 +30,20 @@ session_start();
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        border: 1px solid black;
+        /* border: 1px solid black; */
         color: black;
         padding: 15px;
+        margin-left: 0.7rem;
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
+      }
+
+      .divider{
+        margin: 0 auto;
+        width: 95%;
+        border-bottom: 1px solid grey;
+        padding-top: 5px;
       }
       
       .member-details{
@@ -48,8 +56,15 @@ session_start();
       .member-btn{
         display: flex;
         flex-direction: row;
-        gap: 10px;
+        vertical-align: middle;
+        gap: 30px;
       } 
+
+      .member-qr-img{
+        width: 150px;
+        height: 150px;
+      }
+
 
       button {
         border-radius: 10px;
@@ -57,7 +72,9 @@ session_start();
 
       .content{
         overflow: auto;
+
       }
+      
       
     </style>
 </head>
@@ -102,9 +119,14 @@ session_start();
 
   <!-- main content -->
   <div class="content">
-        <h3>Members</h3>
-        <hr>
-        <?php
+    <div class="members-add">
+      <h3>Members</h3>
+      <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
+    </div>
+  <div class="divider"></div>
+
+
+  <?php
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "members");
 
@@ -142,7 +164,7 @@ if (isset($_GET['q'])) {
                         
                   echo"</div>";
 
-                  echo '<div class="member-qr">';
+                  echo '<div class="member-qr-img">';
                         // Generate and update QR code for each member
                         $memberId = $row['id'];
                         $data = $row['name']; // You can customize this based on your needs
@@ -154,6 +176,7 @@ if (isset($_GET['q'])) {
                   echo "</div>";
                         // ... Display delete and edit buttons ...
               echo "</div>";
+              echo"<div class='divider'></div>";
           }
          
         } else {

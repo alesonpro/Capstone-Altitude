@@ -135,7 +135,7 @@ if (!isset($_SESSION['username'])) {
       $connection = mysqli_connect("localhost", "root", "", "members");
 
       // Retrieve member data
-      $query = "SELECT * FROM members_list ORDER BY name";
+      $query = "SELECT * FROM members_list ORDER BY id";
       $result = mysqli_query($connection, $query);
 
       if ($result) {

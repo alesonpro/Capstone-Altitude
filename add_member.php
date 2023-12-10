@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
-        echo "Member added successfully.";
+        echo '<script>alert("Member added successfully.")</script>';
     } else {
         echo "Error: " . mysqli_error($connection);
     }
@@ -44,36 +44,129 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <title>Add Member</title>
 </head>
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+h3{
+    color: #740A00;
+}
+
+/* Form container */
+.container {
+  max-width: 400px;
+}
+
+/* Card styles */
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Label styles */
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Input and select styles */
+input[type="text"],
+input[type="date"],
+select {
+  width: calc(100% - 12px);
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+}
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #740A00;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: black;
+}
+
+/* Adjusting anchor tag styles */
+a {
+  text-decoration: none;
+}
+
+</style>
 <body>
-<h3>Add Member</h3>
-    <form method="post" action="">
-        <label>Name:</label>
-        <input type="text" name="name" required><br>
+    <div class="container">
+        <div class="card">
+            <h3 class="heading-members">Add Member</h3>
+            <form method="post" action="">
+                <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                </div>
 
-        <label>Joining Date:</label>
-        <input type="date" name="joining_date" required><br>
+                <div class="form-group">
+                <label for="joining-date">Joining Date:</label>
+                <input type="date" id="joining-date" name="joining_date" required>
+                </div>
 
-        <label>latest Due Date:</label>
-        <input type="date" name="initial_due_date" required><br>
+                <div class="form-group">
+                <label for="latest-due-date">Latest Due Date:</label>
+                <input type="date" id="latest-due-date" name="initial_due_date" required>
+                </div>
 
-        <label>Gender:</label>
-        <select name="gender" required>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-        </select><br>
+                <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+                </div>
 
+                <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="Student">Student</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Regular/Coach">Regular/Coach</option>
+                </select>
+                </div>
 
-        <label>Category:</label>
-        <select name="category" required>
-            <option value="Student">Student</option>
-            <option value="Regular">Regular</option>
-            <option value="Regular/Coach">Regular/Coach</option>
-        </select><br>
-
-        <button type="submit">Add Member</button>
-        <!-- Add button to return to members.php -->
-        <a href="members.php"><button type="button">Return to Members</button></a>
-    </form>
+                <div class="form-group">
+                <button type="submit">Add Member</button>
+                <a href="members.php"><button type="button">Return to Members</button></a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
