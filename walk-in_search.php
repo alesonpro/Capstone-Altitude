@@ -15,15 +15,66 @@ session_start();
 
 
     <style>
+         .edit {
+        padding: 0;
+        margin: 0
+      }
 
-        .attendance-details {
-          color: black;
-          display: flex;
-          padding: 15px;
-          margin-bottom: 10px;
-          width:calc(100% - 30px);
-          gap: calc(100% - 800px);
-        }
+      .delete {
+        padding: 0;
+        margin: 0;
+      }
+
+      .walkin-content{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: black;
+        
+      }
+
+      .walkin-btn{
+        margin-right: 2rem;
+      }
+
+      .divider{
+        margin: 0 auto;
+        width: 95%;
+        border-bottom: 1px solid grey;
+        padding-top: 5px;
+      }
+    
+      .attendance-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        padding-left: 30px;
+        margin-bottom: 20px;
+        width:calc(100% - 30px);
+      }
+
+      .attendance-details, .walk-in-time{
+        color: black;
+      }
+
+      button {
+        border-radius: 10px;
+      }
+
+      .walk-in-btn{
+        display: flex;
+        gap: 10px;
+      }
+
+      .walk-in-time{
+        align-items: center;
+        gap: 20px;
+      }
+
+      .content{
+         overflow: auto;
+      }
     </style>
 </head>
 <body>
@@ -51,7 +102,7 @@ session_start();
 
 <div class="body-container">
 <form class="search" action="walk-in_search.php" method="get">
-  <input type="text" name="q_l" placeholder="Search members">
+  <input type="text" name="q" placeholder="Search members">
   <button type="submit">Search</button>
 </form>
   <!-- sidenav -->
@@ -68,7 +119,7 @@ session_start();
   <!-- main content -->
   <div class="content">
         <h3>Walk-in</h3>
-        <hr>
+        <div class="divider"></div>
         <?php
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "attendance");
@@ -82,20 +133,55 @@ if (isset($_GET['q'])) {
     $result = mysqli_query($connection, $searchQuery);
   
     // Display search results
-    if ($result->num_rows > 0) {
-      echo '<div class="attendance-list">';
-      while ($row = $result->fetch_assoc()) {
-        echo '<div class="attendance-details">';
-        echo "<h4>Name: " . $row['name'] . "</h4>";
-        echo "<h6>TIME IN: " . date("h:i A", strtotime($row['time_in'])) . "</h6>";
-        echo "<h6>TIME OUT: " . date("h:i A", strtotime($row['time_out'])) . "</h6>";
-        echo "</div>";
-      }
-      echo "</div>";
-    } else {
+  if ($result) {
+  if (mysqli_num_rows($result) > 0) {
+        echo '<div class="attendance-table">';
+          while ($row = mysqli_fetch_assoc($result)) {
+              echo '<div class="attendance-info">';
+                  echo '<div class="attendance-details">';
+                    echo "<h4>Name</h4>";
+                    echo "<h4>" . $row['name'] . "</h4>";
+                  echo "</div>";
+                  
+                  echo "<div class='walk-in-time'>";
+                      // Format time_in in AM/PM format
+                      $timeInFormatted = date("h:i A", strtotime($row['time_in']));
+                      echo "<h6>TIME IN: " . $timeInFormatted . "</h6>";
+
+                      // Check if time_out is empty before formatting and displaying
+                      if (!empty($row['time_out'])) {
+                          // Format time_out in AM/PM format
+                          $timeOutFormatted = date("h:i A", strtotime($row['time_out']));
+                          echo "<h6>TIME OUT: " . $timeOutFormatted . "</h6>";
+                      } else {
+                          // Display an empty TIME OUT if time_out is empty
+                          echo "<h6>TIME OUT: </h6>";
+                      }
+                  echo "</div>";
+
+                  echo "<div class='walk-in-btn'>";
+                    echo "<form class='edit' method='post' action='edit_walk-in.php'>";
+                      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                      echo "<button type='submit' name='edit_walk-in'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
+                    echo "</form>";
+
+                    echo "<form class='delete' method='post' action=''>";
+                      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                      echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+                    echo "</form>";
+                  echo "</div>";
+              echo "</div>";
+              echo"<div class='divider'></div>";
+
+          }
+
+  echo "</div>";
+
+  } else {
       echo "<p>No members found.</p>";
-    }
   }
+}
+}
   
 
 // Close the database connection

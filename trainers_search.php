@@ -15,15 +15,76 @@ session_start();
 
 
     <style>
+         .delete {
+        padding: 0;
+        margin: 0;
+      }
 
-        .attendance-details {
-          color: black;
+      .edit {
+        padding: 0;
+        margin: 0
+      }
+
+       .divider{
+        margin: 0 auto;
+        width: 95%;
+        border-bottom: 1px solid grey;
+        padding-top: 5px;
+      }
+      
+
+
+      .trainer-info{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        /* border: 1px solid black; */
+        color: black;
+        padding: 15px;
+        margin-left: 0.7rem;
+        padding-left: 30px;
+        margin-bottom: 20px;
+        width: calc(100% - 30px);
+      }
+
+      .trainer-details{
+        display: flex;
+        flex-direction: column;
+        color: black;
+        width: 25%;
+      } 
+
+      .trainer-btn{
+        display: flex;
+        flex-direction: row;
+        vertical-align: middle;
+        gap: 30px;
+      } 
+
+      button {
+        border-radius: 10px;
+      }
+
+      .content{
+        overflow: auto;
+
+      }
+
+       .trainers-add{
           display: flex;
-          padding: 15px;
-          margin-bottom: 10px;
-          width:calc(100% - 30px);
-          gap: calc(100% - 800px);
-        }
+          justify-content: space-between;
+          align-items: center;
+          margin:10px;
+       }
+
+       .trainers-add h3{
+        color: black;
+       }
+
+       .trainers-add button{
+        margin-right: 2rem;
+       }
     </style>
 </head>
 <body>
@@ -67,8 +128,8 @@ session_start();
 
   <!-- main content -->
   <div class="content">
-        <h3>Logs</h3>
-        <hr>
+        <h3>Trainers</h3>
+        <div class="divider"></div>
         <?php
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "coaches");
@@ -82,20 +143,42 @@ if (isset($_GET['q'])) {
     $result = mysqli_query($connection, $searchQuery);
   
     // Display search results
-    if ($result->num_rows > 0) {
-      echo '<div class="attendance-list">';
-      while ($row = $result->fetch_assoc()) {
-        echo '<div class="attendance-details">';
-        echo "<h4>Name: " . $row['name'] . "</h4>";
+    if ($result) {
+            if ($result->num_rows > 0) {
+              echo '<div class="member-list">';
+              while ($row = $result->fetch_assoc()) {
+                  echo '<div class="trainer-info">';
 
-        echo "</div>";
-      }
-      echo "</div>";
-    } else {
-      echo "<p>No members found.</p>";
-    }
-  }
-  
+                      echo '<div class="trainer-details">';
+                        echo "<h4>Name: </h4>";
+                        echo "<h4>". $row['name'] . "</h4>";
+                      echo '</div>';
+
+                      echo '<div class="trainer-btn">';
+                        echo "<form class='edit' method='post' action='edit_trainer.php'>";
+                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                        echo "<button type='submit' name='edit_trainer'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
+                        echo "</form>";
+                        
+                        echo "<form class='delete' method='post' action=''>";
+                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                        echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+                        echo "</form>";
+
+                      echo '</div>';
+                  echo "</div>";
+                  echo"<div class='divider'></div>";
+
+              }
+              echo "</div>";
+          } else {
+              echo "<p>No members found.</p>";
+          }
+            mysqli_free_result($result);
+          } else {
+            echo "<p>Error: " . mysqli_error($connection) . "</p>";
+        }
+}
 
 // Close the database connection
 mysqli_close($connection);
