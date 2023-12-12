@@ -21,24 +21,53 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
 
-    <style>
+<style>
 
-      .attendance-details {
-        border-bottom: solid black;
-        color: black;
-        display: flex;
-        padding: 15px;
-        padding-left: 30px;
-        margin-bottom: 20px;
-        width:calc(100% - 30px);
-        gap: 200px;
-        
-      }
+  
+.divider{
+  margin: 0 auto;
+  width: 95%;
+  border-bottom: 1px solid grey;
+  padding-top: 5px;
+}
 
-      button {
-        border-radius: 10px;
-      }
-    </style>
+
+.logs-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+
+.attendance-details{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  padding-left: 30px;
+  margin-bottom: 20px;
+  width:calc(100% - 30px);
+}
+
+.logs-name, .logs-time{
+  color: black;
+}
+.content{
+  overflow: auto;
+}
+
+.logs-btn{
+  margin-right: 2rem;
+}
+
+
+button {
+  border-radius: 10px;  
+}
+
+
+</style>
 </head>
 <body>
   <!-- header -->
@@ -81,11 +110,16 @@ if (!isset($_SESSION['username'])) {
 
   <!-- main content -->
   <div class="content">
-        <h3>Logs</h3>
+    <div class="logs-content">
+      <h3>Logs</h3>
+      <div class="logs-btn">
         <button onclick="printToPDF()">Print to PDF</button>
         <button onclick="window.location.href='add_timein.php'">Add Members</button>
-        <hr>
-        <?php
+      </div>
+    </div>
+    <div class="divider"></div>
+
+<?php
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "attendance");
 
@@ -97,13 +131,28 @@ if ($result) {
     if (mysqli_num_rows($result) > 0) {
         echo '<div class="attendance-table">';
         while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="attendance-details">';
-            echo "<h4>Name: " . $row['qr_content'] . "</h4>";
-            echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
-            echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
+            echo '<div class="attendance-info">';
+              echo '<div class="attendance-details">';
+
+                echo'<div class="logs-name">';
+                  echo "<h4>Name:</h4>";
+                  echo "<h4>" . $row['qr_content'] . "</h4>";
+                echo'</div>';
+                
+                echo'<div class="logs-time">';
+                  echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
+                  echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
+                echo'</div>';
+                
+                echo'<div class="logs-btn">';
+                echo'</div>';
+             
+              echo "</div>";
+              echo "<div class='divider'></div>";
             echo "</div>";
-        }
-        echo "</div>";
+            }
+
+echo "</div>";
     } else {
         echo "<p>No members found.</p>";
     }

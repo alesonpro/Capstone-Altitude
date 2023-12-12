@@ -34,10 +34,88 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Walk-in</title>
+    <title>Add Logs</title>
 </head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+h3 {
+    color: #740A00;
+}
+
+/* Form container */
+.container {
+    max-width: 400px;
+}
+
+/* Card styles */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Label styles */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Input and select styles */
+input[type="text"] {
+    width: calc(100% - 12px);
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 4px;
+}
+
+/* Button styles */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #740A00;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: black;
+}
+
+/* Adjusting anchor tag styles */
+a {
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+}
+
+</style>
 <body>
-    <h3>Add Members</h3>
+    <!-- <h3>Add Members</h3>
     <form method="post" action="">
         <label>Name:</label>
         <input type="text" name="qr_content" required><br>
@@ -50,7 +128,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br>
 
         <button type="submit">Add Member</button>
-        <!-- Add button to return to members.php -->
+        <a href="logs.php"><button type="button">Return to Logs</button></a>
+    </form> -->
+    <form class="container card" method="post" action="">
+        <h3>Add Members</h3>
+        <div class="form-group">
+            <label for="qr_content">Name:</label>
+            <input type="text" name="qr_content" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="time_in">Time in:</label>
+            <input type="text" name="time_in" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="time_out">Time out:</label>
+            <input type="text" name="time_out"><br>
+        </div>
+
+        <button type="submit">Add Member</button>
+        <!-- Add button to return to logs.php -->
         <a href="logs.php"><button type="button">Return to Logs</button></a>
     </form>
 </body>

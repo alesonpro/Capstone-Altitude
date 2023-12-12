@@ -32,16 +32,42 @@ if (!isset($_SESSION['username'])) {
         margin: 0
       }
 
-      .member-details {
-        border-bottom: solid black;
-        color: black;
+       .divider{
+        margin: 0 auto;
+        width: 95%;
+        border-bottom: 1px solid grey;
+        padding-top: 5px;
+      }
+      
+
+
+      .trainer-info{
         display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        /* border: 1px solid black; */
+        color: black;
         padding: 15px;
+        margin-left: 0.7rem;
         padding-left: 30px;
         margin-bottom: 20px;
         width: calc(100% - 30px);
-        /* gap: 100px; */
       }
+
+      .trainer-details{
+        display: flex;
+        flex-direction: column;
+        color: black;
+        width: 25%;
+      } 
+
+      .trainer-btn{
+        display: flex;
+        flex-direction: row;
+        vertical-align: middle;
+        gap: 30px;
+      } 
 
       button {
         border-radius: 10px;
@@ -51,6 +77,21 @@ if (!isset($_SESSION['username'])) {
         overflow: auto;
 
       }
+
+       .trainers-add{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin:10px;
+       }
+
+       .trainers-add h3{
+        color: black;
+       }
+
+       .trainers-add button{
+        margin-right: 2rem;
+       }
     </style>
 </head>
 <body>
@@ -93,9 +134,11 @@ if (!isset($_SESSION['username'])) {
 
     <!-- main content -->
     <div class="content">
-      <h3>Trainers</h3>
-      <button onclick="window.location.href='add_trainers.php'">Add Trainers</button>
-      <hr>
+      <div class="trainers-add">
+        <h3>Trainers</h3>
+        <button onclick="window.location.href='add_trainers.php'">Add Trainers</button>
+      </div>
+      <div class="divider"></div>
 
       <?php
       // Connect to the database
@@ -109,17 +152,28 @@ if (!isset($_SESSION['username'])) {
         if ($result->num_rows > 0) {
           echo '<div class="member-list">';
           while ($row = $result->fetch_assoc()) {
-              echo '<div class="member-details">';
-              echo "<h4>Name: " . $row['name'] . "</h4>";
-              echo "<form class='delete' method='post' action=''>";
-              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
-              echo "</form>";
-              echo "<form class='edit' method='post' action='edit_trainer.php'>";
-              echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-              echo "<button type='submit' name='edit_trainer'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
-              echo "</form>";
+              echo '<div class="trainer-info">';
+
+                  echo '<div class="trainer-details">';
+                    echo "<h4>Name: </h4>";
+                    echo "<h4>". $row['name'] . "</h4>";
+                  echo '</div>';
+
+                  echo '<div class="trainer-btn">';
+                    echo "<form class='edit' method='post' action='edit_trainer.php'>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<button type='submit' name='edit_trainer'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
+                    echo "</form>";
+                    
+                    echo "<form class='delete' method='post' action=''>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+                    echo "</form>";
+
+                  echo '</div>';
               echo "</div>";
+              echo"<div class='divider'></div>";
+
           }
           echo "</div>";
       } else {

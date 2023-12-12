@@ -78,7 +78,6 @@ if (!isset($_SESSION['username'])) {
 
       .content{
         overflow: auto;
-
       }
       
     </style>
