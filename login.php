@@ -5,9 +5,17 @@
     <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@300;400;500;700&family=Russo+One&display=swap" rel="stylesheet">
     </head>
 <body>
+
+<style>
+    body{
+        font-family: 'M PLUS 1p', sans-serif;
+    }
+</style>
     <div class="header">
         <div class="img">
             <a href="login.php"><img src="./img/logo.png"/></a>
