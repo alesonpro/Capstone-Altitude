@@ -15,6 +15,11 @@
     body{
         font-family: 'M PLUS 1p', sans-serif;
     }
+
+    .logo-text {
+        font-family: 'M PLUS 1p', sans-serif;
+        font-weight: 700;
+    }
 </style>
     <div class="header">
         <div class="img">
