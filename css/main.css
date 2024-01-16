@@ -17,6 +17,7 @@ body {
     display: flex;
     justify-content: space-between;
     font-family: 'M PLUS 1p', sans-serif;
+    font-weight: 700;
     background-color: #740A00;
     height: 80px;
     align-items: center;

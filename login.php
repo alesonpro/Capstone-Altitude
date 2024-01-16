@@ -13,14 +13,17 @@
 
 <style>
     body{
+        font-family: 'M PLUS 1p', sans-serif;   
+    }
+    .logo-text{
         font-family: 'M PLUS 1p', sans-serif;
+        font-weight: 700;
     }
 </style>
     <div class="header">
         <div class="img">
             <a href="login.php"><img src="./img/logo.png"/></a>
         </div>
-
         <div class="logo-text">ALTITUDE</div>
     </div>
 
