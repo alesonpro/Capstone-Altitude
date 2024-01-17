@@ -131,12 +131,15 @@ session_start();
 $connection = mysqli_connect("localhost", "root", "", "members");
 
 // Retrieve search query
+// if (isset($_GET['q'])) {
+//   $query = $_GET['q'];
 if (isset($_GET['q'])) {
-  $query = $_GET['q'];
+    $query = $_GET['q'];
 
   // Perform search query
   $searchQuery = "SELECT * FROM members_list WHERE name LIKE '%$query%'";
   $result = mysqli_query($connection, $searchQuery);
+  
 
   // Display search results
  if ($result) {

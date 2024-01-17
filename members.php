@@ -141,6 +141,7 @@ if (!isset($_SESSION['username'])) {
 
       // Retrieve member data
       $query = "SELECT * FROM members_list ORDER BY id";
+      
       $result = mysqli_query($connection, $query);
 
       if ($result) {

@@ -129,6 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_member'])) {
                         echo "<select name='Category' required>";
                         echo "<option value='Student' " . ($editedMember['Category'] == 'Student' ? 'selected' : '') . ">Student</option>";
                         echo "<option value='Regular' " . ($editedMember['Category'] == 'Regular' ? 'selected' : '') . ">Regular</option>";
+                        echo "<option value='Student/Coach' " . ($editedMember['Category'] == 'Student/Coach' ? 'selected' : '') . ">Student/Coach</option>";
                         echo "<option value='Regular/Coach' " . ($editedMember['Category'] == 'Regular/Coach' ? 'selected' : '') . ">Regular/Coach</option>";
                         echo "</select><br>";
                     echo"</div>";

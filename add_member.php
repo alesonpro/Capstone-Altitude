@@ -146,9 +146,9 @@ a {
                 <div class="form-group">
                 <label for="gender">Gender:</label>
                 <select id="gender" name="gender" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                 </select>
                 </div>
 
@@ -157,6 +157,7 @@ a {
                 <select id="category" name="category" required>
                     <option value="Student">Student</option>
                     <option value="Regular">Regular</option>
+                    <option value="Student/Coach">Student/Coach</option>
                     <option value="Regular/Coach">Regular/Coach</option>
                 </select>
                 </div>
