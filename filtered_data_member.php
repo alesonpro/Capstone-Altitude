@@ -139,22 +139,25 @@ if (!isset($_SESSION['username'])) {
 
     <!-- main content -->
     <div class="content">
-    <!-- eto bago aleson -->
+
+      <!-- eto bago aleson -->
+
+
       <div class="members-add">
         <h3>Members</h3>
         <form method="post" action="filtered_data_member.php" id="filterForm">
           <select class="form-select" aria-label="Default select example" name="category" id="category" onchange="submitForm()">
-              <option value="" disabled="" selected="">Filter</option>
-              <option value="Student">Student</option>
-              <option value="Regular">Regular</option>
-              <option value="Student/Coach">Student/Coach</option>
-              <option value="Regular/Coach">Regular/Coach</option>
+                <option value="" disabled="" selected="">Filter</option>
+                <option value="Student" <?php echo ($_POST['category'] == 'Student') ? 'selected' : ''; ?>>Student</option>
+                <option value="Regular" <?php echo ($_POST['category'] == 'Regular') ? 'selected' : ''; ?>>Regular</option>
+                <option value="Student/Coach" <?php echo ($_POST['category'] == 'Student/Coach') ? 'selected' : ''; ?>>Student/Coach</option>
+                <option value="Regular/Coach" <?php echo ($_POST['category'] == 'Regular/Coach') ? 'selected' : ''; ?>>Regular/Coach</option>
           </select>
         </form>
 
         <script>
             function submitForm() {
-              document.getElementById("filterForm").submit();
+                document.getElementById("filterForm").submit();
             }
         </script>
         <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
@@ -164,12 +167,25 @@ if (!isset($_SESSION['username'])) {
 
       <?php
       // Connect to the database
-      $connection = mysqli_connect("localhost", "root", "", "members");
+      $connection = new mysqli("localhost", "root", "", "members");
 
-      // Retrieve member data
-      $query = "SELECT * FROM members_list ORDER BY id";
-      
-      $result = mysqli_query($connection, $query);
+        // Check connection
+        if ($connection->connect_error) {
+            die("Connection failed: " . $connection->connect_error);
+        }
+
+        // Get user-selected value from the form
+        $category = $_POST['category'];
+
+        // Build the SQL query based on user selection
+        $sql = "SELECT * FROM members_list WHERE 1=1";
+
+        if ($category != 'all') {
+            $sql .= " AND category = '$category'";
+        }
+
+        // Execute the query
+        $result = $connection->query($sql);
 
       if ($result) {
         if ($result->num_rows > 0) {
