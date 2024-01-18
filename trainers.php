@@ -168,6 +168,11 @@ if (!isset($_SESSION['username'])) {
                   echo '<div class="trainer-btn">';
                     echo "<form class='edit' method='post' action='edit_trainer.php'>";
                     echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<button type='submit' name='edit_trainer'><i class='fa fa-info' aria-hidden='true'></i> Info</button>";
+                    echo "</form>";
+
+                    echo "<form class='edit' method='post' action='edit_trainer.php'>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
                     echo "<button type='submit' name='edit_trainer'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
                     echo "</form>";
                     

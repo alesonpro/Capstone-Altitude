@@ -69,6 +69,8 @@ button {
 }
 
 
+
+
 </style>
 </head>
 <body>
@@ -133,25 +135,76 @@ if ($result) {
     if (mysqli_num_rows($result) > 0) {
         echo '<div class="attendance-table">';
         while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="attendance-info">';
-              echo '<div class="attendance-details">';
+            // echo '<div class="attendance-info">';
+            //   echo '<div class="attendance-details">';
 
-                echo'<div class="logs-name">';
-                  echo "<h4>Name:</h4>";
-                  echo "<h4>" . $row['qr_content'] . "</h4>";
-                echo'</div>';
+            //     echo'<div class="logs-name">';
+            //       echo "<h4>Name:</h4>";
+            //       echo "<h4>" . $row['qr_content'] . "</h4>";
+            //     echo'</div>';
                 
-                echo'<div class="logs-time">';
-                  echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
-                  echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
-                echo'</div>';
+            //     echo'<div class="logs-time">';
+            //       echo "<h6>TIME IN: " . $row['time_in'] . "</h6>";
+            //       echo "<h6>TIME OUT: " . $row['time_out'] . "</h6>";
+            //     echo'</div>';
                 
-                echo'<div class="logs-btn">';
-                echo'</div>';
+            //     echo'<div class="logs-btn">';
+            //     echo'</div>';
              
-              echo "</div>";
-              echo "<div class='divider'></div>";
-            echo "</div>";
+            //   echo "</div>";
+            //   echo "<div class='divider'></div>";
+            // echo "</div>";
+//             echo '<table class="table table-bordered">';
+//             echo '    <thead>';
+//             echo '        <tr>';
+//             echo '            <th>Name</th>';
+//             echo '            <th>Time-in</th>';
+//             echo '            <th>Time-out</th>';
+//             echo '            <th>Date</th>';
+//             echo '        </tr>';
+//             echo '    </thead>';
+//             echo '    <tbody>';
+
+// // Assuming $result is your database query result
+// while ($row = $result->fetch_assoc()) {
+//     echo '        <tr>';
+//     echo '            <td>' . $row['qr_content'] . '</td>';
+//     echo '            <td>' . $row['time_in'] . '</td>';
+//     echo '            <td>' . $row['time_out'] . '</td>';
+//     echo '            <td>' . date("m-d-Y", strtotime($row["date"])) . '</td>';
+//     echo '        </tr>';
+
+// }
+
+// echo '    </tbody>';
+// echo '</table>';
+echo '<div class="container mt-4">';
+echo '    <table class="table">';
+echo '        <thead>';
+echo '            <tr>';
+echo '                <th>Name</th>';
+echo '                <th>Time-in</th>';
+echo '                <th>Time-out</th>';
+echo '                <th>Date</th>';
+echo '            </tr>';
+echo '        </thead>';
+echo '        <tbody>';
+
+// Assuming $result is your database query result
+while ($row = $result->fetch_assoc()) {
+    echo '            <tr>';
+    echo '                <td>' . $row['qr_content'] . '</td>';
+    echo '                <td>' . $row['time_in'] . '</td>';
+    echo '                <td>' . $row['time_out'] . '</td>';
+    echo '                <td>' . date("m-d-Y", strtotime($row["date"])) . '</td>';
+    echo '            </tr>';
+}
+
+echo '        </tbody>';
+echo '    </table>';
+echo '</div>';
+
+
             }
 
 echo "</div>";
