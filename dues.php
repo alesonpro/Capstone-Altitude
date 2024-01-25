@@ -182,7 +182,7 @@ if ($result) {
                 echo '<div class="member-btn">';
                   echo "<form class='pay' method='post' action='pay_dues.php'>";
                   echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                  echo "<button type='submit' name='pay_dues'><i class='fa fa-money' aria-hidden='true'></i> Pay</button>";
+                  echo "<button type='submit' name='pay_dues'><i class='fa fa-money' aria-hidden='true'></i></button>";
                   echo "</form>";
 
                   // echo "<form class='delete' method='post' action=''>";

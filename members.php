@@ -94,6 +94,7 @@ if (!isset($_SESSION['username'])) {
         color: black;
       }
       
+
     </style>
 </head>
 <body>
@@ -186,12 +187,12 @@ if (!isset($_SESSION['username'])) {
                   echo'<div class="member-btn">';
                         echo "<form class='edit' method='post' action='edit_member.php'>";
                         echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                        echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
+                        echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
                         echo "</form>";
 
                         echo "<form class='delete' method='post' action=''>";
                         echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                        echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
+                        echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i></button>";
                         echo "</form>";
                         
                   echo"</div>";
