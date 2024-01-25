@@ -125,7 +125,7 @@ a {
 </style>
 <body>
     <div class="container">
-        <div class="card">
+        <div class="card">  
             <h3 class="heading-members">Add Member</h3>
             <form method="post" action="">
                 <div class="form-group">
