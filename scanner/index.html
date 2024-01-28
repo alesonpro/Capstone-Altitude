@@ -61,7 +61,7 @@
                 scanner.stop();
 
                 // Display status message
-                statusMessage.innerHTML = 'Logged In';
+                statusMessage.innerHTML = 'Logged';
 
                 // Display the QR code content
                 qrContentElement.innerHTML = 'QR Code Content: ' + content;
@@ -72,7 +72,7 @@
                     scanner.start();
                     statusMessage.innerHTML = '';
                     qrContentElement.innerHTML = '';
-                }, 5000);
+                }, 3000);
 
                 // Send the scanned QR code content to the server for processing
                 fetch('scan.php', {
@@ -84,7 +84,8 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message);
+                    // Instead of alert, you can update the DOM or perform other actions
+                    console.log(data.message);
                     // You can perform additional actions based on the server response
                 })
                 .catch(error => {

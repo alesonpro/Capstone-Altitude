@@ -145,37 +145,46 @@ if (!isset($_SESSION['username'])) {
   <!-- end of sidenav -->
 
   <!-- main content -->
-  <div class="content"> 
+  <div class="content">
   <div class="members-add">
     <h3>Dues</h3>
     <form method="post" action="filtered_data_dues.php" id="filterForm">
     <select class="form-select" aria-label="Default select example" name="status" id="status" onchange="submitForm()">
-        <option value="" disabled selected>Filter</option>
-        <option value="Active">Active</option>
-        <option value="Expired">Expired</option>
+        <option value="" disabled <?php echo empty($_POST['status']) ? 'selected' : ''; ?>>Filter</option>
+        <option value="Active" <?php echo ($_POST['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
+        <option value="Expired" <?php echo ($_POST['status'] == 'Expired') ? 'selected' : ''; ?>>Expired</option>
     </select>
 </form>
 
-          <script>
-              function submitForm() {
-                  document.getElementById("filterForm").submit();
-              }
-          </script>
-  </div>
-  
-  <div class="divider"></div>
-      <?php
-      $status = isset($_POST['status']) ? $_POST['status'] : '';
-      // Connect to the database
-$connection = mysqli_connect("localhost", "root", "", "members");
-date_default_timezone_set('Asia/Manila');
+<script>
+    function submitForm() {
+        document.getElementById("filterForm").submit();
+    }
+</script>
+</div>
+<div class="divider"></div>
 
-// Retrieve member data
-$query = "SELECT * FROM members_list ORDER BY id";
-$result = mysqli_query($connection, $query);
+<?php
+// Connect to the database
+$connection = new mysqli("localhost", "root", "", "members");
 
-// Get current date
-$currentDate = date("Y-m-d");
+// Check connection
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
+
+// Get user-selected value from the form
+$status = isset($_POST['status']) ? $_POST['status'] : '';
+
+// Build the SQL query based on user selection
+$sql = "SELECT * FROM members_list WHERE 1=1";
+
+if ($status != '') {
+    $sql .= " AND status = '$status'";
+}
+
+// Execute the query
+$result = $connection->query($sql);
 
 if ($result) {
   if ($result->num_rows > 0) {
@@ -184,7 +193,7 @@ if ($result) {
             echo '<div class="member-info">';
                 echo '<div class="member-details-name">';
                   echo "<h4>Name</h4>";
-                  echo "<h4>". $row['name'] . "</h4>";
+                  echo"<h4> ". $row['name'] . "</h4>";
                 echo "</div>";
 
                 echo '<div class="member-details-date">';
@@ -196,7 +205,7 @@ if ($result) {
 
                 echo '<div class="member-details-status">';
                   // Calculate the status based on the updated due date
-                  $status = ($dueDate >= $currentDate) ? 'Active' : 'Expired';
+                  $status = (strtotime($dueDate) >= strtotime($currentDate)) ? 'Active' : 'Expired';
                   echo "<h6>Status</h6>";
                   echo "<h6>". $status . "</h6>";
                 echo "</div>";
@@ -215,14 +224,15 @@ if ($result) {
                 
             echo '</div>'; 
             echo"<div class='divider'></div>";
-      }
-      echo "</div>";
-  } else {
-      echo "<p>No members found.</p>";
-  }
-  mysqli_free_result($result);
+
+    }
+    echo "</div>";
 } else {
-  echo "<p>Error: " . mysqli_error($connection) . "</p>";
+    echo "<p>No members found.</p>";
+}
+mysqli_free_result($result);
+} else {
+    echo "<p>Error: " . mysqli_error($connection) . "</p>";
 }
 
 $updateExpiredQuery = "UPDATE members_list SET status = 'Expired' WHERE due_date < '$currentDate'";
@@ -234,7 +244,6 @@ $connection->query($updateActiveQuery);
 // Close the database connection
 $connection->close();
 ?>
-
     </div>
     <!-- end of content -->
   </div>
@@ -250,7 +259,6 @@ $connection->close();
   </div>
   <!-- end of content -->
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
 </body>
 </html>

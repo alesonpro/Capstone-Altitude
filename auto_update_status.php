@@ -1,32 +1,49 @@
 <?php
 // auto_update_status.php
 date_default_timezone_set('Asia/Manila');
+
 // Connect to the database
-$connection = mysqli_connect("localhost", "root", "", "members");
+$connection = new mysqli("localhost", "root", "", "members");
 
 // Check connection
-if ($connection === false) {
-    die("Error: Connection error. " . mysqli_connect_error());
+if ($connection->connect_error) {
+    die("Error: Connection error. " . $connection->connect_error);
 }
 
 // Get current date
 $currentDate = date("Y-m-d");
 
 // Select members who are past due
-$query = "SELECT * FROM members_list WHERE due_date < '$currentDate' AND status = 'Active'";
-$result = mysqli_query($connection, $query);
+$query = "SELECT id FROM members_list WHERE due_date < ? AND status = 'Active'";
+$stmt = $connection->prepare($query);
+$stmt->bind_param("s", $currentDate);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         // Member is past due, set status to 'Expired'
         $memberId = $row['id'];
-        $updateStatusQuery = "UPDATE members_list SET status = 'Expired' WHERE id = '$memberId'";
-        $updateStatusResult = mysqli_query($connection, $updateStatusQuery);
+        $updateStatusQuery = "UPDATE members_list SET status = 'Expired' WHERE id = ?";
+        $stmtUpdate = $connection->prepare($updateStatusQuery);
+        $stmtUpdate->bind_param("i", $memberId);
+        
+        // Execute the update statement
+        $stmtUpdate->execute();
+
+        // Check for errors in the execution
+        if ($stmtUpdate->error) {
+            echo "Error updating status: " . $stmtUpdate->error . "\n";
+        }
+        
+        // Close the update statement
+        $stmtUpdate->close();
     }
 } else {
-    echo "Error fetching past due members: " . mysqli_error($connection) . "\n";
+    echo "Error fetching past due members: " . $connection->error . "\n";
 }
 
 // Close the database connection
-mysqli_close($connection);
+$stmt->close();
+$connection->close();
 ?>
