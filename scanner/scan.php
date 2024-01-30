@@ -28,7 +28,7 @@ if ($data && isset($data->content)) {
         $response['message'] = "Connection failed: " . $conn->connect_error;
     } else {
         // User is making attendance
-        $attendance_time = date('h:i:s A');
+        $attendance_time = date('h:i A');
 
         // Check if the user has checked in today
         $check_last_attendance_query = "SELECT * FROM attendance_table WHERE qr_content = '$qr_content' ORDER BY id DESC LIMIT 1";

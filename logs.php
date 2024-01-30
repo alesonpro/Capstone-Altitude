@@ -128,7 +128,7 @@ button {
 $connection = mysqli_connect("localhost", "root", "", "attendance");
 
 // Retrieve member data
-$query = "SELECT * FROM attendance_table";
+$query = "SELECT * FROM attendance_table ORDER BY date DESC";
 $result = mysqli_query($connection, $query);
 
 if ($result) {
@@ -191,13 +191,13 @@ echo '        </thead>';
 echo '        <tbody>';
 
 // Assuming $result is your database query result
-while ($row = $result->fetch_assoc()) {
-    echo '            <tr>';
-    echo '                <td>' . $row['qr_content'] . '</td>';
-    echo '                <td>' . $row['time_in'] . '</td>';
-    echo '                <td>' . $row['time_out'] . '</td>';
-    echo '                <td>' . date("m-d-Y", strtotime($row["date"])) . '</td>';
-    echo '            </tr>';
+while ($row = mysqli_fetch_assoc($result)) {
+  echo ' <tr>';
+  echo '     <td>' . $row['qr_content'] . '</td>';
+  echo '     <td>' . $row['time_in'] . '</td>';
+  echo '     <td>' . $row['time_out'] . '</td>';
+  echo '     <td>' . date("m-d-Y", strtotime($row["date"])) . '</td>';
+  echo ' </tr>';
 }
 
 echo '        </tbody>';
