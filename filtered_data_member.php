@@ -86,12 +86,14 @@ if (!isset($_SESSION['username'])) {
         overflow: auto;
       }
 
-      #filterForm {
-        padding-left: 650px;
-      }
-
       select, option {
         color: black;
+      }
+
+       .members-add{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
       
     </style>
@@ -139,29 +141,31 @@ if (!isset($_SESSION['username'])) {
 
     <!-- main content -->
     <div class="content">
+        <div class="members-add">
+          <div class="member-title">
+            <h3>Members</h3>
+          </div>
+          <div class="members-form">
+            <form method="post" action="filtered_data_member.php" id="filterForm">
+              <select class="form-select" aria-label="Default select example" name="category" id="category" onchange="submitForm()">
+                  <option value="" disabled="" selected="">Filter</option>
+                  <option value="Student">Student</option>
+                  <option value="Regular">Regular</option>
+                  <option value="Student/Coach">Student/Coach</option>
+                  <option value="Regular/Coach">Regular/Coach</option>
+              </select>
+            </form>
 
-      <!-- eto bago aleson -->
-
-
-      <div class="members-add">
-        <h3>Members</h3>
-        <form method="post" action="filtered_data_member.php" id="filterForm">
-          <select class="form-select" aria-label="Default select example" name="category" id="category" onchange="submitForm()">
-                <option value="" disabled="" selected="">Filter</option>
-                <option value="Student" <?php echo ($_POST['category'] == 'Student') ? 'selected' : ''; ?>>Student</option>
-                <option value="Regular" <?php echo ($_POST['category'] == 'Regular') ? 'selected' : ''; ?>>Regular</option>
-                <option value="Student/Coach" <?php echo ($_POST['category'] == 'Student/Coach') ? 'selected' : ''; ?>>Student/Coach</option>
-                <option value="Regular/Coach" <?php echo ($_POST['category'] == 'Regular/Coach') ? 'selected' : ''; ?>>Regular/Coach</option>
-          </select>
-        </form>
-
-        <script>
-            function submitForm() {
-                document.getElementById("filterForm").submit();
-            }
-        </script>
-        <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
-      </div>
+            <script>
+                function submitForm() {
+                  document.getElementById("filterForm").submit();
+                }
+            </script>
+          </div>
+          <div class="members-btn">
+            <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
+          </div>
+        </div>
       <div class="divider"></div>
       
 

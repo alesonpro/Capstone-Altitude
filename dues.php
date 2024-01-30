@@ -94,15 +94,19 @@ if (!isset($_SESSION['username'])) {
 
       }
 
-      #filterForm {
-        padding-left: 650px;
-      }
-
       select, option {
         color: black;
       }
 
+      .members-add{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
       
+      .members-add #filterForm{
+        width: 13%;
+      }
     </style>
 </head>
 <body>
@@ -149,18 +153,19 @@ if (!isset($_SESSION['username'])) {
   <div class="members-add">
     <h3>Dues</h3>
     <form method="post" action="filtered_data_dues.php" id="filterForm">
-    <select class="form-select" aria-label="Default select example" name="status" id="status" onchange="submitForm()">
-        <option value="" disabled selected>Filter</option>
-        <option value="Active">Active</option>
-        <option value="Expired">Expired</option>
-    </select>
-</form>
-
-          <script>
-              function submitForm() {
-                  document.getElementById("filterForm").submit();
-              }
-          </script>
+      <select class="form-select" aria-label="Default select example" name="status" id="status" onchange="submitForm()">
+          <option value="" disabled selected>Filter</option>
+          <option value="Active">Active</option>
+          <option value="Expired">Expired</option>
+      </select>
+    </form>
+    
+    <div class="invisible"></div>
+    <script>
+        function submitForm() {
+            document.getElementById("filterForm").submit();
+        }
+    </script>
   </div>
   
   <div class="divider"></div>

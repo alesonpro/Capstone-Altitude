@@ -86,14 +86,19 @@ if (!isset($_SESSION['username'])) {
         overflow: auto;
       }
 
-      #filterForm {
-        padding-left: 650px;
-      }
-
       select, option {
         color: black;
       }
-      
+
+      .members-add{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .members-add #filterForm{
+        width: 100%;
+      }
 
     </style>
 </head>
@@ -137,31 +142,34 @@ if (!isset($_SESSION['username'])) {
       <a href="logs.php"><i class="fa-solid fa-right-to-bracket"></i>Logs</a>
     </div>
     <!-- end of sidenav -->
-
     <!-- main content -->
-    <div class="content">
-    <!-- eto bago aleson -->
-      <div class="members-add">
-        <h3>Members</h3>
-        <form method="post" action="filtered_data_member.php" id="filterForm">
-          <select class="form-select" aria-label="Default select example" name="category" id="category" onchange="submitForm()">
-              <option value="" disabled="" selected="">Filter</option>
-              <option value="Student">Student</option>
-              <option value="Regular">Regular</option>
-              <option value="Student/Coach">Student/Coach</option>
-              <option value="Regular/Coach">Regular/Coach</option>
-          </select>
-        </form>
+      <div class="content">
+        <div class="members-add">
+          <div class="member-title">
+            <h3>Members</h3>
+          </div>
+          <div class="members-form">
+            <form method="post" action="filtered_data_member.php" id="filterForm">
+              <select class="form-select" aria-label="Default select example" name="category" id="category" onchange="submitForm()">
+                  <option value="" disabled="" selected="">Filter</option>
+                  <option value="Student">Student</option>
+                  <option value="Regular">Regular</option>
+                  <option value="Student/Coach">Student/Coach</option>
+                  <option value="Regular/Coach">Regular/Coach</option>
+              </select>
+            </form>
 
-        <script>
-            function submitForm() {
-              document.getElementById("filterForm").submit();
-            }
-        </script>
-        <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
-      </div>
+            <script>
+                function submitForm() {
+                  document.getElementById("filterForm").submit();
+                }
+            </script>
+          </div>
+          <div class="members-btn">
+            <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
+          </div>
+        </div>
       <div class="divider"></div>
-      
 
       <?php
       // Connect to the database

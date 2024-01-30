@@ -94,14 +94,20 @@ if (!isset($_SESSION['username'])) {
 
       }
 
-      #filterForm {
-        padding-left: 650px;
-      }
 
       select, option {
         color: black;
       }
 
+      .members-add{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      } 
+
+      .members-add #filterForm{
+        width: 13%;
+      }
       
     </style>
 </head>
@@ -149,12 +155,13 @@ if (!isset($_SESSION['username'])) {
   <div class="members-add">
     <h3>Dues</h3>
     <form method="post" action="filtered_data_dues.php" id="filterForm">
-    <select class="form-select" aria-label="Default select example" name="status" id="status" onchange="submitForm()">
-        <option value="" disabled <?php echo empty($_POST['status']) ? 'selected' : ''; ?>>Filter</option>
-        <option value="Active" <?php echo ($_POST['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
-        <option value="Expired" <?php echo ($_POST['status'] == 'Expired') ? 'selected' : ''; ?>>Expired</option>
-    </select>
-</form>
+      <select class="form-select filterForm" aria-label="Default select example" name="status" id="status" onchange="submitForm()">
+          <option value="" disabled <?php echo empty($_POST['status']) ? 'selected' : ''; ?>>Filter</option>
+          <option value="Active" <?php echo ($_POST['status'] == 'Active') ? 'selected' : ''; ?>>Active</option>
+          <option value="Expired" <?php echo ($_POST['status'] == 'Expired') ? 'selected' : ''; ?>>Expired</option>
+      </select>
+    </form>
+    <div class="invisible"></div>
 
 <script>
     function submitForm() {
