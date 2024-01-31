@@ -42,7 +42,6 @@ if (!isset($_SESSION['username'])) {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        /* border: 1px solid black; */
         color: black;
         padding: 15px;
         margin-left: 0.7rem;
@@ -98,6 +97,17 @@ if (!isset($_SESSION['username'])) {
 
       .members-add #filterForm{
         width: 100%;
+      }
+      
+      table{
+        text-align:center;
+      }
+
+      .action-parent{
+        display: flex;
+        align-items: center;
+        margin-left: 2.3rem;
+        gap: 10px;
       }
 
     </style>
@@ -184,39 +194,90 @@ if (!isset($_SESSION['username'])) {
         if ($result->num_rows > 0) {
            echo '<div class="member-list">';
            while ($row = $result->fetch_assoc()) {
-              echo '<div class="member-info">';
-                  echo '<div class="member-details">';
-                      echo "<h4>Name: " . $row['name'] . "</h4>";
-                      echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
-                      echo "<h6>Category: " . $row['Category'] . "</h6>";
-                      echo "<h6>Gender: " . $row['gender'] . "</h6>";
-                  echo "</div>";
+              // echo '<div class="member-info">';
+              //     echo '<div class="member-details">';
+              //         echo "<h4>Name: " . $row['name'] . "</h4>";
+              //         echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
+              //         echo "<h6>Category: " . $row['Category'] . "</h6>";
+              //         echo "<h6>Gender: " . $row['gender'] . "</h6>";
+              //     echo "</div>";
 
-                  echo'<div class="member-btn">';
-                        echo "<form class='edit' method='post' action='edit_member.php'>";
-                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                        echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
-                        echo "</form>";
+              //     echo'<div class="member-btn">';
+              //           echo "<form class='edit' method='post' action='edit_member.php'>";
+              //           echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+              //           echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+              //           echo "</form>";
 
-                        echo "<form class='delete' method='post' action=''>";
-                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                        echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i></button>";
-                        echo "</form>";
+              //           echo "<form class='delete' method='post' action=''>";
+              //           echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+              //           echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i></button>";
+              //           echo "</form>";
                         
-                  echo"</div>";
+              //     echo"</div>";
 
-                  echo '<div class="member-qr">';
-                        // Generate and update QR code for each member
-                        $memberId = $row['id'];
-                        $data = $row['name']; // You can customize this based on your needs
+              //     echo '<div class="member-qr">';
+              //           // Generate and update QR code for each member
+              //           $memberId = $row['id'];
+              //           $data = $row['name']; // You can customize this based on your needs
 
-                        $filename = generateAndUpdateQRCode($memberId, $data, $connection);
+              //           $filename = generateAndUpdateQRCode($memberId, $data, $connection);
 
-                        // ... Display the QR code image ...
-                        echo '<img class="member-qr-img" src="' . $filename . '" alt="QR Code">';
-                  echo "</div>";
-                        // ... Display delete and edit buttons ...
-              echo "</div>";
+              //           // ... Display the QR code image ...
+              //           echo '<img class="member-qr-img" src="' . $filename . '" alt="QR Code">';
+              //     echo "</div>";
+              //           // ... Display delete and edit buttons ...
+              // echo "</div>";
+            echo '<table class="table table-striped">';
+                echo '<thead>';
+                  echo '<tr>';
+                  echo '<th>Name</th>';
+                  echo '<th>Joining Date</th>';
+                  echo '<th>Category</th>';
+                  echo '<th>Gender</th>';
+                  echo '<th>QR</th>';
+                  echo '<th>Actions</th>';
+                  echo '</tr>';
+                echo '</thead>';
+              echo '<tbody>';
+                while ($row = $result->fetch_assoc()) {
+                    echo '<tr>';
+                    echo '<td>' . $row['name'] . '</td>';
+                    echo '<td>' . date("m-d-Y", strtotime($row['joining_date'])) . '</td>';
+                    echo '<td>' . $row['Category'] . '</td>';
+                    echo '<td>' . $row['gender'] . '</td>';
+                    
+                    echo '<td>';
+                    // Generate and update QR code for each member
+                    $memberId = $row['id'];
+                    $data = $row['name']; // You can customize this based on your needs
+                    $filename = generateAndUpdateQRCode($memberId, $data, $connection);
+                    
+                    // Display the QR code image
+                    echo '<img class="member-qr-img" src="' . $filename . '" alt="QR Code">';
+                    echo '</td>';
+                    
+                    echo '<td>';
+                    // Display edit and delete buttons
+                    echo"<div class='action-parent'>";
+                        echo"<div class='action-left'>"; 
+                          echo "<form class='edit' method='post' action='edit_member.php'>";
+                            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                            echo "<button type='submit' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+                          echo "</form>";
+                        echo"</div>";
+                        echo"<div class='action-right'>"; 
+                          echo "<form class='delete' method='post' action=''>";
+                            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                            echo "<button type='submit' style='background-color: #740A00 !important; color: #fff !important;'  class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
+                          echo "</form>";
+                        echo"</div>";
+                    echo"</div>";
+                    echo '</td>';
+                    echo '</tr>';
+                }
+              echo '</tbody>';
+            echo '</table>';
+
               echo"<div class='divider'></div>";
           }
          

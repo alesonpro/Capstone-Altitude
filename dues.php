@@ -107,6 +107,10 @@ if (!isset($_SESSION['username'])) {
       .members-add #filterForm{
         width: 13%;
       }
+
+      table{
+        text-align: center;
+      }
     </style>
 </head>
 <body>
@@ -184,44 +188,76 @@ $currentDate = date("Y-m-d");
 
 if ($result) {
   if ($result->num_rows > 0) {
-    echo '<div class="member-list">';
-      while ($row = $result->fetch_assoc()) {
-            echo '<div class="member-info">';
-                echo '<div class="member-details-name">';
-                  echo "<h4>Name</h4>";
-                  echo "<h4>". $row['name'] . "</h4>";
-                echo "</div>";
+    // echo '<div class="member-list">';
+    //   while ($row = $result->fetch_assoc()) {
+    //         echo '<div class="member-info">';
+    //             echo '<div class="member-details-name">';
+    //               echo "<h4>Name</h4>";
+    //               echo "<h4>". $row['name'] . "</h4>";
+    //             echo "</div>";
 
-                echo '<div class="member-details-date">';
-                  // Update due date to the current date if it has expired
-                  $dueDate = ($row['due_date']);
-                  echo "<h6>Due Date</h6>";
-                  echo "<h6>" . date("m-d-Y", strtotime($dueDate)) . "</h6>";
-                echo "</div>";
+    //             echo '<div class="member-details-date">';
+    //               // Update due date to the current date if it has expired
+    //               $dueDate = ($row['due_date']);
+    //               echo "<h6>Due Date</h6>";
+    //               echo "<h6>" . date("m-d-Y", strtotime($dueDate)) . "</h6>";
+    //             echo "</div>";
 
-                echo '<div class="member-details-status">';
-                  // Calculate the status based on the updated due date
-                  $status = ($dueDate >= $currentDate) ? 'Active' : 'Expired';
-                  echo "<h6>Status</h6>";
-                  echo "<h6>". $status . "</h6>";
-                echo "</div>";
+    //             echo '<div class="member-details-status">';
+    //               // Calculate the status based on the updated due date
+    //               $status = ($dueDate >= $currentDate) ? 'Active' : 'Expired';
+    //               echo "<h6>Status</h6>";
+    //               echo "<h6>". $status . "</h6>";
+    //             echo "</div>";
              
-                echo '<div class="member-btn">';
-                  echo "<form class='pay' method='post' action='pay_dues.php'>";
-                  echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                  echo "<button type='submit' name='pay_dues'><i class='fa fa-money' aria-hidden='true'></i></button>";
-                  echo "</form>";
+    //             echo '<div class="member-btn">';
+    //               echo "<form class='pay' method='post' action='pay_dues.php'>";
+    //               echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+    //               echo "<button type='submit' name='pay_dues'><i class='fa fa-money' aria-hidden='true'></i></button>";
+    //               echo "</form>";
 
-                  // echo "<form class='delete' method='post' action=''>";
-                  // echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                  // echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
-                  // echo "</form>";
-                echo '</div>';    
+    //             echo '</div>';    
                 
-            echo '</div>'; 
-            echo"<div class='divider'></div>";
-      }
-      echo "</div>";
+    //         echo '</div>'; 
+    //         echo"<div class='divider'></div>";
+    //   }
+    //   echo "</div>";
+    echo '<table class="table table-striped">';
+echo '<thead>';
+echo '<tr>';
+echo '<th>Name</th>';
+echo '<th>Due Date</th>';
+echo '<th>Status</th>';
+echo '<th>Pay</th>';
+echo '</tr>';
+echo '</thead>';
+echo '<tbody>';
+
+while ($row = $result->fetch_assoc()) {
+    echo '<tr>';
+    echo '<td>' . $row['name'] . '</td>';
+    
+    // Update due date to the current date if it has expired
+    $dueDate = ($row['due_date']);
+    echo '<td>' . date("m-d-Y", strtotime($dueDate)) . '</td>';
+    
+    // Calculate the status based on the updated due date
+    $status = ($dueDate >= $currentDate) ? 'Active' : 'Expired';
+    echo '<td>' . $status . '</td>';
+    
+    echo '<td>';
+    echo "<form class='pay' method='post' action='pay_dues.php'>";
+    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+    echo '<button type="submit" class="btn" class="btn"  style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-money" aria-hidden="true"></i> Pay</button>';
+    echo "</form>";
+    echo '</td>';
+    
+    echo '</tr>';
+}
+
+echo '</tbody>';
+echo '</table>';
+
   } else {
       echo "<p>No members found.</p>";
   }
