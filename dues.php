@@ -246,10 +246,10 @@ while ($row = $result->fetch_assoc()) {
     echo '<td>' . $status . '</td>';
     
     echo '<td>';
-    echo "<form class='pay' method='post' action='pay_dues.php'>";
+    echo "<form method='post' action='pay_dues.php'>";
     echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-    echo '<button type="submit" class="btn" class="btn"  style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-money" aria-hidden="true"></i> Pay</button>';
-    echo "</form>";
+    echo '<button type="submit" name="pay_dues" class="btn" style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-money" aria-hidden="true"></i> Pay</button>';
+    echo '</form>';
     echo '</td>';
     
     echo '</tr>';
