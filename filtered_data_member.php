@@ -184,88 +184,93 @@ if (!isset($_SESSION['username'])) {
       // Connect to the database
       $connection = new mysqli("localhost", "root", "", "members");
 
-        // Check connection
-        if ($connection->connect_error) {
-            die("Connection failed: " . $connection->connect_error);
+// Check connection
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
+
+// Get user-selected value from the form
+$category = $_POST['category'];
+
+// Build the SQL query based on user selection
+$sql = "SELECT * FROM members_list WHERE 1=1";
+
+if ($category != 'all') {
+    $sql .= " AND category = '$category'";
+}
+
+// Execute the query
+$result = $connection->query($sql);
+
+if ($result) {
+    if ($result->num_rows > 0) {
+        echo '<div class="member-list">';
+        $membersData = array(); // Array to store member data
+
+        while ($row = $result->fetch_assoc()) {
+            $membersData[] = $row; // Store each row in the array
         }
 
-        // Get user-selected value from the form
-        $category = $_POST['category'];
+        echo '<table class="table table-striped">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>Name</th>';
+        echo '<th>Joining Date</th>';
+        echo '<th>Category</th>';
+        echo '<th>Gender</th>';
+        echo '<th>QR</th>';
+        echo '<th>Actions</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
 
-        // Build the SQL query based on user selection
-        $sql = "SELECT * FROM members_list WHERE 1=1";
+        foreach ($membersData as $row) {
+            echo '<tr>';
+            echo '<td>' . $row['name'] . '</td>';
+            echo '<td>' . date("m-d-Y", strtotime($row['joining_date'])) . '</td>';
+            echo '<td>' . $row['Category'] . '</td>';
+            echo '<td>' . $row['gender'] . '</td>';
 
-        if ($category != 'all') {
-            $sql .= " AND category = '$category'";
+            echo '<td>';
+            // Generate and update QR code for each member
+            $memberId = $row['id'];
+            $data = $row['name']; // You can customize this based on your needs
+            $filename = generateAndUpdateQRCode($memberId, $data, $connection);
+
+            // Display the QR code image
+            echo '<img class="member-qr-img" src="' . $filename . '" alt="QR Code">';
+            echo '</td>';
+
+            echo '<td>';
+            // Display edit and delete buttons
+            echo "<div class='action-parent'>";
+            echo "<div class='action-left'>";
+            echo "<form class='edit' method='post' action='edit_member.php'>";
+            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+            echo "<button type='submit' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+            echo "</form>";
+            echo "</div>";
+            echo "<div class='action-right'>";
+            echo "<form class='delete' method='post' action=''>";
+            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+            echo "<button type='submit' style='background-color: #740A00 !important; color: #fff !important;'  class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
+            echo "</form>";
+            echo "</div>";
+            echo "</div>";
+            echo '</td>';
+            echo '</tr>';
         }
 
-        // Execute the query
-        $result = $connection->query($sql);
-
-      if ($result) {
-        if ($result->num_rows > 0) {
-           echo '<div class="member-list">';
-           while ($row = $result->fetch_assoc()) {
-               echo '<table class="table table-striped">';
-                echo '<thead>';
-                  echo '<tr>';
-                  echo '<th>Name</th>';
-                  echo '<th>Joining Date</th>';
-                  echo '<th>Category</th>';
-                  echo '<th>Gender</th>';
-                  echo '<th>QR</th>';
-                  echo '<th>Actions</th>';
-                  echo '</tr>';
-                echo '</thead>';
-              echo '<tbody>';
-                while ($row = $result->fetch_assoc()) {
-                    echo '<tr>';
-                    echo '<td>' . $row['name'] . '</td>';
-                    echo '<td>' . date("m-d-Y", strtotime($row['joining_date'])) . '</td>';
-                    echo '<td>' . $row['Category'] . '</td>';
-                    echo '<td>' . $row['gender'] . '</td>';
-                    
-                    echo '<td>';
-                    // Generate and update QR code for each member
-                    $memberId = $row['id'];
-                    $data = $row['name']; // You can customize this based on your needs
-                    $filename = generateAndUpdateQRCode($memberId, $data, $connection);
-                    
-                    // Display the QR code image
-                    echo '<img class="member-qr-img" src="' . $filename . '" alt="QR Code">';
-                    echo '</td>';
-                    
-                    echo '<td>';
-                    // Display edit and delete buttons
-                    echo"<div class='action-parent'>";
-                        echo"<div class='action-left'>"; 
-                          echo "<form class='edit' method='post' action='edit_member.php'>";
-                            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                            echo "<button type='submit' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
-                          echo "</form>";
-                        echo"</div>";
-                        echo"<div class='action-right'>"; 
-                          echo "<form class='delete' method='post' action=''>";
-                            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                            echo "<button type='submit' style='background-color: #740A00 !important; color: #fff !important;'  class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
-                          echo "</form>";
-                        echo"</div>";
-                    echo"</div>";
-                    echo '</td>';
-                    echo '</tr>';
-                }
-              echo '</tbody>';
-            echo '</table>';
-              echo"<div class='divider'></div>";
-          }
-         
-        } else {
-            echo "<p>No members found.</p>";
-        }
-        mysqli_free_result($result);
+        echo '</tbody>';
+        echo '</table>';
+        echo "<div class='divider'></div>";
     } else {
-        echo "<p>Error: " . mysqli_error($connection) . "</p>";
+        echo "<p>No members found.</p>";
     }
+    mysqli_free_result($result);
+} else {
+    echo "<p>Error: " . mysqli_error($connection) . "</p>";
+}
 
     // Close the database connection
 
