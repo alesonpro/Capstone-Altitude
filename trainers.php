@@ -22,7 +22,6 @@ if (!isset($_SESSION['username'])) {
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
   
 
-
     <style>
 
       *{
