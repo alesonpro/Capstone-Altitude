@@ -112,7 +112,7 @@ error_reporting(E_ALL);
         align-items: center;
         margin-left: 2.3rem;
         gap: 10px;
-      }
+      } 
 
     </style>
 </head>
@@ -202,16 +202,16 @@ error_reporting(E_ALL);
             }
     
             echo '<table class="table table-striped">';
-            echo '<thead>';
-            echo '<tr>';
-            echo '<th>Name</th>';
-            echo '<th>Joining Date</th>';
-            echo '<th>Category</th>';
-            echo '<th>Gender</th>';
-            echo '<th>QR</th>';
-            echo '<th colspan="2">Actions</th>'; // Set colspan to 2 to accommodate the two buttons
-            echo '</tr>';
-            echo '</thead>';
+              echo '<thead>';
+                echo '<tr>';
+                echo '<th>Name</th>';
+                echo '<th>Joining Date</th>';
+                echo '<th>Category</th>';
+                echo '<th>Gender</th>';
+                echo '<th>QR</th>';
+                echo '<th colspan="2">Actions</th>'; // Set colspan to 2 to accommodate the two buttons
+                echo '</tr>';
+              echo '</thead>';
             echo '<tbody>';
     
             foreach ($membersData as $row) {

@@ -87,6 +87,10 @@ if (!isset($_SESSION['username'])) {
          overflow: auto;
       }
 
+      table {
+        text-align: center;
+      }
+
     </style>
 </head>
 <body>
@@ -149,52 +153,70 @@ $result = mysqli_query($connection, $query);
 
 if ($result) {
   if (mysqli_num_rows($result) > 0) {
-        echo '<div class="attendance-table">';
-          while ($row = mysqli_fetch_assoc($result)) {
-              echo '<div class="attendance-info">';
-                  echo '<div class="attendance-details">';
-                    echo "<h4>Name</h4>";
-                    echo "<h4>" . $row['name'] . "</h4>";
-                  echo "</div>";
-                  
-                  echo "<div class='walk-in-time'>";
-                      // Format time_in in AM/PM format
-                      $timeInFormatted = date("h:i A", strtotime($row['time_in']));
-                      echo "<h6>TIME IN: " . $timeInFormatted . "</h6>";
+    echo '<div class="attendance-table">';
+      echo '<div class="attendance-info">';
+      echo '<table class="table table-striped">';
+      echo '<thead>';
+      echo '<tr>';
+      echo '<th>Name</th>';
+      echo '<th>Time-in</th>';
+      echo '<th>Time-out</th>';
+      echo '<th style="text-align: center;">Actions</th>'; // Center align the header
 
-                      // Check if time_out is empty before formatting and displaying
-                      if (!empty($row['time_out'])) {
-                          // Format time_out in AM/PM format
-                          $timeOutFormatted = date("h:i A", strtotime($row['time_out']));
-                          echo "<h6>TIME OUT: " . $timeOutFormatted . "</h6>";
-                      } else {
-                          // Display an empty TIME OUT if time_out is empty
-                          echo "<h6>TIME OUT: </h6>";
-                      }
-                  echo "</div>";
+      while ($row = mysqli_fetch_assoc($result)) {
+          echo '<tr>';
+          echo '<td>' . $row['name'] . '</td>';
 
-                  echo "<div class='walk-in-btn'>";
-                    echo "<form class='edit' method='post' action='edit_walk-in.php'>";
-                      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                      echo "<button type='submit' name='edit_walk-in'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
-                    echo "</form>";
+          // Format time_in in AM/PM format
+          $timeInFormatted = date("h:i A", strtotime($row['time_in']));
+          echo '<td>' . $timeInFormatted . '</td>';
 
-                    echo "<form class='delete' method='post' action=''>";
-                      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                      echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i></button>";
-                    echo "</form>";
-                  echo "</div>";
-              echo "</div>";
-              echo"<div class='divider'></div>";
-
+          // Check if time_out is empty before formatting and displaying
+          if (!empty($row['time_out'])) {
+              // Format time_out in AM/PM format
+              $timeOutFormatted = date("h:i A", strtotime($row['time_out']));
+              echo '<td>' . $timeOutFormatted . '</td>';
+          } else {
+              // Display an empty cell if time_out is empty
+              echo '<td></td>';
           }
+
+          echo '<td style="text-align: center;">'; // Center align the actions in each row
+
+          // Container for side-by-side buttons
+          echo '<div style="display: flex; justify-content: space-evenly;">';
+
+          // Display edit button
+          echo "<form class='edit' method='post' action='edit_walk-in.php'>";
+          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+          echo "<button type='submit' name='edit_walk-in' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+          echo "</form>";
+
+          // Display delete button
+          echo "<form class='delete' method='post' action=''>";
+          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+          echo "<button type='submit' name='delete_member' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
+          echo "</form>";
+
+          echo '</div>'; // End of the container
+
+          echo '</td>';
+          echo '</tr>';
+      }
+
+      echo '</tbody>';
+      echo '</table>';
+    echo '</div>';
+
+    echo"<div class='divider'></div>";
+
+}
 
   echo "</div>";
 
   } else {
       echo "<p>No members found.</p>";
   }
-}
 
 // Handle member deletion
 if (isset($_POST['delete_member'])) {
