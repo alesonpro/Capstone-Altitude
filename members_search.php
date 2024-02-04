@@ -161,40 +161,6 @@ if (isset($_GET['q'])) {
  if ($result) {
         if ($result->num_rows > 0) {
            echo '<div class="member-list">';
-          //  while ($row = $result->fetch_assoc()) {
-          //     echo '<div class="member-info">';
-          //         echo '<div class="member-details">';
-          //             echo "<h4>Name: " . $row['name'] . "</h4>";
-          //             echo "<h6>Joining Date: " . date("m-d-Y", strtotime($row['joining_date'])) . "</h6>";
-          //             echo "<h6>Category: " . $row['Category'] . "</h6>";
-          //             echo "<h6>Gender: " . $row['gender'] . "</h6>";
-          //         echo "</div>";
-
-          //         echo'<div class="member-btn">';
-          //               echo "<form class='edit' method='post' action='edit_member.php'>";
-          //               echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-          //               echo "<button type='submit' name='edit_member'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
-          //               echo "</form>";
-
-          //               echo "<form class='delete' method='post' action=''>";
-          //               echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-          //               echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
-          //               echo "</form>";
-                        
-          //         echo"</div>";
-
-          //         echo '<div class="member-qr-img">';
-          //               // Generate and update QR code for each member
-          //               $memberId = $row['id'];
-          //               $data = $row['name']; // You can customize this based on your needs
-
-          //               $filename = generateAndUpdateQRCode($memberId, $data, $connection);
-
-          //               // ... Display the QR code image ...
-          //               echo '<img src="' . $filename . '" alt="QR Code">';
-          //         echo "</div>";
-          //               // ... Display delete and edit buttons ...
-          //     echo "</div>";
            while ($row = $result->fetch_assoc()) {
                 $membersData[] = $row; // Store each row in the array
             }

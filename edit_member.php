@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_member'])) {
                         echo "<option value='Regular/Coach' " . ($editedMember['Category'] == 'Regular/Coach' ? 'selected' : '') . ">Regular/Coach</option>";
                         echo "</select><br>";
                     echo"</div>";
-                        echo"<button type='submit' name='update_member'>Update Member</button>";
+                    echo"<button type='submit' name='update_member'>Update Member</button>";
                 echo "</form>";
             echo"</div>";
         echo"</div>";
