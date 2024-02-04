@@ -145,28 +145,49 @@ if (isset($_GET['q'])) {
     // Display search results
     if ($result) {
             if ($result->num_rows > 0) {
-              echo '<div class="member-list">';
+               echo '<div class="member-list">';
+          echo '<div class="trainer-info">';
+              echo '<table class="table table-striped">';
+              echo '<thead>';
+              echo '<tr>';
+              echo '<th>Name</th>';
+              echo '<th>Specialty</th>';
+              echo '<th>Schedule</th>';
+              echo '<th style="text-align: center;">Actions</th>'; // Center align the header
+
               while ($row = $result->fetch_assoc()) {
-                  echo '<div class="trainer-info">';
+                  echo '<tr>';
+                  echo '<td>' . $row['name'] . '</td>';
+                  echo '<td>' . $row['specialty'] . '</td>';
+                  echo '<td>' . $row['schedule'] . '</td>';
 
-                      echo '<div class="trainer-details">';
-                        echo "<h4>Name: </h4>";
-                        echo "<h4>". $row['name'] . "</h4>";
-                      echo '</div>';
+                  echo '<td style="text-align: center;">'; // Center align the actions in each row
 
-                      echo '<div class="trainer-btn">';
-                        echo "<form class='edit' method='post' action='edit_trainer.php'>";
-                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                        echo "<button type='submit' name='edit_trainer'><i class='fa fa-pencil' aria-hidden='true'></i> Edit</button>";
-                        echo "</form>";
-                        
-                        echo "<form class='delete' method='post' action=''>";
-                        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-                        echo "<button type='submit' name='delete_member'><i class='fa fa-trash' aria-hidden='true'></i> Delete</button>";
-                        echo "</form>";
+                  // Container for side-by-side buttons
+                  echo '<div style="display: flex; justify-content: space-evenly;">';
 
-                      echo '</div>';
-                  echo "</div>";
+                    // Display edit button
+                    echo "<form class='edit' method='post' action='edit_trainer.php'>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<button type='submit' name='edit_trainer' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+                    echo "</form>";
+
+                    // Display delete button
+                    echo "<form class='delete' method='post' action=''>";
+                    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+                    echo "<button type='submit' name='delete_member' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
+                    echo "</form>";
+
+                  echo '</div>'; // End of the container
+
+                  echo '</td>';
+                  echo '</tr>';
+              }
+
+              echo '</tbody>';
+              echo '</table>';
+              echo '</div>';
+
                   echo"<div class='divider'></div>";
 
               }
@@ -178,8 +199,6 @@ if (isset($_GET['q'])) {
           } else {
             echo "<p>Error: " . mysqli_error($connection) . "</p>";
         }
-}
-
 // Close the database connection
 mysqli_close($connection);
 ?>

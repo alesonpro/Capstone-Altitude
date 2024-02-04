@@ -1,5 +1,4 @@
 <?php
-
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connect to the database
@@ -12,9 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Sanitize user inputs
     $name = mysqli_real_escape_string($connection, $_POST['name']);
+    $specialty = mysqli_real_escape_string($connection, $_POST['specialty']);
+    $schedule = mysqli_real_escape_string($connection, $_POST['schedule']);
 
-    // Insert member data into the database
-    $insertQuery = "INSERT INTO trainers (name) VALUES ('$name')";
+    // Insert trainer data into the database
+    $insertQuery = "INSERT INTO trainers (name, specialty, schedule) VALUES ('$name', '$specialty', '$schedule')";
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
@@ -27,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_close($connection);
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -104,23 +107,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 </style>
 <body>
-    <!-- <h3>Add Trainer</h3>
+   <div class="container card">
+    <h3>Add Trainer</h3>
     <form method="post" action="">
-        <label>Name:</label>
-        <input type="text" name="name" required><br>
-
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="specialty">Specialty:</label>
+            <input type="text" id="specialty" name="specialty">
+        </div>
+        <div class="form-group">
+            <label for="schedule">Schedule:</label>
+            <input type="text" id="schedule" name="schedule">
+        </div>
         <button type="submit">Add Trainer</button>
-    </form> -->
+    </form>
+</div>
 
-    <div class="container card">
-        <h3>Add Trainer</h3>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <button type="submit">Add Trainer</button>
-        </form>
-    </div>
 </body>
 </html>

@@ -109,10 +109,12 @@
             echo "<label for='name'>Name:</label>";
             echo "<input type='text' name='name' value='" . $editedWalk_in['name'] . "' required><br>";
             echo "</div>";
+
             echo "<div class='form-group'>";
             echo "<label for='time_in'>Time in:</label>";
             echo "<input type='time' name='time_in' value='" . $editedWalk_in['time_in'] . "' required><br>";
             echo "</div>";
+            
             echo "<div class='form-group'>";
             echo "<label for='time_out'>Time out:</label>";
             echo "<input type='time' name='time_out' value='" . $editedWalk_in['time_out'] . "'><br>";

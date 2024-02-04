@@ -93,27 +93,28 @@
             if ($editResult) {
                 $editedTrainer = mysqli_fetch_assoc($editResult);
 
-
-        // Display a form for editing member details
-        // echo "<form action='update_trainer.php' method='post'>";
-        // echo "<input type='hidden' name='id' value='" . $editedTrainer['id'] . "'>";
-        // echo "<label for='name'>Name:</label>";
-        // echo "<input type='text' name='name' value='" . $editedTrainer['name'] . "' required><br>";
-        // echo "<button type='submit' name='update_trainer'>Update trainer</button>";
-        // echo "</form>";
-
         echo "<div class='container card'>";
             echo "<h3>Update Trainer</h3>";
             echo "<form action='update_trainer.php' method='post'>";
+            
             echo "<input type='hidden' name='id' value='" . $editedTrainer['id'] . "'>";
-            echo "<div class='form-group'>";
-                echo "<label for='name'>Name:</label>";
-                echo "<input type='text' name='name' value='" . $editedTrainer['name'] . "' required><br>";
-                echo "</div>";
-                echo "<button type='submit' name='update_trainer'>Update trainer</button>";
-            echo "</form>";
-        echo "</div>";
+                echo "<div class='form-group'>";
+                    echo "<label for='name'>Name:</label>";
+                    echo "<input type='text' name='name' value='" . $editedTrainer['name'] . "' required><br>";
+                    echo "</div>";
 
+                    echo "<div class='form-group'>";
+                    echo "<label for='specialty'>Specialty:</label>";
+                    echo "<input type='text' name='specialty' value='" . $editedTrainer['specialty'] . "' required><br>";
+                    echo "</div>";
+
+                    echo "<div class='form-group'>";
+                    echo "<label for='name'>Schedule:</label>";
+                    echo "<input type='text' name='schedule' value='" . $editedTrainer['schedule'] . "' required><br>";
+                    echo "</div>";
+                    echo "<button type='submit' name='update_trainer'>Update trainer</button>";
+                echo "</form>";
+        echo "</div>";
                 } else {
                     echo "Error: " . mysqli_error($connection);
                 }
