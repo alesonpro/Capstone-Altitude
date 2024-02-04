@@ -137,7 +137,6 @@ $result = mysqli_query($connection, $query);
 if ($result) {
     if (mysqli_num_rows($result) > 0) {
         echo '<div class="attendance-table">';
-        while ($row = mysqli_fetch_assoc($result)) {
 echo '<div class="container mt-4">';
 echo '    <table class="table">';
 echo '        <thead>';
@@ -159,13 +158,11 @@ while ($row = mysqli_fetch_assoc($result)) {
   echo '     <td>' . date("m-d-Y", strtotime($row["date"])) . '</td>';
   echo ' </tr>';
 }
+  
+  echo '        </tbody>';
+  echo '    </table>';
+  echo '</div>';
 
-echo '        </tbody>';
-echo '    </table>';
-echo '</div>';
-
-
-            }
 
 echo "</div>";
     } else {
