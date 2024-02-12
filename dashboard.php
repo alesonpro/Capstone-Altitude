@@ -55,6 +55,72 @@ if ($resultLogins) {
 
 // Close the connection to the second database
 $connLogins->close();
+
+
+$connActive = new mysqli("localhost", "root", "", "members");
+
+// Check the connection
+if ($connActive->connect_error) {
+    die("Connection failed: " . $connActive->connect_error);
+}
+
+// Query to get the number of members
+$sqlActive = "SELECT COUNT(*) as activeMembers FROM members_list WHERE status = 'Active'";
+$resultActive = $connActive->query($sqlActive);
+
+// Check if the query was successful
+if ($resultActive) {
+    $row = $resultActive->fetch_assoc();
+    $activeMembers = $row['activeMembers'];
+} else {
+    $activeMembers = "Error fetching data";
+}
+// Close the database connection
+$connActive->close();
+
+
+$connExpired = new mysqli("localhost", "root", "", "members");
+
+// Check the connection
+if ($connExpired->connect_error) {
+    die("Connection failed: " . $connExpired->connect_error);
+}
+
+// Query to get the number of members
+$sqlExpired = "SELECT COUNT(*) as expiredMembers FROM members_list WHERE status = 'Expired'";
+$resultActive = $connExpired->query($sqlExpired);
+
+// Check if the query was successful
+if ($resultActive) {
+    $row = $resultActive->fetch_assoc();
+    $expiredMembers = $row['expiredMembers'];
+} else {
+    $expiredMembers = "Error fetching data";
+}
+// Close the database connection
+$connExpired->close();
+
+
+$connTrainers = new mysqli("localhost", "root", "", "coaches");
+
+// Check the connection
+if ($connTrainers->connect_error) {
+    die("Connection failed: " . $connTrainersconn->connect_error);
+}
+
+// Query to get the number of members
+$sqlTrainers = "SELECT COUNT(id) as totalTrainers FROM trainers";
+$resultTrainers = $connTrainers->query($sqlTrainers);
+
+// Check if the query was successful
+if ($resultTrainers) {
+    $row = $resultTrainers->fetch_assoc();
+    $totalTrainers = $row['totalTrainers'];
+} else {
+    $totalTrainers = "Error fetching data";
+}
+// Close the database connection
+$connTrainers->close();
 ?>
 <!DOCTYPE html>
 <html>
@@ -155,32 +221,79 @@ $connLogins->close();
           <p class="card-text display-4" style="color: black;"><?php echo $totalMembers; ?></p>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Active Members</h5>
+          <p class="card-text display-4" style="color: black;"><?php echo $activeMembers; ?></p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Expired Members</h5>
+          <p class="card-text display-4" style="color: black;"><?php echo $expiredMembers; ?></p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Gym Staff</h5>
+          <p class="card-text display-4" style="color: black;"><?php echo $totalTrainers; ?></p>
+        </div>
+      </div>
+
+
       <div class="chart">
         <canvas id="loginTimesChart" height="200" width="400"></canvas>
 
         <script>
-          var ctx = document.getElementById('loginTimesChart').getContext('2d');
-          var loginTimesChart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: <?php echo json_encode(array_keys($loginData)); ?>,
-                datasets: [{
-                  label: 'Number of Logins',
-                  data: <?php echo json_encode(array_values($loginData)); ?>,
-                  fill: false,
-                  borderColor: 'rgba(75, 192, 192, 1)',
-                  borderWidth: 1
-                }]
-              },
-              options: {
-                scales: {
-                  y: {
+    // Your PHP login data
+    var loginData = <?php echo json_encode($loginData); ?>;
+
+    // Define time slots from 7AM to 10PM
+    var timeSlots = ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", 
+                     "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", 
+                     "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+
+    // Initialize an array to hold login data for each time slot
+    var loginDataArray = Array.from({ length: timeSlots.length }, () => 0);
+
+    // Loop through the login data and map them to their respective time slots
+    Object.keys(loginData).forEach(function(timestamp) {
+        var date = new Date(timestamp);
+        var hour = date.getHours();
+        // Find the index of the corresponding time slot
+        var index = hour - 7;
+        if (index >= 0 && index < timeSlots.length) {
+            // Add the login count to the appropriate time slot
+            loginDataArray[index] = loginData[timestamp];
+        }
+    });
+
+    // Create the chart
+    var ctx = document.getElementById('loginTimesChart').getContext('2d');
+    var loginTimesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timeSlots,
+            datasets: [{
+                label: 'Number of Logins',
+                data: loginData,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
                     beginAtZero: true
-                  }
                 }
-              }
-          });
-        </script>
+            }
+        }
+    });
+</script>
       </div>
     </div>
     <!-- Add more content here -->
