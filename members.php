@@ -104,7 +104,7 @@ error_reporting(E_ALL);
       }
       
       table{
-        text-align:center;
+        text-align: center;
       }
 
       .action-parent{
