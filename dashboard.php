@@ -137,36 +137,39 @@ $connTrainers->close();
     <script src="https://kit.fontawesome.com/94a2ea5975.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-
-
-        .card-text {
-            color: black; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card {
-          height: 200px;
-          width: 18rem;
+    <style>      
+      .card-text {
+          color: black; 
           display: flex;
+          align-items: center;
           justify-content: center;
-          align-items: center;
-        }
+      }
 
-        .main-wrap {
-          display: flex;
-          justify-content: space-evenly;
-          align-items: center;
-          width: calc(130% - 350px);
-          height: 50vh;
-        }
+      .card {
+        height: 200px;
+        width: 18rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
+      .main-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        width: calc(130% - 350px);
+        height: 50vh;
+      }
 
-
-
-
+      .cards{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        text-align: center;
+        margin-top: 5rem;
+      }
+      
 
     </style>
 
@@ -215,89 +218,91 @@ $connTrainers->close();
     <h3>Welcome back <?php echo $_SESSION["username"]; echo"!";?></h3>
     <hr>
     <div class="main-wrap">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Total Members</h5>
-          <p class="card-text display-4" style="color: black;"><?php echo $totalMembers; ?></p>
+      <!-- cards parent -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Total Members</h5>
+            <p class="card-text display-4" style="color: black;"><?php echo $totalMembers; ?></p>
+          </div>
+        </div>
+  
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Active Members</h5>
+            <p class="card-text display-4" style="color: black;"><?php echo $activeMembers; ?></p>
+          </div>
+        </div>
+  
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Expired Members</h5>
+            <p class="card-text display-4" style="color: black;"><?php echo $expiredMembers; ?></p>
+          </div>
+        </div>
+  
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Gym Staff</h5>
+            <p class="card-text display-4" style="color: black;"><?php echo $totalTrainers; ?></p>
+          </div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Active Members</h5>
-          <p class="card-text display-4" style="color: black;"><?php echo $activeMembers; ?></p>
+      <!-- chart parent -->
+      <div class="charts">
+        <div class="chart">
+                  <canvas id="loginTimesChart" height="200" width="400"></canvas>
+    
+                  <script>
+              // Your PHP login data
+              var loginData = <?php echo json_encode($loginData); ?>;
+    
+              // Define time slots from 7AM to 10PM
+              var timeSlots = ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", 
+                              "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", 
+                              "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+    
+              // Initialize an array to hold login data for each time slot
+              var loginDataArray = Array.from({ length: timeSlots.length }, () => 0);
+    
+              // Loop through the login data and map them to their respective time slots
+              Object.keys(loginData).forEach(function(timestamp) {
+                  var date = new Date(timestamp);
+                  var hour = date.getHours();
+                  // Find the index of the corresponding time slot
+                  var index = hour - 7;
+                  if (index >= 0 && index < timeSlots.length) {
+                      // Add the login count to the appropriate time slot
+                      loginDataArray[index] = loginData[timestamp];
+                  }
+              });
+    
+              // Create the chart
+              var ctx = document.getElementById('loginTimesChart').getContext('2d');
+              var loginTimesChart = new Chart(ctx, {
+                  type: 'line',
+                  data: {
+                      labels: timeSlots,
+                      datasets: [{
+                          label: 'Number of Logins',
+                          data: loginData,
+                          fill: false,
+                          borderColor: 'rgba(75, 192, 192, 1)',
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          y: {
+                              beginAtZero: true
+                          }
+                      }
+                  }
+              });
+          </script>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Expired Members</h5>
-          <p class="card-text display-4" style="color: black;"><?php echo $expiredMembers; ?></p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Gym Staff</h5>
-          <p class="card-text display-4" style="color: black;"><?php echo $totalTrainers; ?></p>
-        </div>
-      </div>
-
-
-      <div class="chart">
-        <canvas id="loginTimesChart" height="200" width="400"></canvas>
-
-        <script>
-    // Your PHP login data
-    var loginData = <?php echo json_encode($loginData); ?>;
-
-    // Define time slots from 7AM to 10PM
-    var timeSlots = ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", 
-                     "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", 
-                     "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
-
-    // Initialize an array to hold login data for each time slot
-    var loginDataArray = Array.from({ length: timeSlots.length }, () => 0);
-
-    // Loop through the login data and map them to their respective time slots
-    Object.keys(loginData).forEach(function(timestamp) {
-        var date = new Date(timestamp);
-        var hour = date.getHours();
-        // Find the index of the corresponding time slot
-        var index = hour - 7;
-        if (index >= 0 && index < timeSlots.length) {
-            // Add the login count to the appropriate time slot
-            loginDataArray[index] = loginData[timestamp];
-        }
-    });
-
-    // Create the chart
-    var ctx = document.getElementById('loginTimesChart').getContext('2d');
-    var loginTimesChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: timeSlots,
-            datasets: [{
-                label: 'Number of Logins',
-                data: loginData,
-                fill: false,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-</script>
-      </div>
-    </div>
     <!-- Add more content here -->
-
   </div>
 
 </div>
