@@ -167,7 +167,16 @@ $connTrainers->close();
         justify-content: space-evenly;
         align-items: center;
         text-align: center;
+        padding: 20px;
+        gap: 1rem;
         margin-top: 5rem;
+      }
+
+      .card{
+        width: 200px;
+        height: 150px;
+        background-color: #740A00;
+        color: white;
       }
       
 
@@ -223,28 +232,28 @@ $connTrainers->close();
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Total Members</h5>
-            <p class="card-text display-4" style="color: black;"><?php echo $totalMembers; ?></p>
+            <p class="card-text display-4" style="color: white;"><?php echo $totalMembers; ?></p>
           </div>
         </div>
   
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Active Members</h5>
-            <p class="card-text display-4" style="color: black;"><?php echo $activeMembers; ?></p>
+            <p class="card-text display-4" style="color: white;"><?php echo $activeMembers; ?></p>
           </div>
         </div>
   
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Expired Members</h5>
-            <p class="card-text display-4" style="color: black;"><?php echo $expiredMembers; ?></p>
+            <p class="card-text display-4" style="color: white;"><?php echo $expiredMembers; ?></p>
           </div>
         </div>
   
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Gym Staff</h5>
-            <p class="card-text display-4" style="color: black;"><?php echo $totalTrainers; ?></p>
+            <p class="card-text display-4" style="color: white;"><?php echo $totalTrainers; ?></p>
           </div>
         </div>
       </div>

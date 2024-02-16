@@ -112,7 +112,11 @@ error_reporting(E_ALL);
         align-items: center;
         margin-left: 2.3rem;
         gap: 10px;
-      } 
+      }
+      
+      .edit, .delete{
+        margin: 0 -10px 0 -10px;
+      }
 
     </style>
 </head>

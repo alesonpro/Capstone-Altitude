@@ -30,7 +30,6 @@ session_start();
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        /* border: 1px solid black; */
         color: black;
         padding: 15px;
         margin-left: 0.7rem;
@@ -60,11 +59,6 @@ session_start();
         gap: 30px;
       } 
 
-      /* .member-qr-img{
-        width: 150px;
-        height: 150px;
-      } */
-
       .member-qr-img{
         width: 100px;
         height: 100px;
@@ -89,6 +83,11 @@ session_start();
         align-items: center;
         margin-left: 2.3rem;
         gap: 10px;
+      }
+
+
+      .edit, .delete{
+        margin: 0 -10px 0 -10px;
       }
       
       

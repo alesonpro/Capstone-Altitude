@@ -75,6 +75,10 @@ session_start();
       .content{
          overflow: auto;
       }
+
+      .edit, .delete{
+        margin: 0 -10px 0 -10px;
+      }
     </style>
 </head>
 <body>
