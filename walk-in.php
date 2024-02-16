@@ -91,6 +91,10 @@ if (!isset($_SESSION['username'])) {
         text-align: center;
       }
 
+      .edit, .delete{
+        margin: 0 -10px 0 -10px;
+      }
+
     </style>
 </head>
 <body>

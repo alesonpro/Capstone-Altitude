@@ -39,7 +39,6 @@ session_start();
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        /* border: 1px solid black; */
         color: black;
         padding: 15px;
         margin-left: 0.7rem;
@@ -85,6 +84,10 @@ session_start();
        .trainers-add button{
         margin-right: 2rem;
        }
+
+       .edit, .delete{
+        margin: 0 -10px 0 -10px;
+      }
     </style>
 </head>
 <body>
