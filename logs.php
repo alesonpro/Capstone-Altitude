@@ -8,6 +8,45 @@ if (!isset($_SESSION['username'])) {
   header("Location: login.php");
   exit();
 }
+
+// Connect to the database
+$connection = mysqli_connect("localhost", "root", "", "attendance");
+
+// Check connection
+if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    exit();
+}
+
+// Define the threshold date for archiving (e.g., 30 days ago)
+$threshold_date = date('Y-m-d', strtotime('-0 days'));
+
+// Move old records to archive table
+$query_archive = "INSERT INTO archive_table (qr_content, time_in, time_out, date)
+                  SELECT qr_content, time_in, time_out, date
+                  FROM attendance_table
+                  WHERE date < '$threshold_date'";
+$result_archive = mysqli_query($connection, $query_archive);
+
+if (!$result_archive) {
+    echo "Error archiving old records: " . mysqli_error($connection);
+    exit();
+}
+
+// Delete archived records from the main table
+$query_delete = "DELETE FROM attendance_table WHERE date < '$threshold_date'";
+$result_delete = mysqli_query($connection, $query_delete);
+
+if (!$result_delete) {
+    echo "Error deleting old records: " . mysqli_error($connection);
+    exit();
+}
+
+// Retrieve member data
+$query_select = "SELECT * FROM attendance_table ORDER BY date DESC";
+$result_select = mysqli_query($connection, $query_select);
+
+// Display member data
 ?>
 <!DOCTYPE html>
 <html>
@@ -120,71 +159,82 @@ table{
     <div class="logs-content">
       <h3>Logs</h3>
       <div class="logs-btn">
+      <button onclick="viewArchivedData()">View Archived Data</button>
         <button onclick="printToPDF()">Print to PDF</button>
         <button onclick="window.location.href='add_timein.php'">Add Logs</button>
       </div>
     </div>
     <div class="divider"></div>
 
-<?php
+    <?php
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "attendance");
+
+// Check the connection
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
 // Retrieve member data
 $query = "SELECT * FROM attendance_table ORDER BY date DESC";
 $result = mysqli_query($connection, $query);
 
-if ($result) {
-    if (mysqli_num_rows($result) > 0) {
-        echo '<div class="attendance-table">';
-echo '<div class="container mt-4">';
-echo '    <table class="table">';
-echo '        <thead>';
-echo '            <tr>';
-echo '                <th>Name</th>';
-echo '                <th>Time-in</th>';
-echo '                <th>Time-out</th>';
-echo '                <th>Date</th>';
-echo '            </tr>';
-echo '        </thead>';
-echo '        <tbody>';
+if ($result && mysqli_num_rows($result) > 0) {
+    echo '<div class="attendance-table">';
+    echo '<div class="container mt-4">';
+    echo '    <table class="table">';
+    echo '        <thead>';
+    echo '            <tr>';
+    echo '                <th>Name</th>';
+    echo '                <th>Time-in</th>';
+    echo '                <th>Time-out</th>';
+    echo '                <th>Date</th>';
+    echo '            </tr>';
+    echo '        </thead>';
+    echo '        <tbody>';
 
-// Assuming $result is your database query result
-while ($row = mysqli_fetch_assoc($result)) {
-  echo ' <tr>';
-  echo '     <td>' . $row['qr_content'] . '</td>';
-  echo '     <td>' . $row['time_in'] . '</td>';
-  echo '     <td>' . $row['time_out'] . '</td>';
-  echo '     <td>' . date("m-d-Y", strtotime($row["date"])) . '</td>';
-  echo ' </tr>';
-}
-  
-  echo '        </tbody>';
-  echo '    </table>';
-  echo '</div>';
-
-
-echo "</div>";
-    } else {
-        echo "<p>No members found.</p>";
+    // Loop through each row in the result set
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo ' <tr>';
+        echo '     <td>' . $row['qr_content'] . '</td>';
+        echo '     <td>' . date("h:i A", strtotime($row['time_in'])) . '</td>';
+        echo '     <td>' . ($row['time_out'] ? date("h:i A", strtotime($row['time_out'])) : 'N/A') . '</td>';
+        echo '     <td>' . date("m-d-Y", strtotime($row['date'])) . '</td>';
+        echo ' </tr>';
     }
 
+    echo '        </tbody>';
+    echo '    </table>';
+    echo '</div>';
+    echo '</div>';
+} else {
+    echo "<p>No members found.</p>";
 }
 
 // Close the database connection
 mysqli_close($connection);
 ?>
+
   </div>
   <!-- end of content -->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
 <script>
+
+
     function printToPDF() {
    // Redirect to the server-side script to generate the PDF
    window.location.href = 'generate_pdf_member.php';
 }
 
+  </script>
+
+<script>
+    function viewArchivedData() {
+      // Redirect to the PHP page displaying archived data
+      window.location.href = 'display_archived_data.php';
+    }
   </script>
 </body>
 </html>

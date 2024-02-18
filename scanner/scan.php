@@ -28,7 +28,7 @@ if ($data && isset($data->content)) {
         $response['message'] = "Connection failed: " . $conn->connect_error;
     } else {
         // User is making attendance
-        $attendance_time = date('h:i A');
+        $attendance_datetime = date('Y-m-d H:i:s'); // Format datetime as 'YYYY-MM-DD HH:MM:SS'
 
         // Check if the user has checked in today
         $check_last_attendance_query = "SELECT * FROM attendance_table WHERE qr_content = '$qr_content' ORDER BY id DESC LIMIT 1";
@@ -42,7 +42,7 @@ if ($data && isset($data->content)) {
 
             if ($last_attendance['time_out'] !== null) {
                 // Last attendance was a time_out, so insert a new time_in
-                $insert_query = "INSERT INTO attendance_table (qr_content, time_in) VALUES ('$qr_content', '$attendance_time')";
+                $insert_query = "INSERT INTO attendance_table (qr_content, time_in) VALUES ('$qr_content', '$attendance_datetime')";
 
                 if ($conn->query($insert_query) === TRUE) {
                     $response = ['status' => 'success', 'message' => 'Attendance recorded successfully (time_in).'];
@@ -53,7 +53,7 @@ if ($data && isset($data->content)) {
                 // Last attendance was a time_in, so update the time_out
                 $attendance_id = $last_attendance['id'];
 
-                $update_time_out_query = "UPDATE attendance_table SET time_out = '$attendance_time' WHERE id = $attendance_id";
+                $update_time_out_query = "UPDATE attendance_table SET time_out = '$attendance_datetime' WHERE id = $attendance_id";
 
                 if ($conn->query($update_time_out_query) === TRUE) {
                     $response = ['status' => 'success', 'message' => 'Attendance recorded successfully (time_out).'];
@@ -63,7 +63,7 @@ if ($data && isset($data->content)) {
             }
         } else {
             // User is checking in for the first time today
-            $insert_query = "INSERT INTO attendance_table (qr_content, time_in) VALUES ('$qr_content', '$attendance_time')";
+            $insert_query = "INSERT INTO attendance_table (qr_content, time_in) VALUES ('$qr_content', '$attendance_datetime')";
 
             if ($conn->query($insert_query) === TRUE) {
                 $response = ['status' => 'success', 'message' => 'Attendance recorded successfully (time_in).'];
