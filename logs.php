@@ -18,14 +18,14 @@ if (mysqli_connect_errno()) {
     exit();
 }
 
-// Define the threshold date for archiving (e.g., 30 days ago)
-$threshold_date = date('Y-m-d', strtotime('-0 days'));
+// Define the threshold date for archiving (yesterday's date)
+$threshold_date = date('Y-m-d', strtotime('0 day'));
 
 // Move old records to archive table
 $query_archive = "INSERT INTO archive_table (qr_content, time_in, time_out, date)
                   SELECT qr_content, time_in, time_out, date
                   FROM attendance_table
-                  WHERE date < '$threshold_date'";
+                  WHERE date = '$threshold_date'";
 $result_archive = mysqli_query($connection, $query_archive);
 
 if (!$result_archive) {
@@ -34,7 +34,7 @@ if (!$result_archive) {
 }
 
 // Delete archived records from the main table
-$query_delete = "DELETE FROM attendance_table WHERE date < '$threshold_date'";
+$query_delete = "DELETE FROM attendance_table WHERE date = '$threshold_date'";
 $result_delete = mysqli_query($connection, $query_delete);
 
 if (!$result_delete) {
@@ -42,8 +42,8 @@ if (!$result_delete) {
     exit();
 }
 
-// Retrieve member data
-$query_select = "SELECT * FROM attendance_table ORDER BY date DESC";
+// Retrieve member data for today
+$query_select = "SELECT * FROM attendance_table WHERE date = CURDATE() ORDER BY date DESC";
 $result_select = mysqli_query($connection, $query_select);
 
 // Display member data
