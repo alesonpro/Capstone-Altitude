@@ -143,38 +143,40 @@ if (isset($_GET['q'])) {
 
     <?php
       if ($result && mysqli_num_rows($result) > 0) {
-          echo '<div class="container">';
-          echo '<table class="table">';
-          echo '<thead>';
-          echo '<tr>';
-          echo '<th>Name</th>';
-          echo '<th>Time-in</th>';
-          echo '<th>Time-out</th>';
-          echo '<th>Date</th>';
-          echo '</tr>';
-          echo '</thead>';
-          echo '<tbody>';
-
-          // Loop through each archived record
-          while ($row = mysqli_fetch_assoc($result)) {
-              echo '<tr>';
-              echo '<td>' . $row['qr_content'] . '</td>';
-              echo '<td>' . $row['time_in'] . '</td>';
-              echo '<td>' . $row['time_out'] . '</td>';
-              echo '<td>' . date("m-d-Y", strtotime($row["date"])) . '</td>';
-              echo '</tr>';
-          }
-          
-          echo '</tbody>';
-          echo '</table>';
-          echo '</div>';
-      } else {
-          echo "<p>No archived data found for the search query: $search_query</p>";
-      }
-
-      // Close the database connection
-      mysqli_close($connection);
-      ?>
+        echo '<div class="attendance-table">';
+        echo '<div class="container mt-4">';
+        echo '    <table class="table">';
+        echo '        <thead>';
+        echo '            <tr>';
+        echo '                <th>Name</th>';
+        echo '                <th>Time-in</th>';
+        echo '                <th>Time-out</th>';
+        echo '                <th>Date</th>';
+        echo '            </tr>';
+        echo '        </thead>';
+        echo '        <tbody>';
+    
+        // Loop through each row in the result set
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo ' <tr>';
+            echo '     <td>' . $row['qr_content'] . '</td>';
+            echo '     <td>' . date("h:i A", strtotime($row['time_in'])) . '</td>';
+            echo '     <td>' . ($row['time_out'] ? date("h:i A", strtotime($row['time_out'])) : 'N/A') . '</td>';
+            echo '     <td>' . date("m-d-Y", strtotime($row['date'])) . '</td>';
+            echo ' </tr>';
+        }
+    
+        echo '        </tbody>';
+        echo '    </table>';
+        echo '</div>';
+        echo '</div>';
+    } else {
+        echo "<p>No members found.</p>";
+    }
+    
+    // Close the database connection
+    mysqli_close($connection);
+    ?>
     </body>
     </html>
     <?php
