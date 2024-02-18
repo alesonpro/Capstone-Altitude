@@ -112,6 +112,12 @@
                     echo "<label for='name'>Schedule:</label>";
                     echo "<input type='text' name='schedule' value='" . $editedTrainer['schedule'] . "' required><br>";
                     echo "</div>";
+
+                    echo "<div class='form-group'>";
+                    echo "<label for='name'>Time:</label>";
+                    echo "<input type='text' name='time' value='" . $editedTrainer['time'] . "' required><br>";
+                    echo "</div>";
+                    
                     echo "<button type='submit' name='update_trainer'>Update trainer</button>";
                 echo "</form>";
         echo "</div>";

@@ -13,9 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = mysqli_real_escape_string($connection, $_POST['name']);
     $specialty = mysqli_real_escape_string($connection, $_POST['specialty']);
     $schedule = mysqli_real_escape_string($connection, $_POST['schedule']);
+    $time = mysqli_real_escape_string($connection, $_POST['time']);
 
     // Insert trainer data into the database
-    $insertQuery = "INSERT INTO trainers (name, specialty, schedule) VALUES ('$name', '$specialty', '$schedule')";
+    $insertQuery = "INSERT INTO trainers (name, specialty, schedule, time) VALUES ('$name', '$specialty', '$schedule', '$time')";
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
@@ -112,15 +113,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form method="post" action="">
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" required placeholder="Your Name">
         </div>
         <div class="form-group">
             <label for="specialty">Specialty:</label>
-            <input type="text" id="specialty" name="specialty">
+            <input type="text" id="specialty" name="specialty" placeholder="Calisthenics">
         </div>
         <div class="form-group">
             <label for="schedule">Schedule:</label>
-            <input type="text" id="schedule" name="schedule">
+            <input type="text" id="schedule" name="schedule" placeholder="Monday to Wednesday">
+        </div>
+        <div class="form-group">
+            <label for="schedule">Time:</label>
+            <input type="text" id="time" name="time" placeholder="7am to 8pm">
         </div>
         <button type="submit">Add Trainer</button>
     </form>
