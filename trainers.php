@@ -97,12 +97,12 @@ if (!isset($_SESSION['username'])) {
         margin-right: 2rem;
        }
 
-       table{
+       /* table{
         text-align: center;
-       }
+       } */
 
        .edit, .delete{
-        margin: 0 -10px 0 -10px;
+        margin: 0 -5px 0 -5px;
       }
     </style>
 </head>
@@ -170,6 +170,7 @@ if (!isset($_SESSION['username'])) {
               echo '<th>Name</th>';
               echo '<th>Specialty</th>';
               echo '<th>Schedule</th>';
+              echo '<th>Time</th>';
               echo '<th style="text-align: center;">Actions</th>'; // Center align the header
 
               while ($row = $result->fetch_assoc()) {
@@ -177,6 +178,7 @@ if (!isset($_SESSION['username'])) {
                   echo '<td>' . $row['name'] . '</td>';
                   echo '<td>' . $row['specialty'] . '</td>';
                   echo '<td>' . $row['schedule'] . '</td>';
+                  echo '<td>' . $row['time'] . '</td>';
 
                   echo '<td style="text-align: center;">'; // Center align the actions in each row
 
