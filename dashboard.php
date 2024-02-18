@@ -31,29 +31,31 @@ if ($result) {
 // Close the database connection
 $conn->close();
 
-// Create a connection to the second database
+// Create a connection to the database
 $connLogins = new mysqli("localhost", "root", "", "attendance");
 
-// Check the connection to the second database
+// Check the connection
 if ($connLogins->connect_error) {
-    die("Connection to logins database failed: " . $connLogins->connect_error);
+    die("Connection to the database failed: " . $connLogins->connect_error);
 }
 
 // Query to get login times
-$sqlLogins = "SELECT time_in, COUNT(*) as loginCount FROM attendance_table GROUP BY time_in";
+$sqlLogins = "SELECT DATE_FORMAT(time_in, '%Y-%m-%d %H:00:00') AS time_slot, COUNT(*) AS loginCount FROM attendance_table GROUP BY time_slot";
 $resultLogins = $connLogins->query($sqlLogins);
 
-// Check if the query to the second database was successful
+// Check if the query was successful
 $loginData = array();
 if ($resultLogins) {
     while ($rowLogins = $resultLogins->fetch_assoc()) {
-        $loginData[$rowLogins['time_in']] = $rowLogins['loginCount'];
+        // Store the login count for each time slot
+        $loginData[$rowLogins['time_slot']] = $rowLogins['loginCount'];
     }
 } else {
-    $loginData['Error'] = "Error fetching login data from logins database";
+    // Handle error if the query fails
+    die("Error fetching login data from the database: " . $connLogins->error);
 }
 
-// Close the connection to the second database
+// Close the database connection
 $connLogins->close();
 
 
@@ -263,52 +265,61 @@ $connTrainers->close();
                   <canvas id="loginTimesChart" height="200" width="400"></canvas>
     
                   <script>
-              // Your PHP login data
-              var loginData = <?php echo json_encode($loginData); ?>;
-    
-              // Define time slots from 7AM to 10PM
-              var timeSlots = ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", 
-                              "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", 
-                              "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
-    
-              // Initialize an array to hold login data for each time slot
-              var loginDataArray = Array.from({ length: timeSlots.length }, () => 0);
-    
-              // Loop through the login data and map them to their respective time slots
-              Object.keys(loginData).forEach(function(timestamp) {
-                  var date = new Date(timestamp);
-                  var hour = date.getHours();
-                  // Find the index of the corresponding time slot
-                  var index = hour - 7;
-                  if (index >= 0 && index < timeSlots.length) {
-                      // Add the login count to the appropriate time slot
-                      loginDataArray[index] = loginData[timestamp];
-                  }
-              });
-    
-              // Create the chart
-              var ctx = document.getElementById('loginTimesChart').getContext('2d');
-              var loginTimesChart = new Chart(ctx, {
-                  type: 'line',
-                  data: {
-                      labels: timeSlots,
-                      datasets: [{
-                          label: 'Number of Logins',
-                          data: loginData,
-                          fill: false,
-                          borderColor: 'rgba(75, 192, 192, 1)',
-                          borderWidth: 1
-                      }]
-                  },
-                  options: {
-                      scales: {
-                          y: {
-                              beginAtZero: true
-                          }
-                      }
-                  }
-              });
-          </script>
+    // Your PHP login data
+    var loginData = <?php echo json_encode($loginData); ?>;
+
+    // Define time slots from 7AM to 10PM
+    var timeSlots = ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", 
+                     "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", 
+                     "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+
+    // Initialize an array to hold login data for each time slot
+    var loginDataArray = Array.from({ length: timeSlots.length }, () => 0);
+
+    // Loop through the login data and map them to their respective time slots
+    Object.keys(loginData).forEach(function(timestamp) {
+        var date = new Date(timestamp);
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        
+        // Round down the minute to the nearest hour
+        if (minute >= 30) {
+            hour++; // Move to the next hour
+        }
+
+        // Find the index of the corresponding time slot
+        var index = hour - 7;
+        if (index >= 0 && index < timeSlots.length) {
+            // Add the login count to the appropriate time slot
+            loginDataArray[index] += loginData[timestamp];
+        }
+    });
+
+    // Create the chart
+    var ctx = document.getElementById('loginTimesChart').getContext('2d');
+    var loginTimesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: timeSlots,
+            datasets: [{
+                label: 'Number of Logins',
+                data: loginDataArray,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+
         </div>
       </div>
     <!-- Add more content here -->
