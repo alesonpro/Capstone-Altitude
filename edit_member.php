@@ -125,6 +125,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_member'])) {
                     echo"</div>";
 
                     echo"<div class='form-group'";
+                      echo "<label for='email'>Email:</label>";
+                      echo "<input type='text' name='email' value='" . $editedMember['email'] . "'><br>";
+                    echo"</div>";
+
+                    
+
+                    echo"<div class='form-group'";
                         echo "<label for='Category'>Category:</label>";
                         echo "<select name='Category' required>";
                         echo "<option value='Student' " . ($editedMember['Category'] == 'Student' ? 'selected' : '') . ">Student</option>";

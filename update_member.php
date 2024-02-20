@@ -11,9 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_member'])) {
     $newName = mysqli_real_escape_string($connection, $_POST['name']);
     $newJoiningDate = mysqli_real_escape_string($connection, $_POST['joining_date']);
     $newCategory = mysqli_real_escape_string($connection, $_POST['Category']);
+    $newEmail = mysqli_real_escape_string($connection, $_POST['email']);
 
     // Update member details in the database
-    $updateQuery = "UPDATE members_list SET name = '$newName', joining_date = '$newJoiningDate', Category = '$newCategory' WHERE id = '$memberId'";
+    $updateQuery = "UPDATE members_list SET name = '$newName', joining_date = '$newJoiningDate', Category = '$newCategory', email = '$newEmail' WHERE id = '$memberId'";
     $updateResult = mysqli_query($connection, $updateQuery);
 
     if ($updateResult) {
