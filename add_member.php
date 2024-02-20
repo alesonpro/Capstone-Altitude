@@ -22,11 +22,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $dueDate = mysqli_real_escape_string($connection, $_POST['initial_due_date']);
 
+    $email = mysqli_real_escape_string($connection, $_POST['email']);
+
     // Set initial status based on due date
     $status = "Active";
 
     // Insert member data into the database
-    $insertQuery = "INSERT INTO members_list (name, joining_date, gender, Category, status, due_date) VALUES ('$name', '$joiningDate', '$gender', '$category', '$status', '$dueDate')";
+    $insertQuery = "INSERT INTO members_list (name, joining_date, gender, Category, status, due_date, email) VALUES ('$name', '$joiningDate', '$gender', '$category', '$status', '$dueDate', '$email')";
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
@@ -141,6 +143,11 @@ a {
                 <div class="form-group">
                 <label for="latest-due-date">Latest Due Date:</label>
                 <input type="date" id="latest-due-date" name="initial_due_date" required>
+                </div>
+
+                <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="text" id="email" name="email" required>
                 </div>
 
                 <div class="form-group">

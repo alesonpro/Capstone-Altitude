@@ -10,6 +10,8 @@ if (!isset($_SESSION['username'])) {
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -184,6 +186,7 @@ error_reporting(E_ALL);
             </script>
           </div>
           <div class="members-btn">
+            <button class="add-btn" onclick="window.location.href='mailer.php'">Send QR code</button>
             <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
           </div>
         </div>
