@@ -19,7 +19,7 @@ if (mysqli_connect_errno()) {
 }
 
 // Define the threshold date for archiving (yesterday's date)
-$threshold_date = date('Y-m-d', strtotime('0 day'));
+$threshold_date = date('Y-m-d', strtotime('-1 day'));
 
 // Move old records to archive table
 $query_archive = "INSERT INTO archive_table (qr_content, time_in, time_out, date)
