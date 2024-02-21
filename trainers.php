@@ -170,7 +170,8 @@ if (!isset($_SESSION['username'])) {
               echo '<th>Name</th>';
               echo '<th>Specialty</th>';
               echo '<th>Schedule</th>';
-              echo '<th>Time</th>';
+              echo '<th>Time In</th>';
+              echo '<th>Time Out</th>';
               echo '<th style="text-align: center;">Actions</th>'; // Center align the header
 
               while ($row = $result->fetch_assoc()) {
@@ -178,7 +179,19 @@ if (!isset($_SESSION['username'])) {
                   echo '<td>' . $row['name'] . '</td>';
                   echo '<td>' . $row['specialty'] . '</td>';
                   echo '<td>' . $row['schedule'] . '</td>';
-                  echo '<td>' . $row['time'] . '</td>';
+                  // Format time_in in AM/PM format
+                  $timeInFormatted = date("h:i A", strtotime($row['time_in']));
+                  echo '<td>' . $timeInFormatted . '</td>';
+
+                  // Check if time_out is empty before formatting and displaying
+                  if (!empty($row['time_out'])) {
+                      // Format time_out in AM/PM format
+                      $timeOutFormatted = date("h:i A", strtotime($row['time_out']));
+                      echo '<td>' . $timeOutFormatted . '</td>';
+                  } else {
+                      // Display an empty cell if time_out is empty
+                      echo '<td></td>';
+                  }
 
                   echo '<td style="text-align: center;">'; // Center align the actions in each row
 
