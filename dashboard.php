@@ -310,13 +310,16 @@ $connTrainers->close();
             }]
         },
         options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 5 // Set the Y-axis interval to 1
                 }
             }
         }
-    });
+    }
+});
 </script>
 
 
