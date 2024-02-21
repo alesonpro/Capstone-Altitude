@@ -114,8 +114,13 @@
                     echo "</div>";
 
                     echo "<div class='form-group'>";
-                    echo "<label for='name'>Time:</label>";
-                    echo "<input type='text' name='time' value='" . $editedTrainer['time'] . "' required><br>";
+                    echo "<label for='name'>Time In:</label>";
+                    echo "<input type='time' name='time_in' value='" . $editedTrainer['time_in'] . "' required><br>";
+                    echo "</div>";
+
+                    echo "<div class='form-group'>";
+                    echo "<label for='name'>Time Out:</label>";
+                    echo "<input type='time' name='time_out' value='" . $editedTrainer['time_out'] . "' required><br>";
                     echo "</div>";
                     
                     echo "<button type='submit' name='update_trainer'>Update trainer</button>";
