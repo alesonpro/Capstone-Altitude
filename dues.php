@@ -212,11 +212,19 @@ if ($result) {
       echo '<td>' . $status . '</td>';
       
       echo '<td>';
+      echo "<form method='post' action='edit_dues.php'>";
+      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+      echo '<button type="submit" name="edit_dues" class="btn" style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-pencil" aria-hidden="true"></i></button>';
+      echo '</form>';
+      echo '</td>';
+      
+      echo '<td>';
       echo "<form method='post' action='pay_dues.php'>";
       echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
       echo '<button type="submit" name="pay_dues" class="btn" style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-money" aria-hidden="true"></i> Pay</button>';
       echo '</form>';
       echo '</td>';
+
       
       echo '</tr>';
   }

@@ -123,6 +123,52 @@ if ($resultTrainers) {
 }
 // Close the database connection
 $connTrainers->close();
+
+$connGender = new mysqli("localhost", "root", "", "members");
+
+// Check the connection
+if ($connGender->connect_error) {
+    die("Connection failed: " . $connGender->connect_error);
+}
+
+// Query to get the count of male members
+$sqlMale = "SELECT COUNT(id) as maleCount FROM members_list WHERE gender = 'Male'";
+$resultMale = $connGender->query($sqlMale);
+
+// Check if the query was successful
+if ($resultMale) {
+    $rowMale = $resultMale->fetch_assoc();
+    $maleCount = $rowMale['maleCount'];
+} else {
+    $maleCount = "Error fetching male data";
+}
+
+// Query to get the count of female members
+$sqlFemale = "SELECT COUNT(id) as femaleCount FROM members_list WHERE gender = 'Female'";
+$resultFemale = $connGender->query($sqlFemale);
+
+// Check if the query was successful
+if ($resultFemale) {
+    $rowFemale = $resultFemale->fetch_assoc();
+    $femaleCount = $rowFemale['femaleCount'];
+} else {
+    $femaleCount = "Error fetching female data";
+}
+
+// Query to get the count of other gender members
+$sqlOther = "SELECT COUNT(id) as otherCount FROM members_list WHERE gender = 'Other'";
+$resultOther = $connGender->query($sqlOther);
+
+// Check if the query was successful
+if ($resultOther) {
+    $rowOther = $resultOther->fetch_assoc();
+    $otherCount = $rowOther['otherCount'];
+} else {
+    $otherCount = "Error fetching other data";
+}
+
+// Close the database connection
+$connGender->close();
 ?>
 <!DOCTYPE html>
 <html>
@@ -325,7 +371,45 @@ $connTrainers->close();
 
         </div>
       </div>
-    <!-- Add more content here -->
+      <div class="chart">
+    <canvas id="genderDistributionChart" height="200" width="400"></canvas>
+</div>
+
+<script>
+    // Your PHP data for the pie chart
+    var genderData = {
+        labels: ["Male", "Female", "Other"],
+        datasets: [{
+            data: [<?php echo $maleCount; ?>, <?php echo $femaleCount; ?>, <?php echo $otherCount; ?>],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.7)', // Blue for Male
+                'rgba(255, 99, 132, 0.7)', // Red for Female
+                'rgba(75, 192, 192, 0.7)', // Green for Other
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Create the pie chart
+    var ctxPie = document.getElementById('genderDistributionChart').getContext('2d');
+    var genderDistributionChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: genderData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+                display: true,
+                text: 'Gender Distribution'
+            }
+        }
+    });
+</script>
   </div>
 
 </div>
