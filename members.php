@@ -174,8 +174,8 @@ error_reporting(E_ALL);
                   <option value="" disabled="" selected="">Filter</option>
                   <option value="Student">Student</option>
                   <option value="Regular">Regular</option>
-                  <option value="Student/Coach">Student/Coach</option>
-                  <option value="Regular/Coach">Regular/Coach</option>
+                  <option value="Student/Coach">Student w/ Coach</option>
+                  <option value="Regular/Coach">Regular w/ Coach</option>
               </select>
             </form>
 

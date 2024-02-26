@@ -109,8 +109,13 @@
                     echo "</div>";
 
                     echo "<div class='form-group'>";
-                    echo "<label for='name'>Schedule:</label>";
-                    echo "<input type='text' name='schedule' value='" . $editedTrainer['schedule'] . "' required><br>";
+                    echo "<label for='name'>Schedule Start:</label>";
+                    echo "<input type='text' name='schedule_start' value='" . $editedTrainer['schedule_start'] . "' required><br>";
+                    echo "</div>";
+
+                    echo "<div class='form-group'>";
+                    echo "<label for='name'>Schedule End:</label>";
+                    echo "<input type='text' name='schedule_end' value='" . $editedTrainer['schedule_end'] . "' required><br>";
                     echo "</div>";
 
                     echo "<div class='form-group'>";

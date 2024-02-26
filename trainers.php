@@ -43,8 +43,6 @@ if (!isset($_SESSION['username'])) {
         border-bottom: 1px solid grey;
         padding-top: 5px;
       }
-      
-
 
       .trainer-info{
         display: flex;
@@ -79,7 +77,6 @@ if (!isset($_SESSION['username'])) {
 
       .content{
         overflow: auto;
-
       }
 
        .trainers-add{
@@ -94,7 +91,7 @@ if (!isset($_SESSION['username'])) {
        }
 
        .trainers-add button{
-        margin-right: 2rem;
+        margin-right: 4rem;
        }
 
        /* table{
@@ -102,7 +99,7 @@ if (!isset($_SESSION['username'])) {
        } */
 
        .edit, .delete{
-        margin: 0 -5px 0 -5px;
+        margin: 0 -1px 0 -1px;
       }
     </style>
 </head>
@@ -169,7 +166,8 @@ if (!isset($_SESSION['username'])) {
               echo '<tr>';
               echo '<th>Name</th>';
               echo '<th>Specialty</th>';
-              echo '<th>Schedule</th>';
+              echo '<th>Schedule Start</th>';
+              echo '<th>Schedule End</th>';
               echo '<th>Time In</th>';
               echo '<th>Time Out</th>';
               echo '<th style="text-align: center;">Actions</th>'; // Center align the header
@@ -178,7 +176,8 @@ if (!isset($_SESSION['username'])) {
                   echo '<tr>';
                   echo '<td>' . $row['name'] . '</td>';
                   echo '<td>' . $row['specialty'] . '</td>';
-                  echo '<td>' . $row['schedule'] . '</td>';
+                  echo '<td>' . $row['schedule_start'] . '</td>';
+                  echo '<td>' . $row['schedule_end'] . '</td>';
                   // Format time_in in AM/PM format
                   $timeInFormatted = date("h:i A", strtotime($row['time_in']));
                   echo '<td>' . $timeInFormatted . '</td>';
