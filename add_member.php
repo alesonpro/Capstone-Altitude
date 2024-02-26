@@ -147,7 +147,7 @@ a {
 
                 <div class="form-group">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" required>
+                <input type="text" id="email" name="email">
                 </div>
 
                 <div class="form-group">
@@ -164,8 +164,8 @@ a {
                 <select id="category" name="category" required>
                     <option value="Student">Student</option>
                     <option value="Regular">Regular</option>
-                    <option value="Student/Coach">Student/Coach</option>
-                    <option value="Regular/Coach">Regular/Coach</option>
+                    <option value="Student w/ Coach">Student w/ Coach</option>
+                    <option value="Regular w/ Coach">Regular w/ Coach</option>
                 </select>
                 </div>
 

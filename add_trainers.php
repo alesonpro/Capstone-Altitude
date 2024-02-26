@@ -12,14 +12,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize user inputs
     $name = mysqli_real_escape_string($connection, $_POST['name']);
     $specialty = mysqli_real_escape_string($connection, $_POST['specialty']);
-    $schedule = mysqli_real_escape_string($connection, $_POST['schedule']);
+    $schedule_start = mysqli_real_escape_string($connection, $_POST['schedule_start']);
+    $schedule_end = mysqli_real_escape_string($connection, $_POST['schedule_end']);
     $time_in = mysqli_real_escape_string($connection, $_POST['time_in']);
     $time_out = mysqli_real_escape_string($connection, $_POST['time_out']);
 
 
 
     // Insert trainer data into the database
-    $insertQuery = "INSERT INTO trainers (name, specialty, schedule, time_in, time_out) VALUES ('$name', '$specialty', '$schedule', '$time_in', '$time_out')";
+    $insertQuery = "INSERT INTO trainers (name, specialty, schedule_start, schedule_end, time_in, time_out) VALUES ('$name', '$specialty', '$schedule_start', '$schedule_end', '$time_in', '$time_out')";
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
@@ -123,8 +124,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="specialty" name="specialty" placeholder="Calisthenics">
         </div>
         <div class="form-group">
-            <label for="schedule">Schedule:</label>
-            <input type="calendar" id="schedule" name="schedule" placeholder="Monday to Wednesday">
+            <label for="schedule_start">Schedule Start:</label>
+            <input type="text" id="schedule_start" name="schedule_start" placeholder="Monday">
+        </div>
+        <div class="form-group">
+            <label for="schedule_end">Schedule End:</label>
+            <input type="text" id="schedule_end" name="schedule_end" placeholder="Saturday">
         </div>
         <div class="form-group">
             <label for="time_in">Time-in:</label>
