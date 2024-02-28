@@ -131,6 +131,9 @@ table{
   <div class="content">
     <div class="logs-content">
         <h3>Archived Logs</h3>
+        <div class="logs-btn">
+        <button onclick="printToPDF()">Print to PDF</button>
+      </div>
     </div>
     <div class="divider"></div>
 
@@ -170,5 +173,13 @@ table{
     // Close the database connection
     mysqli_close($connection);
     ?>
+
+
+<script>
+function printToPDF() {
+// Redirect to the server-side script to generate the PDF
+window.location.href = 'generate_pdf_archived.php';
+}
+</script>
 </body>
 </html>

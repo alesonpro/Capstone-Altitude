@@ -219,11 +219,18 @@ if ($result) {
       echo '</td>';
       
       echo '<td>';
-      echo "<form method='post' action='pay_dues.php'>";
+      echo "<form method='post' action='pay_dues.php' onsubmit='return confirmPayment()'>";
       echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
       echo '<button type="submit" name="pay_dues" class="btn" style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-money" aria-hidden="true"></i> Pay</button>';
       echo '</form>';
       echo '</td>';
+      
+      // JavaScript function for confirmation
+      echo "<script>
+      function confirmPayment() {
+          return confirm('Are you sure you want to pay dues for this member?');
+      }
+      </script>";
 
       
       echo '</tr>';

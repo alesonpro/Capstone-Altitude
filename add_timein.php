@@ -14,7 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $time_in = mysqli_real_escape_string($connection, $_POST['time_in']);
 
-    $time_out = mysqli_real_escape_string($connection, $_POST['time_out']);
+    // Check if time_out is empty
+    $time_out = !empty($_POST['time_out']) ? date("Y-m-d H:i:s", strtotime($_POST['time_out'])) : null;
+
+
 
     // Insert member data into the database
     $insertQuery = "INSERT INTO attendance_table (qr_content, time_in, time_out) VALUES ('$name', '$time_in', '$time_out')";
@@ -139,13 +142,13 @@ a {
 
         <div class="form-group">
             <label for="time_in">Time in:</label>
-            <input type="text" name="time_in" required><br>
+            <input type="datetime-local" name="time_in" required><br>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="time_out">Time out:</label>
-            <input type="text" name="time_out"><br>
-        </div>
+            <input type="datetime-local" name="time_out" value="<?php echo $time_out_formatted; ?>"><br>
+        </div> -->
 
         <button type="submit">Add Member</button>
         <!-- Add button to return to logs.php -->
