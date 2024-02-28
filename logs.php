@@ -189,6 +189,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     echo '                <th>Time-in</th>';
     echo '                <th>Time-out</th>';
     echo '                <th>Date</th>';
+    echo '                <th>Actions</th>';
     echo '            </tr>';
     echo '        </thead>';
     echo '        <tbody>';
@@ -200,6 +201,13 @@ if ($result && mysqli_num_rows($result) > 0) {
         echo '     <td>' . date("h:i A", strtotime($row['time_in'])) . '</td>';
         echo '     <td>' . ($row['time_out'] ? date("h:i A", strtotime($row['time_out'])) : 'N/A') . '</td>';
         echo '     <td>' . date("m-d-Y", strtotime($row['date'])) . '</td>';
+
+        echo '<td>';
+        echo "<form class='edit' method='post' action='edit_logs.php'>";
+        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+        echo "<button type='submit' name='edit_logs' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+        echo "</form>";
+        echo '</td>';
         echo ' </tr>';
     }
 

@@ -243,14 +243,21 @@ error_reporting(E_ALL);
                 echo "<button type='submit' name='edit_member' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
                 echo "</form>";
                 echo '</td>';
-    
+                
                 echo '<td>';
                 // Display delete button
-                echo "<form class='delete' method='post' action=''>";
+                echo "<form class='delete' method='post' action='' onsubmit='return confirmDelete()'>";
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
                 echo "<button type='submit' name='delete_member' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
                 echo "</form>";
                 echo '</td>';
+                
+                // JavaScript function for confirmation
+                echo "<script>
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete this member?');
+                }
+                </script>";
     
                 echo '</tr>';
             }
