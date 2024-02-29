@@ -23,6 +23,57 @@ session_start();
           width:calc(100% - 30px);
           gap: calc(100% - 800px);
         }
+
+        
+*{
+  font-family: 'M PLUS 1p', sans-serif;
+}
+.divider{
+  margin: 0 auto;
+  width: 95%;
+  border-bottom: 1px solid grey;
+  padding-top: 5px;
+}
+
+
+.logs-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+
+.attendance-details{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  padding-left: 30px;
+  margin-bottom: 20px;
+  width:calc(100% - 30px);
+}
+
+.logs-name, .logs-time{
+  color: black;
+}
+.content{
+  overflow: auto;
+}
+
+.logs-btn{
+  margin-right: 2rem;
+}
+
+
+button {
+  border-radius: 10px;  
+}
+
+table{
+  text-align:center;
+}
+
     </style>
 </head>
 <body>

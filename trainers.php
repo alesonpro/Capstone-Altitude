@@ -241,11 +241,11 @@ if (!isset($_SESSION['username'])) {
     // Handle member deletion
     if (isset($_POST['delete_member'])) {
       $memberId = mysqli_real_escape_string($connection, $_POST['id']);
-      $deleteQuery = "DELETE FROM members_list WHERE id = '$memberId'";
+      $deleteQuery = "DELETE FROM trainers WHERE id = '$memberId'";
       $deleteResult = mysqli_query($connection, $deleteQuery);
 
       if ($deleteResult) {
-          echo "<script>alert('Member deleted successfully.');
+          echo "<script>alert('Trainer deleted successfully.');
           window.location.href = window.location.href;</script>";
           exit(); // Stop further execution
       } else {
