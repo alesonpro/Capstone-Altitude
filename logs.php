@@ -160,7 +160,7 @@ table{
       <h3>Logs</h3>
       <div class="logs-btn">
       <button onclick="viewArchivedData()">View Archived Data</button>
-        <button onclick="printToPDF()">Print to PDF</button>
+      <button onclick="printToPDF()" target="_blank">Print to PDF</button>
         <button onclick="window.location.href='add_timein.php'">Add Logs</button>
       </div>
     </div>
@@ -233,7 +233,7 @@ mysqli_close($connection);
 
     function printToPDF() {
    // Redirect to the server-side script to generate the PDF
-   window.location.href = 'generate_pdf_member.php';
+   window.open('generate_pdf_walk-in.php', '_blank');
 }
 
   </script>

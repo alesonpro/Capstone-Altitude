@@ -238,18 +238,22 @@ if (!isset($_SESSION['username'])) {
         echo "<p>Error: " . mysqli_error($connection) . "</p>";
       }
 
-      // Handle member deletion
-      if (isset($_POST['delete_member'])) {
-        $memberId = mysqli_real_escape_string($connection, $_POST['id']);
-        $deleteQuery = "DELETE FROM trainers WHERE id = '$memberId'";
-        $deleteResult = mysqli_query($connection, $deleteQuery);
+    // Handle member deletion
+    if (isset($_POST['delete_member'])) {
+      $memberId = mysqli_real_escape_string($connection, $_POST['id']);
+      $deleteQuery = "DELETE FROM members_list WHERE id = '$memberId'";
+      $deleteResult = mysqli_query($connection, $deleteQuery);
 
-        if ($deleteResult) {
-          echo "<script>alert('Member deleted successfully.');</script>";
-        } else {
+      if ($deleteResult) {
+          echo "<script>alert('Member deleted successfully.');
+          window.location.href = window.location.href;</script>";
+          exit(); // Stop further execution
+      } else {
           echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
-        }
       }
+  }
+
+  exit();
 
       // Close the database connection
       mysqli_close($connection);

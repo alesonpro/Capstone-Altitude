@@ -132,7 +132,7 @@ table{
     <div class="logs-content">
         <h3>Archived Logs</h3>
         <div class="logs-btn">
-        <button onclick="printToPDF()">Print to PDF</button>
+        <button onclick="printToPDF()" target="_blank">Print to PDF</button>
       </div>
     </div>
     <div class="divider"></div>
@@ -177,8 +177,8 @@ table{
 
 <script>
 function printToPDF() {
-// Redirect to the server-side script to generate the PDF
-window.location.href = 'generate_pdf_archived.php';
+  // Redirect to the server-side script to generate the PDF
+  window.open('generate_pdf_walk-in.php', '_blank');  
 }
 </script>
 </body>

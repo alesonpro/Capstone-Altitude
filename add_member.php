@@ -54,65 +54,70 @@ $email = new PHPMailer(TRUE);
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Connect to your database
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "members";
+  // Connect to your database
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "members";
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+  // Create connection
+  $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+  // Check connection
+  if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
 
-    // Retrieve user input
-    $email = $_POST['email'];
+  // Retrieve user input
+  $email = $_POST['email'];
 
-    // Retrieve ID from the database
-    $sql = "SELECT id, name FROM members_list WHERE email = '$email'";
-    $result = $conn->query($sql);
+  // Retrieve ID from the database
+  $sql = "SELECT id, name FROM members_list WHERE email = '$email'";
+  $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $id = $row["id"];
-        $name = $row["name"];
+  if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      $id = $row["id"];
+      $name = $row["name"];
 
-        // Generate QR code
-        $qrCodeData = $name;
-        $qrCodeImagePath = 'qrcodes/member_' . $id . '.png';
-        QRcode::png($qrCodeData, $qrCodeImagePath, QR_ECLEVEL_L, 10);
+      // Check if email address is valid
+      if (!empty($email)) {
+          // Generate QR code
+          $qrCodeData = $name;
+          $qrCodeImagePath = 'qrcodes/member_' . $id . '.png';
+          QRcode::png($qrCodeData, $qrCodeImagePath, QR_ECLEVEL_L, 10);
 
-        // Send email
-        $mail = new PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'jay.aldrin.prado@gmail.com';
-        $mail->Password = 'wauh eose ttek tgci';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-    
-        $mail->setFrom('jay.aldrin.prado@gmail.com', 'Jay Aldrin Prado');
-        $mail->addAddress($email, $name);
-        $mail->addAttachment($qrCodeImagePath, 'qr_code.png');
-        $mail->isHTML(true);
-        $mail->Subject = 'QR Code for ' . $name;
-        $mail->Body    = 'Please find the QR code attached.';
-        
-        if ($mail->send()) {
-            echo '<script>alert("Email sent successfully!")</script>';
-        } else {
-            echo 'Error: ' . $mail->ErrorInfo;
-        }
+          // Send email
+          $mail = new PHPMailer(TRUE);
+          $mail->isSMTP();
+          $mail->Host = 'smtp.gmail.com';
+          $mail->SMTPAuth = true;
+          $mail->Username = 'jay.aldrin.prado@gmail.com';
+          $mail->Password = 'wauh eose ttek tgci';
+          $mail->SMTPSecure = 'tls';
+          $mail->Port = 587;
 
-    } else {
-        echo "No records found for the provided email address.";
-    }
+          $mail->setFrom('jay.aldrin.prado@gmail.com', 'Jay Aldrin Prado');
+          $mail->addAddress($email, $name);
+          $mail->addAttachment($qrCodeImagePath, 'qr_code.png');
+          $mail->isHTML(true);
+          $mail->Subject = 'QR Code for ' . $name;
+          $mail->Body    = 'Please find the QR code attached.';
 
-    $conn->close();
+          if ($mail->send()) {
+              echo '<script>alert("Email sent successfully!")</script>';
+          } else {
+              echo 'Error: ' . $mail->ErrorInfo;
+          }
+      } else {
+          // echo "Invalid email address retrieved from the database.";
+      }
+
+  } else {
+      echo "No records found for the provided email address.";
+  }
+
+  $conn->close();
 }
 
 
@@ -224,7 +229,7 @@ a {
 
                 <div class="form-group">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" required>
+                <input type="text" id="email" name="email">
                 </div>
 
                 <div class="form-group">

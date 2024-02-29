@@ -46,4 +46,28 @@ if ($result) {
 // Close the database connection
 $stmt->close();
 $connection->close();
+
+// Connect to the database
+$connection = new mysqli("localhost", "root", "", "members");
+
+// Check the connection
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
+
+// Get current date
+$currentDate = date("Y-m-d");
+
+// Update member statuses based on due dates
+$updateExpiredQuery = "UPDATE members_list SET status = 'Expired' WHERE due_date < '$currentDate'";
+$updateActiveQuery = "UPDATE members_list SET status = 'Active' WHERE due_date >= '$currentDate'";
+
+if ($connection->query($updateExpiredQuery) === TRUE && $connection->query($updateActiveQuery) === TRUE) {
+    // echo "Member statuses updated successfully.";
+} else {
+    // echo "Error updating member statuses: " . $connection->error;
+}
+
+// Close the database connection
+$connection->close();
 ?>

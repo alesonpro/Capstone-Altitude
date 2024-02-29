@@ -11,13 +11,18 @@ $query = "SELECT * FROM walk_in ORDER BY name";
 $result = mysqli_query($connection, $query);
 
 if ($result) {
+   // Table headers
+   $pdf->SetFont('Arial', 'B', 12);
+   $pdf->Cell(60, 10, 'Name', 1, 0, 'C');
+   $pdf->Cell(40, 10, 'Time In', 1, 0, 'C');
+   $pdf->Cell(40, 10, 'Time Out', 1, 1, 'C');
+
+   // Table rows
+   $pdf->SetFont('Arial', '', 12);
    while ($row = mysqli_fetch_assoc($result)) {
-      $pdf->SetFont('Arial', 'B', 12);
-      $pdf->Cell(0, 10, 'Name: ' . $row['name'], 0, 1);
-      $pdf->SetFont('Arial', '', 12);
-      $pdf->Cell(0, 10, 'Time in: ' . date("h:i A", strtotime($row['time_in'])), 0, 1);
-      $pdf->Cell(0, 10, 'Time out: ' . date("h:i A", strtotime($row['time_out'])), 0, 1);
-      $pdf->Ln(5);
+      $pdf->Cell(60, 10, $row['name'], 1, 0, 'C');
+      $pdf->Cell(40, 10, date("h:i A", strtotime($row['time_in'])), 1, 0, 'C');
+      $pdf->Cell(40, 10, ($row['time_out'] ? date("h:i A", strtotime($row['time_out'])) : 'N/A'), 1, 1, 'C');
    }
    mysqli_free_result($result);
 } else {
@@ -26,6 +31,12 @@ if ($result) {
 
 // Close the database connection
 mysqli_close($connection);
+
+// Centering the table within the page
+$pdf->SetXY(($pdf->GetPageWidth() - 160) / 2, $pdf->GetY());
+
+// Output the PDF
+$pdf->Output();
 
 // Output the PDF
 $pdf->Output();

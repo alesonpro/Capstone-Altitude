@@ -142,7 +142,7 @@ if (!isset($_SESSION['username'])) {
         <h3>Walk-in</h3>
         <div class="walkin-btn">
           <button onclick="window.location.href='add_walk-in.php'">Add Walk-in</button>
-          <button onclick="printToPDF()">Print to PDF</button>
+          <button onclick="printToPDF()" target="_blank">Print to PDF</button>
         </div>
       </div>
       <div class="divider"></div>
@@ -228,18 +228,22 @@ if ($result) {
       echo "<p>No members found.</p>";
   }
 
-// Handle member deletion
-if (isset($_POST['delete_member'])) {
-  $memberId = mysqli_real_escape_string($connection, $_POST['id']);
-  $deleteQuery = "DELETE FROM walk_in WHERE id = '$memberId'";
-  $deleteResult = mysqli_query($connection, $deleteQuery);
+  // Handle member deletion
+  if (isset($_POST['delete_member'])) {
+    $memberId = mysqli_real_escape_string($connection, $_POST['id']);
+    $deleteQuery = "DELETE FROM members_list WHERE id = '$memberId'";
+    $deleteResult = mysqli_query($connection, $deleteQuery);
 
-  if ($deleteResult) {
-    echo "<script>alert('Member deleted successfully.');</script>";
-  } else {
-    echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
-  }
+    if ($deleteResult) {
+        echo "<script>alert('Member deleted successfully.');
+        window.location.href = window.location.href;</script>";
+        exit(); // Stop further execution
+    } else {
+        echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+    }
 }
+
+exit();
 
 // Close the database connection
 mysqli_close($connection);
@@ -252,7 +256,7 @@ mysqli_close($connection);
 <script>
     function printToPDF() {
    // Redirect to the server-side script to generate the PDF
-   window.location.href = 'generate_pdf_walk-in.php';
+   window.open('generate_pdf_walk-in.php', '_blank');
 }
 
   </script>

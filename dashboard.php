@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('auto_update_status.php');
 
 // Check if the user is not logged in
 if (!isset($_SESSION['username'])) {
@@ -200,8 +201,8 @@ $connGender->close();
 
     
     .content{
-      overflow: scroll;
-      height: 100vh;
+      overflow: auto;
+      height: 80vh;
     }
 
     .child-parent{
@@ -362,6 +363,9 @@ $connGender->close();
                   <canvas id="loginTimesChart" height="200" width="400"></canvas>
               
                     <script>
+                      Chart.defaults.backgroundColor = '#000000';
+                      Chart.defaults.borderColor = '#FFFFFF';
+                      Chart.defaults.color = '#FFFFFF';
                     // Your PHP login data
                     var loginData = <?php echo json_encode($loginData); ?>;
 
@@ -402,7 +406,7 @@ $connGender->close();
                                 label: 'Number of Logins',
                                 data: loginDataArray,
                                 fill: false,
-                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderColor: 'rgba(255, 255, 255, 1)',
                                 borderWidth: 1
                             }]
                         },
@@ -424,15 +428,16 @@ $connGender->close();
   </div>
 
   <script>
+    
       // Your PHP data for the pie chart
       var genderData = {
           labels: ["Male", "Female", "Other"],
           datasets: [{
               data: [<?php echo $maleCount; ?>, <?php echo $femaleCount; ?>, <?php echo $otherCount; ?>],
               backgroundColor: [
-                  'rgba(54, 162, 235, 0.7)', // Blue for Male
-                  'rgba(255, 99, 132, 0.7)', // Red for Female
-                  'rgba(75, 192, 192, 0.7)', // Green for Other
+                  'rgba(54, 162, 235, 1)', // Blue for Male
+                  'rgba(255, 99, 132, 1)', // Red for Female
+                  'rgba(75, 192, 192, 1)', // Green for Other
               ],
               borderColor: [
                   'rgba(54, 162, 235, 1)',
@@ -457,6 +462,8 @@ $connGender->close();
               }
           }
       });
+      
+      
   </script>
               </div>
           </div>

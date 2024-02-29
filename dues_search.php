@@ -90,6 +90,10 @@ if (!isset($_SESSION['username'])) {
       table{
         text-align: center;
       }
+
+      .btn{
+        margin: 0 -10px 0 -10px;
+      }
     
     </style>
 </head>
@@ -150,56 +154,75 @@ if (!isset($_SESSION['username'])) {
     $searchQuery = "SELECT * FROM members_list WHERE name LIKE '%$query%'";
     $result = mysqli_query($connection, $searchQuery);
   
-    if ($result) {
-    if ($result->num_rows > 0) {
-        echo '<div class="member-list">';
-        while ($row = $result->fetch_assoc()) {
+// Get current date
+$currentDate = date("Y-m-d");
+
+if ($result) {
+  if ($result->num_rows > 0) {
+
   echo '<table class="table table-striped">';
-      echo '<thead>';
-        echo '<tr>';
-        echo '<th>Name</th>';
-        echo '<th>Due Date</th>';
-        echo '<th>Status</th>';
-        echo '<th>Actions</th>';
-        echo '</tr>';
-      echo '</thead>';
-    echo '<tbody>';
+    echo '<thead>';
+      echo '<tr>';
+      echo '<th>Name</th>';
+      echo '<th>Due Date</th>';
+      echo '<th>Status</th>';
+      echo '<th>Actions</th>';
+      echo '</tr>';
+    echo '</thead>';
+  echo '<tbody>';
 
-    while ($row = $result->fetch_assoc()) {
-        echo '<tr>';
-        echo '<td>' . $row['name'] . '</td>';
-        
-        // Update due date to the current date if it has expired
-        $dueDate = ($row['due_date']);
-        echo '<td>' . date("m-d-Y", strtotime($dueDate)) . '</td>';
-        
-        // Calculate the status based on the updated due date
-        $status = ($dueDate >= $currentDate) ? 'Active' : 'Expired';
-        echo '<td>' . $status . '</td>';
-        
-        echo '<td>';
-        echo "<form method='post' action='pay_dues.php'>";
-        echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-        echo '<button type="submit" name="pay_dues" class="btn" style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-money" aria-hidden="true"></i> Pay</button>';
-        echo '</form>';
-        echo '</td>';
-        
-        echo '</tr>';
-    }
+  while ($row = $result->fetch_assoc()) {
+      echo '<tr>';
+      echo '<td>' . $row['name'] . '</td>';
+      
+      // Update due date to the current date if it has expired
+      $dueDate = ($row['due_date']);
+      echo '<td>' . date("m-d-Y", strtotime($dueDate)) . '</td>';
+      
+      // Calculate the status based on the updated due date
+      $status = ($dueDate >= $currentDate) ? 'Active' : 'Expired';
+      echo '<td>' . $status . '</td>';
+      
 
-    echo '</tbody>';
-    echo '</table>';
-                  echo"<div class='divider'></div>";
+      echo '<td style="text-align: center;">'; // Center align the actions in each row
 
+        // Container for side-by-side buttons
+        echo '<div style="display: flex; justify-content: space-evenly;">';
+
+          // Display edit button
+          echo "<form class='edit' method='post' action='edit_dues.php'>";
+          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+          echo "<button type='submit' name='edit_dues' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+          echo "</form>";
+
+          // Display pay button
+          echo "<form class='delete' method='post' action='pay_dues.php' onsubmit='return confirmPayment()'>";
+          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+          echo "<button type='submit' name='pay_dues' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-money' aria-hidden='true'></i></button>";
+          echo "</form>";
+
+          
+          echo "<script>
+          function confirmPayment() {
+              return confirm('Are you sure you want to pay this member?');
           }
-          echo "</div>";
-      } else {
-          echo "<p>No members found.</p>";
-      }
-      mysqli_free_result($result);
-      } else {
-          echo "<p>Error: " . mysqli_error($connection) . "</p>";
-      }
+          </script>";
+
+        echo '</div>'; // End of the container
+      echo '</td>';    
+      echo '</tr>';
+  }
+
+  echo '</tbody>';
+  echo '</table>';
+
+    } else {
+        echo "<p>No members found.</p>";
+    }
+    mysqli_free_result($result);
+  } else {
+    echo "<p>Error: " . mysqli_error($connection) . "</p>";
+  }
   }
       // Close the database connection
       mysqli_close($connection);

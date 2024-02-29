@@ -309,11 +309,15 @@ error_reporting(E_ALL);
     $deleteResult = mysqli_query($connection, $deleteQuery);
 
     if ($deleteResult) {
-      echo "<script>alert('Member deleted successfully.');</script>";
+        echo "<script>alert('Member deleted successfully.');
+        window.location.href = window.location.href;</script>";
+        exit(); // Stop further execution
     } else {
-      echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+        echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
     }
-  }
+}
+
+exit();
 
   // Close the database connection
   mysqli_close($connection);
