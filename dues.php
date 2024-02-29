@@ -110,6 +110,10 @@ if (!isset($_SESSION['username'])) {
       table{
         text-align: center;
       }
+
+      .btn{
+        margin: 0 -10px 0 -10px;
+      }
     </style>
 </head>
 <body>
@@ -194,7 +198,7 @@ if ($result) {
       echo '<th>Name</th>';
       echo '<th>Due Date</th>';
       echo '<th>Status</th>';
-      echo '<th>Pay</th>';
+      echo '<th>Actions</th>';
       echo '</tr>';
     echo '</thead>';
   echo '<tbody>';
@@ -211,28 +215,33 @@ if ($result) {
       $status = ($dueDate >= $currentDate) ? 'Active' : 'Expired';
       echo '<td>' . $status . '</td>';
       
-      echo '<td>';
-      echo "<form method='post' action='edit_dues.php'>";
-      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-      echo '<button type="submit" name="edit_dues" class="btn" style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-pencil" aria-hidden="true"></i></button>';
-      echo '</form>';
-      echo '</td>';
-      
-      echo '<td>';
-      echo "<form method='post' action='pay_dues.php' onsubmit='return confirmPayment()'>";
-      echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-      echo '<button type="submit" name="pay_dues" class="btn" style="background-color: #740A00 !important; color: #fff !important;"><i class="fa fa-money" aria-hidden="true"></i> Pay</button>';
-      echo '</form>';
-      echo '</td>';
-      
-      // JavaScript function for confirmation
-      echo "<script>
-      function confirmPayment() {
-          return confirm('Are you sure you want to pay dues for this member?');
-      }
-      </script>";
 
-      
+      echo '<td style="text-align: center;">'; // Center align the actions in each row
+
+        // Container for side-by-side buttons
+        echo '<div style="display: flex; justify-content: space-evenly;">';
+
+          // Display edit button
+          echo "<form class='edit' method='post' action='edit_dues.php'>";
+          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+          echo "<button type='submit' name='edit_dues' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+          echo "</form>";
+
+          // Display pay button
+          echo "<form class='delete' method='post' action='pay_dues.php' onsubmit='return confirmPayment()'>";
+          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+          echo "<button type='submit' name='pay_dues' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-money' aria-hidden='true'></i></button>";
+          echo "</form>";
+
+          
+          echo "<script>
+          function confirmPayment() {
+              return confirm('Are you sure you want to pay this member?');
+          }
+          </script>";
+
+        echo '</div>'; // End of the container
+      echo '</td>';    
       echo '</tr>';
   }
 
