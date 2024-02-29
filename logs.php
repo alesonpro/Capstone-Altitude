@@ -205,7 +205,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         echo '<td>';
         echo "<form class='edit' method='post' action='edit_logs.php'>";
         echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-        echo "<button type='submit' name='edit_logs' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+        echo "<button type='submit' name='edit_logs' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-clock' aria-hidden='true'></i></button>";
         echo "</form>";
         echo '</td>';
         echo ' </tr>';
