@@ -185,58 +185,113 @@ $connGender->close();
     <link rel="stylesheet" href="fontawesome-free-6.5.1-web\css\all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>      
-      .card-text {
-          color: black; 
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
+    <style>    
+    
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: 'M PLUS 1p', sans-serif;
+    }
 
-      .card {
-        height: 200px;
-        width: 18rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+    .body-container{
+      overflow: auto;
+    }
 
-      .main-wrap {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        width: calc(130% - 350px);
-        height: 50vh;
-      }
+    
+    .content{
+      overflow: scroll;
+      height: 100vh;
+    }
 
-      .cards{
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-        gap: 1rem;
-        margin-top: 5rem;
-      }
+    .child-parent{
+      width: 95%;
+      margin: 0 auto;
+    }
 
-      .card{
-        width: 200px;
-        height: 150px;
-        background-color: #740A00;
-        color: white;
-      }
-      
+
+
+    /* members css */
+
+    .members-parent{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      background-color: white;
+      border-radius: 20px;
+       background-color: #740a00;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      height: 300px; 
+      width: auto;
+      margin-top: 10px;
+    }
+
+    .members-parent h1{
+      color: white;
+      text-align: center;
+    }
+
+    .members-data{
+      display: flex;
+      justify-content: space-between;
+      text-align: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .title-left{
+      color: white;
+    }
+
+    .members-card {
+      background-color: white;
+      color: black;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      width: 270px;
+    }
+    .members-card .card-title {
+      font-weight: 500;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .members-card .card-text {
+      font-size: 3rem;
+      color: black;
+    }
+
+    /* graph css */
+    .graph-parent{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      height: 400px; 
+      width: auto;
+      margin-top: 2rem;
+      background-color: white;
+      border-radius: 20px;
+      background-color: #740a00;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+
+    .graph-right-parent{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+
 
     </style>
 
 </head>
 <body>
-  <style>
-    *{
-      font-family: 'M PLUS 1p', sans-serif;
-    }
-  </style>
   <!-- header -->
 <div class="dashboard-header">
   <div class="title">
@@ -272,147 +327,157 @@ $connGender->close();
 
   <!-- main content -->
   <div class="content">
-    <h3>Welcome back <?php echo $_SESSION["username"]; echo"!";?></h3>
-    <hr>
-    <div class="main-wrap">
-      <!-- cards parent -->
-      <div class="cards">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Total Members</h5>
-            <p class="card-text display-4" style="color: white;"><?php echo $totalMembers; ?></p>
-          </div>
+        <h3>Welcome back <?php echo $_SESSION["username"]; echo"!";?></h3>
+        <hr>
+        <div class="child-parent">
+          <div class="members-parent">
+            <div class="title-left">
+              <h1>Members</h1>
+            </div>
+            <div class="title-right">
+              <div class="members-data">
+                <div class="members-card">
+                  <h5 class="card-title">Total</h5>
+                  <p class="card-text display-4"><?php echo $totalMembers; ?></p>
+                </div>
+                <div class="members-card">
+                  <h5 class="card-title">Active</h5>
+                  <p class="card-text display-4"><?php echo $activeMembers; ?></p>
+                </div>
+                <div class="members-card">
+                  <h5 class="card-title">Expired</h5>
+                  <p class="card-text display-4"><?php echo $expiredMembers; ?></p>
+                </div>
+              </div>
+            </div>    
         </div>
-  
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Active Members</h5>
-            <p class="card-text display-4" style="color: white;"><?php echo $activeMembers; ?></p>
-          </div>
-        </div>
-  
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Expired Members</h5>
-            <p class="card-text display-4" style="color: white;"><?php echo $expiredMembers; ?></p>
-          </div>
-        </div>
-  
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Gym Staff</h5>
-            <p class="card-text display-4" style="color: white;"><?php echo $totalTrainers; ?></p>
-          </div>
-        </div>
-      </div>
-      <!-- chart parent -->
-      <div class="charts">
-        <div class="chart">
+
+        <div class="graph-parent">
+            <div class="graph-left">
+              <h1>Analytics</h1>
+            </div>
+            <div class="graph-right">
+              <div class="graph-right-parent">
+                <div class="chart">
                   <canvas id="loginTimesChart" height="200" width="400"></canvas>
-    
-                  <script>
-    // Your PHP login data
-    var loginData = <?php echo json_encode($loginData); ?>;
+              
+                    <script>
+                    // Your PHP login data
+                    var loginData = <?php echo json_encode($loginData); ?>;
 
-    // Define time slots from 7AM to 10PM
-    var timeSlots = ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", 
-                     "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", 
-                     "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
+                    // Define time slots from 7AM to 10PM
+                    var timeSlots = ["7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", 
+                                    "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", 
+                                    "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM"];
 
-    // Initialize an array to hold login data for each time slot
-    var loginDataArray = Array.from({ length: timeSlots.length }, () => 0);
+                    // Initialize an array to hold login data for each time slot
+                    var loginDataArray = Array.from({ length: timeSlots.length }, () => 0);
 
-    // Loop through the login data and map them to their respective time slots
-    Object.keys(loginData).forEach(function(timestamp) {
-        var date = new Date(timestamp);
-        var hour = date.getHours();
-        var minute = date.getMinutes();
-        
-        // Round down the minute to the nearest hour
-        if (minute >= 30) {
-            hour++; // Move to the next hour
-        }
+                    // Loop through the login data and map them to their respective time slots
+                    Object.keys(loginData).forEach(function(timestamp) {
+                        var date = new Date(timestamp);
+                        var hour = date.getHours();
+                        var minute = date.getMinutes();
+                        
+                        // Round down the minute to the nearest hour
+                        if (minute >= 30) {
+                            hour++; // Move to the next hour
+                        }
 
-        // Find the index of the corresponding time slot
-        var index = hour - 7;
-        if (index >= 0 && index < timeSlots.length) {
-            // Add the login count to the appropriate time slot
-            loginDataArray[index] += loginData[timestamp];
-        }
-    });
+                        // Find the index of the corresponding time slot
+                        var index = hour - 7;
+                        if (index >= 0 && index < timeSlots.length) {
+                            // Add the login count to the appropriate time slot
+                            loginDataArray[index] += loginData[timestamp];
+                        }
+                    });
 
-    // Create the chart
-    var ctx = document.getElementById('loginTimesChart').getContext('2d');
-    var loginTimesChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: timeSlots,
-            datasets: [{
-                label: 'Number of Logins',
-                data: loginDataArray,
-                fill: false,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 5 // Set the Y-axis interval to 1
-                }
-            }
-        }
-    }
-});
-</script>
-
-
-        </div>
-      </div>
+                    // Create the chart
+                    var ctx = document.getElementById('loginTimesChart').getContext('2d');
+                    var loginTimesChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: timeSlots,
+                            datasets: [{
+                                label: 'Number of Logins',
+                                data: loginDataArray,
+                                fill: false,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 5 // Set the Y-axis interval to 1
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+          </div>
       <div class="chart">
-    <canvas id="genderDistributionChart" height="200" width="400"></canvas>
-</div>
-
-<script>
-    // Your PHP data for the pie chart
-    var genderData = {
-        labels: ["Male", "Female", "Other"],
-        datasets: [{
-            data: [<?php echo $maleCount; ?>, <?php echo $femaleCount; ?>, <?php echo $otherCount; ?>],
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.7)', // Blue for Male
-                'rgba(255, 99, 132, 0.7)', // Red for Female
-                'rgba(75, 192, 192, 0.7)', // Green for Other
-            ],
-            borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderWidth: 1
-        }]
-    };
-
-    // Create the pie chart
-    var ctxPie = document.getElementById('genderDistributionChart').getContext('2d');
-    var genderDistributionChart = new Chart(ctxPie, {
-        type: 'pie',
-        data: genderData,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            title: {
-                display: true,
-                text: 'Gender Distribution'
-            }
-        }
-    });
-</script>
+      <canvas id="genderDistributionChart" height="200" width="400"></canvas>
   </div>
 
-</div>
+  <script>
+      // Your PHP data for the pie chart
+      var genderData = {
+          labels: ["Male", "Female", "Other"],
+          datasets: [{
+              data: [<?php echo $maleCount; ?>, <?php echo $femaleCount; ?>, <?php echo $otherCount; ?>],
+              backgroundColor: [
+                  'rgba(54, 162, 235, 0.7)', // Blue for Male
+                  'rgba(255, 99, 132, 0.7)', // Red for Female
+                  'rgba(75, 192, 192, 0.7)', // Green for Other
+              ],
+              borderColor: [
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(75, 192, 192, 1)',
+              ],
+              borderWidth: 1
+          }]
+      };
+
+      // Create the pie chart
+      var ctxPie = document.getElementById('genderDistributionChart').getContext('2d');
+      var genderDistributionChart = new Chart(ctxPie, {
+          type: 'pie',
+          data: genderData,
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              title: {
+                  display: true,
+                  text: 'Gender Distribution'
+              }
+          }
+      });
+  </script>
+              </div>
+          </div>
+              </div>
+        </div>
+
+        <div class="child-parent">
+          <div class="members-parent">
+            <div class="title-left">
+              <h1>Staff</h1>
+            </div>
+            <div class="title-right">
+              <div class="members-data">
+                <div class="members-card">
+                <h5 class="card-title">Coach</h5>
+                <p class="card-text display-4"><?php echo $totalTrainers; ?></p>
+                </div>
+            </div>    
+        </div>
+  </div>
+  <!-- end of main content -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
