@@ -1,4 +1,5 @@
 <?php
+
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connect to the database
@@ -14,14 +15,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $time_in = mysqli_real_escape_string($connection, $_POST['time_in']);
 
-    // Check if time_out is empty
-    $time_out = !empty($_POST['time_out']) ? date("Y-m-d H:i:s", strtotime($_POST['time_out'])) : null;
+    $time_out = mysqli_real_escape_string($connection, $_POST['time_out']);
 
 
 
-    // Insert member data into the database
+
+// Insert member data into the database
+if ($_POST['time_out'] === "null") {
+    $insertQuery = "INSERT INTO attendance_table (qr_content, time_in, time_out) VALUES ('$name', '$time_in', NULL)";
+} else {
+    $time_out = mysqli_real_escape_string($connection, $_POST['time_out']); // Escape the value
     $insertQuery = "INSERT INTO attendance_table (qr_content, time_in, time_out) VALUES ('$name', '$time_in', '$time_out')";
-    $result = mysqli_query($connection, $insertQuery);
+}
+
+$result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
         echo '<script>alert("added successfully.")</script>';
@@ -133,26 +140,34 @@ a {
         <button type="submit">Add Member</button>
         <a href="logs.php"><button type="button">Return to Logs</button></a>
     </form> -->
-    <form class="container card" method="post" action="">
-        <h3>Add Members</h3>
-        <div class="form-group">
-            <label for="qr_content">Name:</label>
-            <input type="text" name="qr_content" required><br>
-        </div>
+    <form class="container card" method="post" action="" id="attendanceForm">
+    <h3>Add Members</h3>
+    <div class="form-group">
+        <label for="qr_content">Name:</label>
+        <input type="text" name="qr_content" required><br>
+    </div>
 
-        <div class="form-group">
-            <label for="time_in">Time in:</label>
-            <input type="datetime-local" name="time_in" required><br>
-        </div>
+    <div class="form-group">
+        <label for="time_in">Time in:</label>
+        <input type="datetime-local" name="time_in" required><br>
+    </div>
 
-        <!-- <div class="form-group">
-            <label for="time_out">Time out:</label>
-            <input type="datetime-local" name="time_out" value="<?php echo $time_out_formatted; ?>"><br>
-        </div> -->
+    <div class="form-group">
+        <input type="hidden" name="time_out" id="time_out_field" value="null">
+    </div>
 
-        <button type="submit">Add Member</button>
-        <!-- Add button to return to logs.php -->
-        <a href="logs.php"><button type="button">Return to Logs</button></a>
-    </form>
+    <button type="submit">Add Member</button>
+    <!-- Add button to return to logs.php -->
+    <a href="logs.php"><button type="button">Return to Logs</button></a>
+</form>
+
+<script>
+    document.getElementById("attendanceForm").addEventListener("submit", function(event) {
+    var timeOutField = document.getElementById("time_out_field");
+    if (timeOutField.value.trim() === "") {
+        timeOutField.value = "null";
+    }
+});
+</script>
 </body>
 </html>
