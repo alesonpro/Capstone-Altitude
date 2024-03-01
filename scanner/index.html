@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,7 @@
         }
 
         #qr-video {
-            width: 50%;
+            width: 500px;
             border: 1px solid #ccc;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -40,22 +41,28 @@
             font-weight: bold;
             color: #333;
         }
+
+        .message {
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
     </style>
 </head>
+
 <body>
     <h1>Attendance Scanner</h1>
+    <div class="message" id="status-message"></div>
+    <div class="message" id="qr-content"></div>
     <video id="qr-video"></video>
-    <div id="status-message"></div>
-    <div id="qr-content"></div>
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script>
-        let scanner = new Instascan.Scanner({ video: document.getElementById('qr-video') });
-        let statusMessage = document.getElementById('status-message');
-        let qrContentElement = document.getElementById('qr-content');
+        let scanner = new Instascan.Scanner( { video: document.getElementById( 'qr-video' ) } );
+        let statusMessage = document.getElementById( 'status-message' );
+        let qrContentElement = document.getElementById( 'qr-content' );
         let isCameraActive = true;
 
-        scanner.addListener('scan', function (content) {
-            if (isCameraActive) {
+        scanner.addListener( 'scan', function ( content ) {
+            if ( isCameraActive ) {
                 // Turn off the camera for 5 seconds
                 isCameraActive = false;
                 scanner.stop();
@@ -64,45 +71,46 @@
                 statusMessage.innerHTML = 'Logged';
 
                 // Display the QR code content
-                qrContentElement.innerHTML = 'QR Code Content: ' + content;
+                qrContentElement.innerHTML = 'Name: ' + content;
 
                 // Wait for 5 seconds before reactivating the camera
-                setTimeout(function () {
+                setTimeout( function () {
                     isCameraActive = true;
                     scanner.start();
                     statusMessage.innerHTML = '';
                     qrContentElement.innerHTML = '';
-                }, 3000);
+                }, 3000 );
 
                 // Send the scanned QR code content to the server for processing
-                fetch('scan.php', {
+                fetch( 'scan.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ content: content }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Instead of alert, you can update the DOM or perform other actions
-                    console.log(data.message);
-                    // You can perform additional actions based on the server response
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    body: JSON.stringify( { content: content } ),
+                } )
+                    .then( response => response.json() )
+                    .then( data => {
+                        // Instead of alert, you can update the DOM or perform other actions
+                        console.log( data.message );
+                        // You can perform additional actions based on the server response
+                    } )
+                    .catch( error => {
+                        console.error( 'Error:', error );
+                    } );
             }
-        });
+        } );
 
-        Instascan.Camera.getCameras().then(function (cameras) {
-            if (cameras.length > 0) {
-                scanner.start(cameras[0]);
+        Instascan.Camera.getCameras().then( function ( cameras ) {
+            if ( cameras.length > 0 ) {
+                scanner.start( cameras[ 0 ] );
             } else {
-                console.error('No cameras found.');
+                console.error( 'No cameras found.' );
             }
-        }).catch(function (e) {
-            console.error(e);
-        });
+        } ).catch( function ( e ) {
+            console.error( e );
+        } );
     </script>
 </body>
+
 </html>
