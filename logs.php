@@ -176,7 +176,7 @@ if (!$connection) {
 }
 
 // Retrieve member data
-$query = "SELECT * FROM attendance_table ORDER BY date DESC";
+$query = "SELECT * FROM attendance_table ORDER BY date DESC, time_in DESC";
 $result = mysqli_query($connection, $query);
 
 if ($result && mysqli_num_rows($result) > 0) {
@@ -244,5 +244,13 @@ mysqli_close($connection);
       window.location.href = 'display_archived_data.php';
     }
   </script>
+
+<script type="text/javascript">
+        // Function to refresh the page every 5 seconds (5000 milliseconds)
+        function autoRefresh() {
+            window.location = window.location.href;
+        }
+        setInterval('autoRefresh()', 5000);
+    </script>
 </body>
 </html>

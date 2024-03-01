@@ -202,11 +202,18 @@ if (isset($_GET['q'])) {
     
                 echo '<td>';
                 // Display delete button
-                echo "<form class='delete' method='post' action=''>";
+                echo "<form class='delete' method='post' action='' onsubmit='return confirmDelete()'>";
                 echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
                 echo "<button type='submit' name='delete_member' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
                 echo "</form>";
                 echo '</td>';
+                
+                // JavaScript function for confirmation
+                echo "<script>
+                function confirmDelete() {
+                    return confirm('Are you sure you want to delete this member?');
+                }
+                </script>";
     
                 echo '</tr>';
             }
@@ -258,11 +265,15 @@ if (isset($_GET['q'])) {
     $deleteResult = mysqli_query($connection, $deleteQuery);
 
     if ($deleteResult) {
-      echo "<script>alert('Member deleted successfully.');</script>";
+        echo "<script>alert('Member deleted successfully.');
+        window.location.href = window.location.href;</script>";
+        exit(); // Stop further execution
     } else {
-      echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
+        echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
     }
-  }
+}
+
+exit();
 
 // Close the database connection
 mysqli_close($connection);
