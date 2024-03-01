@@ -233,7 +233,7 @@ mysqli_close($connection);
 
     function printToPDF() {
    // Redirect to the server-side script to generate the PDF
-   window.open('generate_pdf_walk-in.php', '_blank');
+   window.open('generate_pdf_member.php', '_blank');
 }
 
   </script>
