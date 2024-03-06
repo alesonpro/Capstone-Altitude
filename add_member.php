@@ -214,7 +214,7 @@ a {
             <form method="post" action="">
                 <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" placeholder="Juan Dela Cruz" required>
                 </div>
 
                 <div class="form-group">
@@ -229,7 +229,7 @@ a {
 
                 <div class="form-group">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email">
+                <input type="text" id="email" name="email" placeholder="altitude@gmail.com">
                 </div>
 
                 <div class="form-group">
@@ -258,5 +258,18 @@ a {
             </form>
         </div>
     </div>
+
+<script>
+document.getElementById('name').addEventListener('input', function() {
+    var inputValue = this.value;
+    var words = inputValue.toLowerCase().split(' ');
+    for (var i = 0; i < words.length; i++) {
+        // Capitalize the first letter of each word
+        words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+    }
+    // Join the words back into a string and set it as the input value
+    this.value = words.join(' ');
+});
+</script>
 </body>
 </html>

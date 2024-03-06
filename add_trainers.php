@@ -143,5 +143,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </div>
 
+<script>
+
+    function capitalizeInput(inputId) {
+    document.getElementById(inputId).addEventListener('input', function() {
+        var inputValue = this.value;
+        var words = inputValue.toLowerCase().split(' ');
+        for (var i = 0; i < words.length; i++) {
+            // Capitalize the first letter of each word
+            words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+        }
+        // Join the words back into a string and set it as the input value
+        this.value = words.join(' ');
+    });
+}
+
+// Call the function with the ID of the input element
+capitalizeInput('name');
+capitalizeInput('specialty');
+capitalizeInput('schedule_start');
+capitalizeInput('schedule_end');
+
+</script>
 </body>
 </html>

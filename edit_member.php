@@ -150,8 +150,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_member'])) {
     }
 }
 
+
 // Close the database connection
 mysqli_close($connection);
 ?>
+
 </body>
 </html>
