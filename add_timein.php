@@ -125,26 +125,11 @@ a {
 
 </style>
 <body>
-    <!-- <h3>Add Members</h3>
-    <form method="post" action="">
-        <label>Name:</label>
-        <input type="text" name="qr_content" required><br>
-
-        <label>Time in:</label>
-        <input type="text" name="time_in" required><br>
-        <label>Time out:</label>
-        <input type="text" name="time_out"><br>
-
-        <br>
-
-        <button type="submit">Add Member</button>
-        <a href="logs.php"><button type="button">Return to Logs</button></a>
-    </form> -->
     <form class="container card" method="post" action="" id="attendanceForm">
     <h3>Add Members</h3>
     <div class="form-group">
         <label for="qr_content">Name:</label>
-        <input type="text" name="qr_content" required><br>
+        <input type="text"  name="qr_content" required><br>
     </div>
 
     <div class="form-group">
@@ -171,3 +156,5 @@ a {
 </script>
 </body>
 </html>
+
+
