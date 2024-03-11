@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $qrCodeImagePath = 'qrcodes/member_' . $id . '.png';
         QRcode::png($qrCodeData, $qrCodeImagePath, QR_ECLEVEL_L, 10);
 
-        // Send email
+        //Send email
         $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
@@ -57,13 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->addAttachment($qrCodeImagePath, 'qr_code.png');
         $mail->isHTML(true);
         $mail->Subject = 'QR Code for ' . $name;
-        $mail->Body    = 'Please find the QR code attached.';
-        
-        if ($mail->send()) {
-            echo '<script>alert("Email sent successfully!")</script>';
-        } else {
-            echo 'Error: ' . $mail->ErrorInfo;
-        }
+        $mail->Body    = 'Please find the QR code attached in the email.';
 
     } else {
         echo "No records found for the provided email address.";
