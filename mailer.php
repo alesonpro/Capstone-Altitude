@@ -47,17 +47,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'jay.aldrin.prado@gmail.com';
-        $mail->Password = 'wauh eose ttek tgci';
+        $mail->Username = 'altitudegymqr@gmail.com';
+        $mail->Password = 'edfu pgae futw tfxc';
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
     
-        $mail->setFrom('jay.aldrin.prado@gmail.com', 'Jay Aldrin Prado');
+        $mail->setFrom('altitudegymqr@gmail.com', 'altitude gym');
         $mail->addAddress($email, $name);
         $mail->addAttachment($qrCodeImagePath, 'qr_code.png');
         $mail->isHTML(true);
         $mail->Subject = 'QR Code for ' . $name;
-        $mail->Body    = 'Please find the QR code attached.';
+        $mail->Body    = 'hoy yung qr code mo!!!';
         
         if ($mail->send()) {
             echo '<script>alert("Email sent successfully!")</script>';
