@@ -195,7 +195,7 @@ if ($result) {
           // Display edit button
           echo "<form class='edit' method='post' action='edit_walk-in.php'>";
           echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-          echo "<button type='submit' name='edit_walk-in' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+          echo "<button type='submit' name='edit_walk-in' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-clock' aria-hidden='true'></i></button>";
           echo "</form>";
 
           // Display delete button
