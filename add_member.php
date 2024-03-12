@@ -102,7 +102,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $mail->addAttachment($qrCodeImagePath, 'qr_code.png');
           $mail->isHTML(true);
           $mail->Subject = 'QR Code for ' . $name;
-          $mail->Body    = 'hoy qr code mo!!!';
+          $mail->Body    = '<html>
+                            <head>
+                              <title>QR Code Email</title>
+                            </head>
+                            <body style="font-family: Arial, sans-serif;">
+
+                              <h1 style="color: #333;">Hello ' . $name . ',</h1>
+                              
+                              <p>Thank you for your interest in Altitude Gym. Here is your QR code:</p>
+                              
+                              <div style="text-align: center;">
+                                <img src="cid:qr_code" style="width: 200px; border: 1px solid #ccc; padding: 5px;">
+                              </div>
+                              
+                              <p style="margin-top: 20px;">If you have any questions, feel free to contact us.</p>
+                              
+                              <p>Best regards,<br>Altitude Gym Team</p>
+
+                            </body>
+                            </html>';
 
           if ($mail->send()) {
               echo '<script>alert("Email sent successfully!")</script>';
