@@ -89,15 +89,24 @@
                     },
                     body: JSON.stringify( { content: content } ),
                 } )
-                    .then( response => response.json() )
-                    .then( data => {
-                        // Instead of alert, you can update the DOM or perform other actions
-                        console.log( data.message );
-                        // You can perform additional actions based on the server response
-                    } )
-                    .catch( error => {
-                        console.error( 'Error:', error );
-                    } );
+                .then( response => response.json() )
+                .then( data => {
+                    // Update the DOM based on the server response
+                    console.log(data.message);
+
+                    if (data.status === 'success') {
+                        // Display the fetched status
+                        qrContentElement.innerHTML = 'Name: ' + content + '<br>Status: ' + data.member_status;
+                    } else {
+                        // Display an error message if status retrieval failed
+                        qrContentElement.innerHTML = 'Name: ' + content + '<br>Error: ' + data.message;
+                    }
+
+                    // You can perform additional actions based on the server response
+                })
+                .catch( error => {
+                    console.error('Error:', error);
+                });
             }
         } );
 
