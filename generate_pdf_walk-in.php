@@ -37,6 +37,4 @@ $pdf->SetXY(($pdf->GetPageWidth() - 160) / 2, $pdf->GetY());
 
 // Output the PDF
 $pdf->Output();
-
-// Output the PDF
-$pdf->Output();
+?>

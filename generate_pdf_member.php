@@ -13,7 +13,7 @@ $result = mysqli_query($connection, $query);
 if ($result) {
     // Table headers
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(40, 10, 'Name', 1, 0, 'C');
+    $pdf->Cell(60, 10, 'Name', 1, 0, 'C');
     $pdf->Cell(40, 10, 'Time In', 1, 0, 'C');
     $pdf->Cell(40, 10, 'Time Out', 1, 0, 'C');
     $pdf->Cell(40, 10, 'Date', 1, 1, 'C');
@@ -21,7 +21,7 @@ if ($result) {
     // Table rows
     $pdf->SetFont('Arial', '', 12);
     while ($row = mysqli_fetch_assoc($result)) {
-        $pdf->Cell(40, 10, $row['qr_content'], 1, 0, 'C');
+        $pdf->Cell(60, 10, $row['qr_content'], 1, 0, 'C');
         $pdf->Cell(40, 10, date("h:i A", strtotime($row['time_in'])), 1, 0, 'C');
         $pdf->Cell(40, 10, ($row['time_out'] ? date("h:i A", strtotime($row['time_out'])) : 'N/A'), 1, 0, 'C');
         $pdf->Cell(40, 10, date("m-d-Y", strtotime($row['date'])), 1, 1, 'C');

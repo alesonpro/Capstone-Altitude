@@ -24,6 +24,15 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="fontawesome-free-6.5.1-web\css\all.min.css">
 
+    <script language="JavaScript" type="text/javascript">
+      function printToPDF() {
+        console.log("Print to PDF button clicked");
+        // Redirect to the server-side script to generate the PDF
+        window.open('generate_pdf_walk-in.php', '_blank');
+      }
+
+    </script>
+
     <style>
       *{
         font-family: 'M PLUS 1p', sans-serif;
@@ -253,14 +262,7 @@ mysqli_close($connection);
   </div>
   <!-- end of content -->
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   
-<script>
-    function printToPDF() {
-   // Redirect to the server-side script to generate the PDF
-   window.open('generate_pdf_walk-in.php', '_blank');
-}
 
-  </script>
 </body>
 </html>
