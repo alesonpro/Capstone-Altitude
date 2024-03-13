@@ -91,6 +91,26 @@ $result = mysqli_query($connection, $query);
           padding-top: 10px;
         }
 
+         /* Style for Flatpickr calendar date */
+        .flatpickr-day {
+            color: black; /* Change the color of the date */
+        }
+
+        /* Style for Flatpickr calendar year and month */
+        .flatpickr-current-month,
+        .flatpickr-monthDropdown-months,
+        .numInputWrapper{
+            color: black; /* Change the color of the month and year */
+        }
+
+
+        /* Style for Flatpickr dropdown options */
+        .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month,
+        .flatpickr-yearDropdown-years .flatpickr-yearDropdown-year {
+            color: black; /* Change the color of the dropdown option */
+        }
+       
+
     </style>
 </head>
 <body>
