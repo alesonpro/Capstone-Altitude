@@ -65,11 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <h1 style="color: #333;">Hello ' . $name . ',</h1>
                             
-                            <p>Thank you for your interest in Altitude Gym. Here is your QR code:</p>
+                            <p>Thank you for your interest in Altitude Gym. Here is your QR code for your attendance in the gym</p>
                             
-                            <div style="text-align: center;">
-                              <img src="cid:qr_code" style="width: 400px; border: 1px solid #ccc; padding: 5px;">
-                            </div>
                             
                             <p style="margin-top: 20px;">If you have any questions, feel free to contact us.</p>
                             
