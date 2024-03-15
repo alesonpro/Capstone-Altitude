@@ -7,6 +7,43 @@ if (!isset($_SESSION['username'])) {
   header("Location: login.php");
   exit();
 }
+
+// Connect to the database
+$connection = mysqli_connect("localhost", "root", "", "attendance");
+
+// Check connection
+if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    exit();
+}
+
+// Define the threshold date for archiving (yesterday's date)
+$threshold_date = date('Y-m-d', strtotime('-1 day'));
+
+// Move old records to archive table
+$query_archive = "INSERT INTO archive_table_walk_in (name, time_in, time_out, date)
+                  SELECT name, time_in, time_out, date
+                  FROM walk_in
+                  WHERE date = '$threshold_date'";
+$result_archive = mysqli_query($connection, $query_archive);
+
+if (!$result_archive) {
+    echo "Error archiving old records: " . mysqli_error($connection);
+    exit();
+}
+
+// Delete archived records from the main table
+$query_delete = "DELETE FROM walk_in WHERE date = '$threshold_date'";
+$result_delete = mysqli_query($connection, $query_delete);
+
+if (!$result_delete) {
+    echo "Error deleting old records: " . mysqli_error($connection);
+    exit();
+}
+
+// Retrieve member data for today
+$query_select = "SELECT * FROM walk_in WHERE date = CURDATE() ORDER BY date DESC";
+$result_select = mysqli_query($connection, $query_select);
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,6 +67,11 @@ if (!isset($_SESSION['username'])) {
         // Redirect to the server-side script to generate the PDF
         window.open('generate_pdf_walk-in.php', '_blank');
       }
+
+      function viewArchivedData() {
+      // Redirect to the PHP page displaying archived data
+      window.location.href = 'display_archived_walk-in.php';
+    }
 
     </script>
 
@@ -152,7 +194,7 @@ if (!isset($_SESSION['username'])) {
       <div class="walkin-content">
         <h3>Walk-in</h3>
         <div class="walkin-btn">
-          <button onclick="window.location.href='add_walk-in.php'">Add Walk-in</button>
+        <button onclick="viewArchivedData()">View Archived Data</button>
           <button onclick="printToPDF()" target="_blank">Print to PDF</button>
         </div>
       </div>
@@ -206,18 +248,7 @@ if ($result) {
           echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
           echo "<button type='submit' name='edit_walk-in' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-clock' aria-hidden='true'></i></button>";
           echo "</form>";
-
-          // Display delete button
-          echo "<form class='delete' method='post' action='' onsubmit='return confirmDelete()'>";
-          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-          echo "<button type='submit' name='delete_member' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-trash' aria-hidden='true'></i></button>";
-          echo "</form>";
-
-          echo "<script>
-          function confirmDelete() {
-              return confirm('Are you sure you want to delete this walk-in log?');
-          }
-          </script>";
+          
 
           echo '</div>'; // End of the container
 
@@ -262,6 +293,8 @@ mysqli_close($connection);
   </div>
   <!-- end of content -->
 </div>
+
+
   
 
 </body>

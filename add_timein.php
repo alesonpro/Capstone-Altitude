@@ -143,7 +143,7 @@ a {
 
     <button type="submit">Add Member</button>
     <!-- Add button to return to logs.php -->
-    <a href="logs.php"><button type="button">Return to Logs</button></a>
+    <a href="/Capstone-Altitude/scanner/index.html"><button type="button">Return to Home</button></a>
 </form>
 
 <script>
