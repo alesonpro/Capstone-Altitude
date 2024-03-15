@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Attendance Scanner</title>
+    <link rel="stylesheet" type="text/css" href="/Capstone-Altitude/css/main.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -46,6 +47,55 @@
             margin-bottom: 20px;
             font-size: 15px;
         }
+
+        *{
+  font-family: 'M PLUS 1p', sans-serif;
+}
+.divider{
+  margin: 0 auto;
+  width: 95%;
+  border-bottom: 1px solid grey;
+  padding-top: 5px;
+}
+
+
+.logs-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+
+.attendance-details{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  padding-left: 30px;
+  margin-bottom: 20px;
+  width:calc(100% - 30px);
+}
+
+.logs-name, .logs-time{
+  color: black;
+}
+.content{
+  overflow: auto;
+}
+
+.logs-btn{
+  margin-right: 2rem;
+}
+
+
+button {
+  border-radius: 10px;  
+}
+
+table{
+  text-align:center;
+}
     </style>
 </head>
 
@@ -54,7 +104,14 @@
     <div class="message" id="status-message"></div>
     <div class="message" id="qr-content"></div>
     <video id="qr-video"></video>
-    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <div class="buttons">
+        <button onclick="window.location.href='/Capstone-Altitude/add_walk-in.php'">walk-in Time IN</button>
+        <button onclick="window.location.href='/Capstone-Altitude/add_timein.php'">Members Time IN</button>
+        <button onclick="window.location.href='/Capstone-Altitude/add_timeout.php'">Time OUT(Members Only)</button>
+        <button onclick="window.location.href='/Capstone-Altitude/out_walk-in.php'">Time OUT(Walk-in Only)</button>
+        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    </div>
+
     <script>
         let scanner = new Instascan.Scanner( { video: document.getElementById( 'qr-video' ) } );
         let statusMessage = document.getElementById( 'status-message' );

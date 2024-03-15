@@ -41,7 +41,8 @@ if ($connLogins->connect_error) {
 }
 
 // Query to get login times
-$sqlLogins = "SELECT DATE_FORMAT(time_in, '%Y-%m-%d %H:00:00') AS time_slot, COUNT(*) AS loginCount FROM attendance_table GROUP BY time_slot";
+$sqlLogins = "SELECT DATE_FORMAT(time_in, '%Y-%m-%d %H:%i:00') AS time_slot, COUNT(*) AS loginCount FROM attendance_table GROUP BY time_slot";
+
 $resultLogins = $connLogins->query($sqlLogins);
 
 // Check if the query was successful
@@ -379,21 +380,24 @@ $connGender->close();
 
                     // Loop through the login data and map them to their respective time slots
                     Object.keys(loginData).forEach(function(timestamp) {
-                        var date = new Date(timestamp);
-                        var hour = date.getHours();
-                        var minute = date.getMinutes();
-                        
-                        // Round down the minute to the nearest hour
-                        if (minute >= 30) {
-                            hour++; // Move to the next hour
-                        }
-
-                        // Find the index of the corresponding time slot
-                        var index = hour - 7;
-                        if (index >= 0 && index < timeSlots.length) {
-                            // Add the login count to the appropriate time slot
-                            loginDataArray[index] += loginData[timestamp];
-                        }
+                      var date = new Date(timestamp);
+                      var hour = date.getHours(); // Get the hour directly
+                      var minute = date.getMinutes(); // Get the minute directly
+                      // Round up the hour if minute is past 30
+                      if (minute >= 30) {
+                          hour++; // Move to the next hour
+                      }
+                      // Adjust the hour if it's beyond the time slots range
+                      if (hour < 7) {
+                          hour = 7; // Set it to the first time slot
+                      } else if (hour > 22) {
+                          hour = 22; // Set it to the last time slot
+                      }
+                      var index = hour - 7; // Calculate the index based on the hour
+                      // Add the login count to the appropriate time slot
+                      if (index >= 0 && index < timeSlots.length) {
+                          loginDataArray[index] += parseInt(loginData[timestamp]);
+                      }
                     });
 
                     // Create the chart

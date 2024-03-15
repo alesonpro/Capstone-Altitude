@@ -14,10 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $time_in = mysqli_real_escape_string($connection, $_POST['time_in']);
 
-    $time_out = mysqli_real_escape_string($connection, $_POST['time_out']);
-
     // Insert member data into the database
-    $insertQuery = "INSERT INTO walk_in (name, time_in, time_out) VALUES ('$name', '$time_in', '$time_out')";
+    $insertQuery = "INSERT INTO walk_in (name, time_in) VALUES ('$name', '$time_in')";
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
@@ -126,12 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="time_in">Time in:</label>
                 <input type="time" name="time_in" required><br>
             </div>
-            <div class="form-group">
-                <label for="time_out">Time out:</label>
-                <input type="time" name="time_out"><br>
-            </div>
             <button type="submit">Add Member</button>
-            <a href="walk-in.php"><button type="button">Return to Walk-in</button></a>
+            <a href="/Capstone-Altitude/scanner/index.html"><button type="button">Return to Home</button></a>
         </form>
     </div>
 
