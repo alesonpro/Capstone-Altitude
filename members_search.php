@@ -136,7 +136,6 @@ session_start();
   <div class="content">
     <div class="members-add">
       <h3>Members</h3>
-      <button class="add-btn" onclick="window.location.href='add_member.php'">Add Members</button>
     </div>
   <div class="divider"></div>
 

@@ -31,7 +31,7 @@ if ($_POST['time_out'] === "null") {
 $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
-        echo '<script>alert("added successfully.")</script>';
+        echo "<script>alert('added successfully.'); window.location.href='/Capstone-Altitude/scanner/index.html';</script>";
     } else {
         echo "Error: " . mysqli_error($connection);
     }
@@ -143,7 +143,6 @@ a {
 
     <button type="submit">Add Member</button>
     <!-- Add button to return to logs.php -->
-    <a href="/Capstone-Altitude/scanner/index.html"><button type="button">Return to Home</button></a>
 </form>
 
 <script>

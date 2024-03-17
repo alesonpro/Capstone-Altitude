@@ -96,7 +96,6 @@ a {
 
         <button type="submit" name="submit_walk-in">Submit</button>
         <!-- Add button to return to logs.php -->
-        <a href="/Capstone-Altitude/scanner/index.html"><button type="button">Return to Home</button></a>
     </form>
 </body>
 </html>

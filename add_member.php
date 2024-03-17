@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
-        echo '<script>alert("Member added successfully.")</script>';
+      echo "<script>alert('Member added successfully.'); window.location.href='members.php';</script>";
     } else {
         echo "Error: " . mysqli_error($connection);
     }
@@ -268,7 +268,6 @@ a {
 
                 <div class="form-group">
                 <button type="submit">Add Member</button>
-                <a href="members.php"><button type="button">Return to Members</button></a>
                 </div>
             </form>
         </div>
