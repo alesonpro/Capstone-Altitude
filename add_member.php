@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </html>';
 
           if ($mail->send()) {
-              echo '<script>alert("Email sent successfully!")</script>';
+              echo "<script>alert('Member added successfully.'); window.location.href='members.php';</script>";
           } else {
               echo 'Error: ' . $mail->ErrorInfo;
           }

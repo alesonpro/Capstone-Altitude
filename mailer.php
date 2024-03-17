@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           </body>
                           </html>';
         if ($mail->send()) {
-            echo '<script>alert("Email sent successfully!")</script>';
+            echo "<script>alert('Member added successfully.'); window.location.href='members.php';</script>";
         } else {
             echo 'Error: ' . $mail->ErrorInfo;
         }
@@ -194,7 +194,7 @@ a {
         </div>
 
         <div class="form-group">
-            <button type="submit">Generate QR Code and Send Email</button>
+            <button type="submit">Send QR Code</button>
         </div>
     </form>
         </div>
