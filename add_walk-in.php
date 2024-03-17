@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="time_in">Time in:</label>
                 <input type="time" name="time_in" required><br>
             </div>
-            <button type="submit">Add Member</button>
+            <button type="submit">Add Walk-In</button>
         </form>
     </div>
 
