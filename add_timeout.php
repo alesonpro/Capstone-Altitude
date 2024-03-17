@@ -93,10 +93,8 @@ a {
             <label for="logout_time">Logout Time:</label>
             <input type="datetime-local" name="logout_time" required><br>
         </div>
-
         <button type="submit" name="submit">Submit</button>
         <!-- Add button to return to logs.php -->
-        <a href="/Capstone-Altitude/scanner/index.html"><button type="button">Return to Home</button></a>
     </form>
 </body>
 </html>

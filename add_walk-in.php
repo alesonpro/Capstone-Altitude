@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($connection, $insertQuery);
 
     if ($result) {
-        echo '<script>alert("Walk-in added successfully.")</script>';
+        echo "<script>alert('added successfully.'); window.location.href='/Capstone-Altitude/scanner/index.html';</script>";
     } else {
         echo "Error: " . mysqli_error($connection);
     }
@@ -125,7 +125,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="time" name="time_in" required><br>
             </div>
             <button type="submit">Add Member</button>
-            <a href="/Capstone-Altitude/scanner/index.html"><button type="button">Return to Home</button></a>
         </form>
     </div>
 

@@ -73,6 +73,27 @@ $result_select = mysqli_query($connection, $query_select);
       window.location.href = 'display_archived_walk-in.php';
     }
 
+    // Variable to track whether an input is clicked
+    var inputClicked = false;
+
+    // Function to refresh the page every 5 seconds (5000 milliseconds)
+    function autoRefresh() {
+        if (!inputClicked) {
+            window.location = window.location.href;
+        }
+    }
+    setInterval(autoRefresh, 5000);
+
+    // Event listener for input type click
+    document.addEventListener('click', function(event) {
+        var clickedElement = event.target;
+        if (clickedElement.tagName.toLowerCase() === 'input') {
+            inputClicked = true;
+        } else {
+            inputClicked = false;
+        }
+    });
+
     </script>
 
     <style>
@@ -295,7 +316,7 @@ mysqli_close($connection);
 </div>
 
 
-  
+
 
 </body>
 </html>
