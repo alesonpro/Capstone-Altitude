@@ -86,7 +86,7 @@ a {
         <h3>Logout</h3>
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" name="name" required><br>
+            <input type="text" name="name" id="name" placeholder="Juan Dela Cruz" required><br>
         </div>
 
         <div class="form-group">
@@ -97,5 +97,18 @@ a {
         <button type="submit" name="submit_walk-in">Submit</button>
         <!-- Add button to return to logs.php -->
     </form>
+    
+<script>
+document.getElementById('name').addEventListener('input', function() {
+    var inputValue = this.value;
+    var words = inputValue.toLowerCase().split(' ');
+    for (var i = 0; i < words.length; i++) {
+        // Capitalize the first letter of each word
+        words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+    }
+    // Join the words back into a string and set it as the input value
+    this.value = words.join(' ');
+});
+</script>
 </body>
 </html>
