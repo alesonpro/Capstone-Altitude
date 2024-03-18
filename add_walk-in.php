@@ -127,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit">Add Walk-In</button>
         </form>
     </div>
-
+        
 <script>
 document.getElementById('name').addEventListener('input', function() {
     var inputValue = this.value;
