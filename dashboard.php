@@ -171,6 +171,99 @@ if ($resultOther) {
 
 // Close the database connection
 $connGender->close();
+
+$connection = mysqli_connect("localhost", "root", "", "attendance");
+
+// Check connection
+if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    exit();
+}
+
+// Calculate the threshold dates for archiving (three days ago, two days ago, and yesterday)
+$three_days_ago = date('Y-m-d', strtotime('-3 days'));
+$two_days_ago = date('Y-m-d', strtotime('-2 days'));
+$yesterday = date('Y-m-d', strtotime('-1 day'));
+
+// Move old records to archive table for three days ago
+$query_archive_three_days_ago = "INSERT INTO archive_table (qr_content, time_in, time_out, date)
+                            SELECT qr_content, time_in, time_out, date
+                            FROM attendance_table
+                            WHERE date = '$three_days_ago'";
+$result_archive_three_days_ago = mysqli_query($connection, $query_archive_three_days_ago);
+
+if (!$result_archive_three_days_ago) {
+    echo "Error archiving old records for three days ago: " . mysqli_error($connection);
+    exit();
+}
+
+// Delete archived records from the main table for three days ago
+$query_delete_three_days_ago = "DELETE FROM attendance_table WHERE date = '$three_days_ago'";
+$result_delete_three_days_ago = mysqli_query($connection, $query_delete_three_days_ago);
+
+if (!$result_delete_three_days_ago) {
+    echo "Error deleting old records for three days ago: " . mysqli_error($connection);
+    exit();
+}
+
+// Move old records to archive table for two days ago
+$query_archive_two_days_ago = "INSERT INTO archive_table (qr_content, time_in, time_out, date)
+                            SELECT qr_content, time_in, time_out, date
+                            FROM attendance_table
+                            WHERE date = '$two_days_ago'";
+$result_archive_two_days_ago = mysqli_query($connection, $query_archive_two_days_ago);
+
+if (!$result_archive_two_days_ago) {
+    echo "Error archiving old records for two days ago: " . mysqli_error($connection);
+    exit();
+}
+
+// Delete archived records from the main table for two days ago
+$query_delete_two_days_ago = "DELETE FROM attendance_table WHERE date = '$two_days_ago'";
+$result_delete_two_days_ago = mysqli_query($connection, $query_delete_two_days_ago);
+
+if (!$result_delete_two_days_ago) {
+    echo "Error deleting old records for two days ago: " . mysqli_error($connection);
+    exit();
+}
+
+// Move old records to archive table for yesterday
+$query_archive_yesterday = "INSERT INTO archive_table (qr_content, time_in, time_out, date)
+                            SELECT qr_content, time_in, time_out, date
+                            FROM attendance_table
+                            WHERE date = '$yesterday'";
+$result_archive_yesterday = mysqli_query($connection, $query_archive_yesterday);
+
+if (!$result_archive_yesterday) {
+    echo "Error archiving old records for yesterday: " . mysqli_error($connection);
+    exit();
+}
+
+// Delete archived records from the main table for yesterday
+$query_delete_yesterday = "DELETE FROM attendance_table WHERE date = '$yesterday'";
+$result_delete_yesterday = mysqli_query($connection, $query_delete_yesterday);
+
+if (!$result_delete_yesterday) {
+    echo "Error deleting old records for yesterday: " . mysqli_error($connection);
+    exit();
+}
+
+// Retrieve member data for today
+$query_select = "SELECT * FROM attendance_table WHERE date = CURDATE() ORDER BY date DESC";
+$result_select = mysqli_query($connection, $query_select);
+
+$MembersTimeIn = array();
+
+if ($result_select) {
+    while ($row = $result_select->fetch_assoc()) {
+        $MembersTimeIn[] = $row['time_in'];
+    }
+} else {
+    echo "Error fetching data: " . mysqli_error($connection);
+}
+
+// Close the database connection
+mysqli_close($connection);
 ?>
 <!DOCTYPE html>
 <html>

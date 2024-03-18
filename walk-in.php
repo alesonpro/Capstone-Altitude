@@ -8,6 +8,9 @@ if (!isset($_SESSION['username'])) {
   exit();
 }
 
+// Set the timezone to your desired location
+date_default_timezone_set('Asia/Macao');
+
 // Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "attendance");
 
@@ -17,27 +20,71 @@ if (mysqli_connect_errno()) {
     exit();
 }
 
-// Define the threshold date for archiving (yesterday's date)
-$threshold_date = date('Y-m-d', strtotime('-1 day'));
+// Calculate the threshold dates for archiving (three days ago, two days ago, and yesterday)
+$three_days_ago = date('Y-m-d', strtotime('-3 days'));
+$two_days_ago = date('Y-m-d', strtotime('-2 days'));
+$yesterday = date('Y-m-d', strtotime('-1 day'));
 
-// Move old records to archive table
-$query_archive = "INSERT INTO archive_table_walk_in (name, time_in, time_out, date)
-                  SELECT name, time_in, time_out, date
-                  FROM walk_in
-                  WHERE date = '$threshold_date'";
-$result_archive = mysqli_query($connection, $query_archive);
+// Move old records to archive table for three days ago
+$query_archive_three_days_ago = "INSERT INTO archive_table_walk_in (name, time_in, time_out, date)
+                                SELECT name, time_in, time_out, date
+                                FROM walk_in
+                                WHERE date = '$three_days_ago'";
+$result_archive_three_days_ago = mysqli_query($connection, $query_archive_three_days_ago);
 
-if (!$result_archive) {
-    echo "Error archiving old records: " . mysqli_error($connection);
+if (!$result_archive_three_days_ago) {
+    echo "Error archiving old records for three days ago: " . mysqli_error($connection);
     exit();
 }
 
-// Delete archived records from the main table
-$query_delete = "DELETE FROM walk_in WHERE date = '$threshold_date'";
-$result_delete = mysqli_query($connection, $query_delete);
+// Delete archived records from the main table for three days ago
+$query_delete_three_days_ago = "DELETE FROM walk_in WHERE date = '$three_days_ago'";
+$result_delete_three_days_ago = mysqli_query($connection, $query_delete_three_days_ago);
 
-if (!$result_delete) {
-    echo "Error deleting old records: " . mysqli_error($connection);
+if (!$result_delete_three_days_ago) {
+    echo "Error deleting old records for three days ago: " . mysqli_error($connection);
+    exit();
+}
+
+// Move old records to archive table for two days ago
+$query_archive_two_days_ago = "INSERT INTO archive_table_walk_in (name, time_in, time_out, date)
+                                SELECT name, time_in, time_out, date
+                                FROM walk_in
+                                WHERE date = '$two_days_ago'";
+$result_archive_two_days_ago = mysqli_query($connection, $query_archive_two_days_ago);
+
+if (!$result_archive_two_days_ago) {
+    echo "Error archiving old records for two days ago: " . mysqli_error($connection);
+    exit();
+}
+
+// Delete archived records from the main table for two days ago
+$query_delete_two_days_ago = "DELETE FROM walk_in WHERE date = '$two_days_ago'";
+$result_delete_two_days_ago = mysqli_query($connection, $query_delete_two_days_ago);
+
+if (!$result_delete_two_days_ago) {
+    echo "Error deleting old records for two days ago: " . mysqli_error($connection);
+    exit();
+}
+
+// Move old records to archive table for yesterday
+$query_archive_yesterday = "INSERT INTO archive_table_walk_in (name, time_in, time_out, date)
+                            SELECT name, time_in, time_out, date
+                            FROM walk_in
+                            WHERE date = '$yesterday'";
+$result_archive_yesterday = mysqli_query($connection, $query_archive_yesterday);
+
+if (!$result_archive_yesterday) {
+    echo "Error archiving old records for yesterday: " . mysqli_error($connection);
+    exit();
+}
+
+// Delete archived records from the main table for yesterday
+$query_delete_yesterday = "DELETE FROM walk_in WHERE date = '$yesterday'";
+$result_delete_yesterday = mysqli_query($connection, $query_delete_yesterday);
+
+if (!$result_delete_yesterday) {
+    echo "Error deleting old records for yesterday: " . mysqli_error($connection);
     exit();
 }
 
@@ -222,77 +269,72 @@ $result_select = mysqli_query($connection, $query_select);
       <div class="divider"></div>
         
         <?php
-// Connect to the database
-$connection = mysqli_connect("localhost", "root", "", "attendance");
-
-// Retrieve member data
 $query = "SELECT * FROM walk_in";
 $result = mysqli_query($connection, $query);
 
 if ($result) {
-  if (mysqli_num_rows($result) > 0) {
-    echo '<div class="attendance-table">';
-      echo '<div class="attendance-info">';
-      echo '<table class="table table-striped">';
-      echo '<thead>';
-      echo '<tr>';
-      echo '<th>Name</th>';
-      echo '<th>Time-in</th>';
-      echo '<th>Time-out</th>';
-      echo '<th style="text-align: center;">Actions</th>'; // Center align the header
+    if (mysqli_num_rows($result) > 0) {
+        echo '<div class="attendance-table">';
+        echo '<div class="attendance-info">';
+        echo '<table class="table table-striped">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>Name</th>';
+        echo '<th>Time-in</th>';
+        echo '<th>Time-out</th>';
+        echo '<th style="text-align: center;">Actions</th>'; // Center align the header
 
-      while ($row = mysqli_fetch_assoc($result)) {
-          echo '<tr>';
-          echo '<td>' . $row['name'] . '</td>';
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<tr>';
+            echo '<td>' . $row['name'] . '</td>';
 
-          // Format time_in in AM/PM format
-          $timeInFormatted = date("h:i A", strtotime($row['time_in']));
-          echo '<td>' . $timeInFormatted . '</td>';
+            // Format time_in in AM/PM format
+            $timeInFormatted = date("h:i A", strtotime($row['time_in']));
+            echo '<td>' . $timeInFormatted . '</td>';
 
-          // Check if time_out is empty before formatting and displaying
-          if (!empty($row['time_out'])) {
-              // Format time_out in AM/PM format
-              $timeOutFormatted = date("h:i A", strtotime($row['time_out']));
-              echo '<td>' . $timeOutFormatted . '</td>';
-          } else {
-              // Display an empty cell if time_out is empty
-              echo '<td></td>';
-          }
+            // Check if time_out is empty before formatting and displaying
+            if (!empty($row['time_out'])) {
+                // Format time_out in AM/PM format
+                $timeOutFormatted = date("h:i A", strtotime($row['time_out']));
+                echo '<td>' . $timeOutFormatted . '</td>';
+            } else {
+                // Display an empty cell if time_out is empty
+                echo '<td></td>';
+            }
 
-          echo '<td style="text-align: center;">'; // Center align the actions in each row
+            echo '<td style="text-align: center;">'; // Center align the actions in each row
 
-          // Container for side-by-side buttons
-          echo '<div style="display: flex; justify-content: space-evenly;">';
+            // Container for side-by-side buttons
+            echo '<div style="display: flex; justify-content: space-evenly;">';
 
-          // Display edit button
-          echo "<form class='edit' method='post' action='edit_walk-in.php'>";
-          echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
-          echo "<button type='submit' name='edit_walk-in' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-clock' aria-hidden='true'></i></button>";
-          echo "</form>";
-          
+            // Display edit button
+            echo "<form class='edit' method='post' action='edit_walk-in.php'>";
+            echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+            echo "<button type='submit' name='edit_walk-in' style='background-color: #740A00 !important; color: #fff !important;' class='btn'><i class='fa fa-clock' aria-hidden='true'></i></button>";
+            echo "</form>";
 
-          echo '</div>'; // End of the container
+            echo '</div>'; // End of the container
 
-          echo '</td>';
-          echo '</tr>';
-      }
+            echo '</td>';
+            echo '</tr>';
+        }
 
-      echo '</tbody>';
-      echo '</table>';
-    echo '</div>';
+        echo '</tbody>';
+        echo '</table>';
+        echo '</div>';
 
-    echo"<div class='divider'></div>";
+        echo "<div class='divider'></div>";
 
+    }
+
+    echo "</div>";
+
+} else {
+    echo "<p>No members found.</p>";
 }
 
-  echo "</div>";
-
-  } else {
-      echo "<p>No members found.</p>";
-  }
-
-  // Handle member deletion
-  if (isset($_POST['delete_member'])) {
+// Handle member deletion
+if (isset($_POST['delete_member'])) {
     $memberId = mysqli_real_escape_string($connection, $_POST['id']);
     $deleteQuery = "DELETE FROM walk_in WHERE id = '$memberId'";
     $deleteResult = mysqli_query($connection, $deleteQuery);
@@ -305,8 +347,6 @@ if ($result) {
         echo "<script>alert('Error: " . mysqli_error($connection) . "');</script>";
     }
 }
-
-exit();
 
 // Close the database connection
 mysqli_close($connection);
