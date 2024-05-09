@@ -183,7 +183,7 @@ $connection = mysqli_connect("localhost", "root", "", "members");
 date_default_timezone_set('Asia/Manila');
 
 // Retrieve member data
-$query = "SELECT * FROM members_list ORDER BY id";
+$query = "SELECT * FROM members_list ORDER BY due_date DESC";
 $result = mysqli_query($connection, $query);
 
 // Get current date

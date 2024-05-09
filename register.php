@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="header">
@@ -17,6 +18,7 @@
     </div>
     
     <form action="register_process.php" method="POST">
+        <a href="login.php" class="back-link"><i class="fas fa-arrow-left fa-lg"></i></a>
         <h2>Register</h2>
         <div class="input-container">
             <label for="username">Username</label>
@@ -28,6 +30,7 @@
         <div class="input-container">
         <div class="divider"></div>
             <input class="submit" type="submit" value="Sign up">
+            
         </div>
     </form>
 </body>

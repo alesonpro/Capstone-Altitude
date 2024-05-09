@@ -35,18 +35,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Set initial status based on due date
     $status = "Active";
 
-    // Insert member data into the database
-    $insertQuery = "INSERT INTO members_list (name, joining_date, gender, Category, status, due_date, email) VALUES ('$name', '$joiningDate', '$gender', '$category', '$status', '$dueDate', '$email')";
-    $result = mysqli_query($connection, $insertQuery);
+    // Check if the name already exists in the database
+    $checkQuery = "SELECT COUNT(*) AS count FROM members_list WHERE name = '$name'";
+    $checkResult = mysqli_query($connection, $checkQuery);
+    $row = mysqli_fetch_assoc($checkResult);
+    $count = $row['count'];
 
-    if ($result) {
-      echo "<script>alert('Member added successfully.'); window.location.href='members.php';</script>";
+    if ($count > 0) {
+        echo "<script>alert('The name already exists in the database. Please use a different name.'); window.location.href='add_member.php';</script>";
     } else {
-        echo "Error: " . mysqli_error($connection);
+        // Set initial status based on due date
+        $status = "Active";
+
+        // Insert member data into the database
+        $insertQuery = "INSERT INTO members_list (name, joining_date, gender, Category, status, due_date, email) VALUES ('$name', '$joiningDate', '$gender', '$category', '$status', '$dueDate', '$email')";
+        $result = mysqli_query($connection, $insertQuery);
+
+        if ($result) {
+            echo "<script>alert('Member added successfully.'); window.location.href='members.php';</script>";
+        } else {
+            echo "Error: " . mysqli_error($connection);
+        }
     }
 
     // Close the database connection
     mysqli_close($connection);
+}
 
 
 $email = new PHPMailer(TRUE);
@@ -135,8 +149,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $conn->close();
 }
 
-
-}
 ?>
 <!DOCTYPE html>
 <html>

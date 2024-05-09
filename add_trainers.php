@@ -17,7 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $time_in = mysqli_real_escape_string($connection, $_POST['time_in']);
     $time_out = mysqli_real_escape_string($connection, $_POST['time_out']);
 
+    // Check if the name already exists in the database
+    $checkQuery = "SELECT * FROM trainers WHERE name = '$name'";
+    $checkResult = mysqli_query($connection, $checkQuery);
 
+    if (mysqli_num_rows($checkResult) > 0) {
+        echo "<script>alert('Trainer with the same name already exists.'); window.location.href='add_trainers.php';</script>";
+        exit(); // Exit script if duplicate name found
+    }
 
     // Insert trainer data into the database
     $insertQuery = "INSERT INTO trainers (name, specialty, schedule_start, schedule_end, time_in, time_out) VALUES ('$name', '$specialty', '$schedule_start', '$schedule_end', '$time_in', '$time_out')";

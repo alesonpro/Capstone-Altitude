@@ -197,8 +197,16 @@ $category = $_POST['category'];
 $sql = "SELECT * FROM members_list WHERE 1=1";
 
 if ($category != 'all') {
-    $sql .= " AND category = '$category'";
+    // Check if the query already contains a WHERE clause
+    if (strpos($sql, "WHERE") === false) {
+        // If no WHERE clause exists, add it
+        $sql .= " WHERE category = '$category'";
+    } else {
+        // If WHERE clause already exists, append AND condition
+        $sql .= " AND category = '$category'";
+    }
 }
+$sql .= " ORDER BY joining_date DESC";
 
 // Execute the query
 $result = $connection->query($sql);

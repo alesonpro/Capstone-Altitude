@@ -13,7 +13,7 @@ if (mysqli_connect_errno()) {
 $date = $_GET['date'];
 
 // Prepare the SQL query to fetch members for the selected date
-$query = "SELECT * FROM archive_table WHERE DATE(date) = '$date'";
+$query = "SELECT * FROM archive_table_walk_in WHERE DATE(date) = '$date'";
 $result = mysqli_query($connection, $query);
 
 if ($result) {
@@ -23,7 +23,7 @@ if ($result) {
         $output = '';
         while ($row = mysqli_fetch_assoc($result)) {
             $output .= '<tr>';
-            $output .= '<td>' . $row['qr_content'] . '</td>';
+            $output .= '<td>' . $row['name'] . '</td>';
             $output .= '<td>' . date("h:i A", strtotime($row['time_in'])) . '</td>';
             $output .= '<td>' . ($row['time_out'] ? date("h:i A", strtotime($row['time_out'])) : 'N/A') . '</td>';
             $output .= '<td>' . date("m-d-Y", strtotime($row['date'])) . '</td>';

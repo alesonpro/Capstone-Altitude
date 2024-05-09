@@ -194,8 +194,17 @@ $status = isset($_POST['status']) ? $_POST['status'] : '';
 $sql = "SELECT * FROM members_list WHERE 1=1";
 
 if ($status != '') {
-    $sql .= " AND status = '$status'";
+    // Check if the query already contains a WHERE clause
+    if (strpos($sql, "WHERE") === false) {
+        // If no WHERE clause exists, add it
+        $sql .= " WHERE status = '$status'";
+    } else {
+        // If WHERE clause already exists, append AND condition
+        $sql .= " AND status = '$status'";
+    }
 }
+
+$sql .= " ORDER BY due_date DESC";
 
 // Execute the query
 $result = $connection->query($sql);

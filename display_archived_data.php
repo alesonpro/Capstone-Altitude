@@ -207,7 +207,7 @@ $result = mysqli_query($connection, $query);
             <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
             <script>
                 flatpickr("#calendar", {
-                dateFormat: "m-d-Y",
+                dateFormat: "Y-m-d",
                 onClose: function(selectedDates, dateStr, instance) {
                     // Convert selected date to MySQL date format (Y-m-d)
                     const selectedDate = moment(selectedDates[0]).format('YYYY-MM-DD');
@@ -226,10 +226,26 @@ $result = mysqli_query($connection, $query);
             });
 
 
-                function printToPDF() {
-                    // Redirect to the server-side script to generate the PDF
+            function printToPDF() {
+                const selectedDate = document.getElementById("calendar").value;
+
+                // If no date is selected, generate PDF of all archived data
+                if (selectedDate === '') {
                     window.open('generate_pdf_archived.php', '_blank');
+                } else {
+                    // Check if the table has been filtered
+                    const filteredData = document.getElementById("members-table").innerHTML.trim();
+                    
+                    // If the table has filtered data, generate PDF from filtered data
+                    if (filteredData !== '') {
+                        window.open('generate_pdf_fetch_members.php?date=' + selectedDate, '_blank');
+                    } else {
+                        // If no filter applied, generate PDF from the currently displayed data
+                        window.open('generate_pdf_archived.php', '_blank');
+                    }
                 }
+            }
+
             </script>
         </div>
     </div>

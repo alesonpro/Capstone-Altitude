@@ -199,7 +199,7 @@ error_reporting(E_ALL);
       $connection = mysqli_connect("localhost", "root", "", "members");
 
       // Retrieve member data
-      $query = "SELECT * FROM members_list ORDER BY id";
+      $query = "SELECT * FROM members_list ORDER BY joining_date DESC";
       $result = mysqli_query($connection, $query);
 
       if ($result) {

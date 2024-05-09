@@ -2,42 +2,56 @@
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Connect to the database
-    $connection = mysqli_connect("localhost", "root", "", "attendance");
+    // Connect to the attendance database
+    $attendanceConnection = mysqli_connect("localhost", "root", "", "attendance");
 
-    // Check connection
-    if ($connection === false) {
-        die("Error: Connection error. " . mysqli_connect_error());
+    // Check attendance database connection
+    if ($attendanceConnection === false) {
+        die("Error: Connection error to attendance database. " . mysqli_connect_error());
+    }
+
+    // Connect to the members database
+    $membersConnection = mysqli_connect("localhost", "root", "", "members");
+
+    // Check members database connection
+    if ($membersConnection === false) {
+        die("Error: Connection error to members database. " . mysqli_connect_error());
     }
 
     // Sanitize user inputs
-    $name = mysqli_real_escape_string($connection, $_POST['qr_content']);
-    
-    $time_in = mysqli_real_escape_string($connection, $_POST['time_in']);
+    $name = mysqli_real_escape_string($attendanceConnection, $_POST['qr_content']);
+    $time_in = mysqli_real_escape_string($attendanceConnection, $_POST['time_in']);
+    $time_out = mysqli_real_escape_string($attendanceConnection, $_POST['time_out']);
 
-    $time_out = mysqli_real_escape_string($connection, $_POST['time_out']);
+    // Check if qr_content exists in members_list table
+    $checkQuery = "SELECT COUNT(*) AS count FROM members_list WHERE name = '$name'";
+    $checkResult = mysqli_query($membersConnection, $checkQuery);
+    $row = mysqli_fetch_assoc($checkResult);
+    $count = $row['count'];
 
-
-
-
-// Insert member data into the database
-if ($_POST['time_out'] === "null") {
-    $insertQuery = "INSERT INTO attendance_table (qr_content, time_in, time_out) VALUES ('$name', '$time_in', NULL)";
-} else {
-    $time_out = mysqli_real_escape_string($connection, $_POST['time_out']); // Escape the value
-    $insertQuery = "INSERT INTO attendance_table (qr_content, time_in, time_out) VALUES ('$name', '$time_in', '$time_out')";
-}
-
-$result = mysqli_query($connection, $insertQuery);
-
-    if ($result) {
-        echo "<script>alert('added successfully.'); window.location.href='/Capstone-Altitude/scanner/index.html';</script>";
-    } else {
-        echo "Error: " . mysqli_error($connection);
+    if ($count == 0) {
+        echo "<script>alert('Member not found in database.'); window.location.href='/Capstone-Altitude/add_timein.php';</script>";
+        exit(); // Exit PHP script if member not found
     }
 
-    // Close the database connection
-    mysqli_close($connection);
+    // Insert member data into the attendance database
+    if ($_POST['time_out'] === "null") {
+        $insertQuery = "INSERT INTO attendance_table (qr_content, time_in, time_out) VALUES ('$name', '$time_in', NULL)";
+    } else {
+        $insertQuery = "INSERT INTO attendance_table (qr_content, time_in, time_out) VALUES ('$name', '$time_in', '$time_out')";
+    }
+
+    $result = mysqli_query($attendanceConnection, $insertQuery);
+
+    if ($result) {
+        echo "<script>alert('Added successfully.'); window.location.href='/Capstone-Altitude/scanner/index.html';</script>";
+    } else {
+        echo "Error: " . mysqli_error($attendanceConnection);
+    }
+
+    // Close the database connections
+    mysqli_close($attendanceConnection);
+    mysqli_close($membersConnection);
 }
 ?>
 

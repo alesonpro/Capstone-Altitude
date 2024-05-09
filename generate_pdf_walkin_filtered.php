@@ -5,38 +5,52 @@ require('C:\xampp\htdocs\Capstone-Altitude\fpdf186\fpdf.php');
 $pdf = new FPDF();
 $pdf->AddPage();
 
-// Fetch member data from the database and add it to the PDF
+// Connect to the database
 $connection = mysqli_connect("localhost", "root", "", "attendance");
-$query = "SELECT * FROM archive_table ORDER BY date DESC";
+
+// Check connection 
+if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    exit();
+}
+
+// Retrieve filtered data based on the selected date
+$date = $_GET['date']; // Assuming you're passing the selected date as a GET parameter
+$query = "SELECT * FROM archive_table_walk_in WHERE date = '$date'";
 $result = mysqli_query($connection, $query);
 
+// Initialize PDF
+$pdf = new FPDF();
+$pdf->AddPage();
+
+// Set font
+$pdf->SetFont('Arial', '', 12);
+
+// Add a title
+$pdf->Cell(0, 10, 'Members Logs - ' . $date, 0, 1, 'C');
+
+// Check if there are results
 if ($result && mysqli_num_rows($result) > 0) {
     // Table headers
-    $pdf->SetFont('Arial', 'B', 12);
     $pdf->Cell(60, 10, 'Name', 1, 0, 'C');
     $pdf->Cell(40, 10, 'Time In', 1, 0, 'C');
     $pdf->Cell(40, 10, 'Time Out', 1, 0, 'C');
     $pdf->Cell(40, 10, 'Date', 1, 1, 'C');
 
     // Table rows
-    $pdf->SetFont('Arial', '', 12);
     while ($row = mysqli_fetch_assoc($result)) {
-        $pdf->Cell(60, 10, $row['qr_content'], 1, 0, 'C');
+        $pdf->Cell(60, 10, $row['name'], 1, 0, 'C');
         $pdf->Cell(40, 10, date("h:i A", strtotime($row['time_in'])), 1, 0, 'C');
         $pdf->Cell(40, 10, ($row['time_out'] ? date("h:i A", strtotime($row['time_out'])) : 'N/A'), 1, 0, 'C');
         $pdf->Cell(40, 10, date("m-d-Y", strtotime($row['date'])), 1, 1, 'C');
     }
-    mysqli_free_result($result);
 } else {
     // No records found message
-    $pdf->Cell(0, 10, 'No records found.', 0, 1);
+    $pdf->Cell(0, 10, 'No records found for the selected date.', 0, 1);
 }
 
 // Close the database connection
 mysqli_close($connection);
-
-// Centering the table within the page
-$pdf->SetXY(($pdf->GetPageWidth() - 160) / 2, $pdf->GetY());
 
 // Output the PDF
 $pdf->Output();
